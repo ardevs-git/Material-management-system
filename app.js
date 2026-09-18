@@ -47,8 +47,113 @@ const state = stored && typeof stored === "object" ? stored : {
   }
 };
 
-state.outwards = Array.isArray(state.outwards) ? state.outwards : [];
-state.purchases = Array.isArray(state.purchases) ? state.purchases : [];
+const defaultPurchases = [
+  {
+    no: "GRN-00218",
+    date: "2026-09-14",
+    supplier: "Fresh Foods Co.",
+    store: "Downtown Kitchen",
+    reference: "INV-90214",
+    remarks: "Weekly dairy delivery",
+    items: [
+      { product: "Paneer", qty: 12, rate: 11.8, unit: "kg", amount: 141.6 },
+      { product: "Butter", qty: 10, rate: 8.5, unit: "kg", amount: 85.0 }
+    ],
+    total: 226.6,
+    user: "Alex Kim",
+    status: "Posted",
+    createdAt: "2026-09-14T10:30:00.000Z"
+  },
+  {
+    no: "GRN-00217",
+    date: "2026-09-06",
+    supplier: "Metro Provisions",
+    store: "Downtown Kitchen",
+    reference: "INV-84190",
+    remarks: "Dry goods & beans restock",
+    items: [
+      { product: "Arabica Coffee Beans", qty: 15, rate: 18.5, unit: "kg", amount: 277.5 },
+      { product: "Basmati Rice", qty: 25, rate: 3.4, unit: "kg", amount: 85.0 }
+    ],
+    total: 362.5,
+    user: "Alex Kim",
+    status: "Posted",
+    createdAt: "2026-09-06T11:15:00.000Z"
+  },
+  {
+    no: "GRN-00216",
+    date: "2026-08-24",
+    supplier: "Green Valley Farms",
+    store: "Downtown Kitchen",
+    reference: "INV-77120",
+    remarks: "End of month produce delivery",
+    items: [
+      { product: "Tomato", qty: 40, rate: 3.4, unit: "kg", amount: 136.0 }
+    ],
+    total: 136.0,
+    user: "Maya Chen",
+    status: "Posted",
+    createdAt: "2026-08-24T09:40:00.000Z"
+  }
+];
+
+const defaultOutwards = [
+  {
+    no: "OUT-00084",
+    date: "2026-09-14",
+    department: "Kitchen",
+    store: "Downtown Kitchen",
+    issuedTo: "Chef Marco",
+    remarks: "Lunch prep & curry service",
+    items: [
+      { product: "Tomato", qty: 4.5, rate: 3.4, unit: "kg", amount: 15.3 }
+    ],
+    total: 15.3,
+    user: "Maya Chen",
+    status: "Issued",
+    createdAt: "2026-09-14T09:15:00.000Z"
+  },
+  {
+    no: "OUT-00083",
+    date: "2026-09-13",
+    department: "Bakery",
+    store: "Downtown Kitchen",
+    issuedTo: "Pastry Chef Sarah",
+    remarks: "Morning croissant production",
+    items: [
+      { product: "Butter", qty: 1.6, rate: 8.5, unit: "kg", amount: 13.6 }
+    ],
+    total: 13.6,
+    user: "Maya Chen",
+    status: "Issued",
+    createdAt: "2026-09-13T16:10:00.000Z"
+  },
+  {
+    no: "OUT-00082",
+    date: "2026-09-10",
+    department: "Bar",
+    store: "Downtown Kitchen",
+    issuedTo: "Bar Manager Sam",
+    remarks: "Espresso & cold brew bar prep",
+    items: [
+      { product: "Arabica Coffee Beans", qty: 3.5, rate: 18.5, unit: "kg", amount: 64.75 }
+    ],
+    total: 64.75,
+    user: "Sam Rivera",
+    status: "Issued",
+    createdAt: "2026-09-10T14:20:00.000Z"
+  }
+];
+
+const defaultPayments = [
+  { id: "PAY-00101", date: "2026-09-08", supplier: "Fresh Foods Co.", amount: 1500, mode: "Bank Transfer", ref: "NEFT-7829104", notes: "Settlement for weekly dairy supplies", recordedBy: "Alex Kim" },
+  { id: "PAY-00102", date: "2026-09-05", supplier: "Metro Provisions", amount: 1000, mode: "Cheque", ref: "CHQ-004812", notes: "Monthly grocery clearance", recordedBy: "Alex Kim" },
+  { id: "PAY-00103", date: "2026-08-28", supplier: "Green Valley Farms", amount: 650, mode: "UPI / Card", ref: "UPI-9182310", notes: "Produce batch settlement", recordedBy: "Maya Chen" }
+];
+
+state.outwards = Array.isArray(state.outwards) && state.outwards.length ? state.outwards : defaultOutwards;
+state.purchases = Array.isArray(state.purchases) && state.purchases.length ? state.purchases : defaultPurchases;
+state.payments = Array.isArray(state.payments) && state.payments.length ? state.payments : defaultPayments;
 state.purchaseOrders = Array.isArray(state.purchaseOrders) ? state.purchaseOrders : [];
 state.suppliers = Array.isArray(state.suppliers) && state.suppliers.length ? state.suppliers : seed.suppliers;
 state.stores = Array.isArray(state.stores) && state.stores.length ? state.stores : seed.stores;
@@ -102,19 +207,239 @@ const save = () => {
 const canManage = () => ["Owner","Admin"].includes(state.users.find(u => u.name === state.currentUser)?.role);
 
 const today = new Date().toISOString().slice(0, 10);
-const roundNumber = n => {
-  const d = Math.max(0, Number(state.settings.decimals) || 0);
+const monthKey = d => String(d || today).slice(0, 7);
+const monthName = m => {
+  if (!m) return "";
+  const parts = String(m).split("-");
+  if (parts.length < 2) return m;
+  const dt = new Date(Number(parts[0]), Number(parts[1]) - 1, 1);
+  return dt.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+};
+
+const roundNumber = (n, methodOverride, decimalsOverride) => {
+  const method = methodOverride || state.settings?.rounding || "normal";
+  const d = decimalsOverride !== undefined ? decimalsOverride : (state.settings?.decimals !== undefined ? Math.max(0, Number(state.settings.decimals)) : 2);
   const m = 10 ** d;
   const v = Number(n) || 0;
-  return state.settings.rounding === "up" ? Math.ceil(v * m) / m :
-         state.settings.rounding === "down" ? Math.floor(v * m) / m :
-         state.settings.rounding === "none" ? v : Math.round(v * m) / m;
+
+  if (method === "none") return v;
+  if (method === "up" || method === "ceil") return Math.ceil(v * m) / m;
+  if (method === "down" || method === "floor") return Math.floor(v * m) / m;
+  if (method === "nearest-05") return Math.round(v * 20) / 20;
+  if (method === "nearest-50") return Math.round(v * 2) / 2;
+  if (method === "nearest-integer") return Math.round(v);
+  if (method === "bankers") {
+    // Banker's Rounding (Round half to nearest even)
+    const shifted = v * m;
+    const floor = Math.floor(shifted);
+    const diff = shifted - floor;
+    if (Math.abs(diff - 0.5) < 1e-9) {
+      return (floor % 2 === 0 ? floor : floor + 1) / m;
+    }
+    return Math.round(shifted) / m;
+  }
+  // Default: Standard Half-Up
+  return Math.round(v * m) / m;
 };
-const numberValue = n => roundNumber(n).toLocaleString("en-US", {
-  minimumFractionDigits: state.settings.rounding === "none" ? 0 : state.settings.decimals,
-  maximumFractionDigits: state.settings.rounding === "none" ? 20 : state.settings.decimals
-});
-const money = n => "$" + numberValue(n);
+
+const numberValue = (n, forcedDecimals) => {
+  const d = forcedDecimals !== undefined ? forcedDecimals : (state.settings?.decimals !== undefined ? Math.max(0, Number(state.settings.decimals)) : 2);
+  const val = roundNumber(n, undefined, d);
+  const isNone = state.settings?.rounding === "none";
+  return val.toLocaleString("en-US", {
+    minimumFractionDigits: isNone ? 0 : d,
+    maximumFractionDigits: isNone ? 20 : d
+  });
+};
+const money = n => numberValue(n, 2);
+
+const escapeHtml = s => String(s ?? "")
+  .replace(/&/g, "&amp;")
+  .replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;")
+  .replace(/'/g, "&#39;");
+
+function highlightMatch(text, query) {
+  if (!text) return "";
+  const str = String(text);
+  const q = (query || "").trim();
+  if (!q) return escapeHtml(str);
+
+  const lowerStr = str.toLowerCase();
+  const lowerQ = q.toLowerCase();
+  const idx = lowerStr.indexOf(lowerQ);
+  if (idx !== -1) {
+    const before = str.slice(0, idx);
+    const match = str.slice(idx, idx + q.length);
+    const after = str.slice(idx + q.length);
+    return `${escapeHtml(before)}<mark class="search-match">${escapeHtml(match)}</mark>${escapeHtml(after)}`;
+  }
+
+  // Word or char matching fallback
+  let res = "";
+  let qI = 0;
+  for (let i = 0; i < str.length; i++) {
+    const c = str[i];
+    if (qI < lowerQ.length && c.toLowerCase() === lowerQ[qI]) {
+      res += `<mark class="search-match">${escapeHtml(c)}</mark>`;
+      qI++;
+    } else {
+      res += escapeHtml(c);
+    }
+  }
+  return res;
+}
+
+// ADVANCED PRODUCT SEARCH & RECOMMENDATION POPOVER SYSTEM
+let currentSearchPopover = {
+  input: null,
+  query: "",
+  items: [],
+  activeIndex: 0,
+  onSelect: null
+};
+
+function openProductSearchPopover(inputEl, query, onSelect) {
+  const popover = document.getElementById("product-search-popover");
+  if (!popover) return;
+  const q = (query || "").trim().toLowerCase();
+  if (!q) {
+    closeProductSearchPopover();
+    return;
+  }
+
+  // Filter products by name, sku, barcode, category
+  const matches = state.products.map(p => {
+    const nameLower = (p.name || "").toLowerCase();
+    const skuLower = (p.sku || "").toLowerCase();
+    const catLower = (p.category || "").toLowerCase();
+    const barLower = (p.barcode || "").toLowerCase();
+
+    let score = 0;
+    if (nameLower.startsWith(q)) score = 100;
+    else if (nameLower.split(/\s+/).some(w => w.startsWith(q))) score = 80;
+    else if (nameLower.includes(q)) score = 60;
+    else if (skuLower.includes(q) || catLower.includes(q) || barLower.includes(q)) score = 40;
+
+    return { product: p, score };
+  })
+  .filter(item => item.score > 0)
+  .sort((a, b) => b.score - a.score || a.product.name.localeCompare(b.product.name))
+  .slice(0, 10);
+
+  currentSearchPopover = {
+    input: inputEl,
+    query: q,
+    items: matches.map(m => m.product),
+    activeIndex: 0,
+    onSelect
+  };
+
+  renderSearchPopover();
+
+  const rect = inputEl.getBoundingClientRect();
+  popover.style.top = (rect.bottom + window.scrollY + 4) + "px";
+  popover.style.left = (rect.left + window.scrollX) + "px";
+  popover.style.width = Math.max(380, rect.width) + "px";
+  popover.style.display = "block";
+}
+
+function renderSearchPopover() {
+  const popover = document.getElementById("product-search-popover");
+  if (!popover) return;
+  const { query, items, activeIndex } = currentSearchPopover;
+
+  let html = `
+    <div class="popover-header-hint">
+      <span>Matching items for "${escapeHtml(query)}"</span>
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate · <kbd>↵</kbd> select</span>
+    </div>
+  `;
+
+  if (!items.length) {
+    html += `
+      <div class="popover-empty">No products matching "<b>${escapeHtml(query)}</b>"</div>
+      <div class="popover-quick-add" onclick="quickAddProductFromSearch('${escapeQuote(query)}')">
+        ＋ Quick create item "${escapeHtml(query)}" and select
+      </div>
+    `;
+  } else {
+    html += items.map((p, idx) => {
+      const isSelected = idx === activeIndex;
+      const stock = Number(p.stock) || 0;
+      const min = Number(p.min) || 5;
+      const stockStatus = stock <= 0 ? "out" : stock <= min ? "low" : "ok";
+      const stockLabel = stock <= 0 ? "Out of Stock" : `${numberValue(stock)} ${p.unit || 'unit'}`;
+      const highlightedName = highlightMatch(p.name, query);
+      const highlightedCat = highlightMatch(p.category || 'General', query);
+      const highlightedSku = highlightMatch(p.sku || '', query);
+      const rate = p.purchaseCost || p.cost || 0;
+
+      return `
+        <div class="search-rec-item ${isSelected ? 'active' : ''}" data-idx="${idx}"
+             onmousedown="selectSearchPopoverItem(${idx})">
+          <div class="rec-left">
+            <span class="rec-icon">${p.icon || '📦'}</span>
+            <div class="rec-details">
+              <span class="rec-name">${highlightedName}</span>
+              <div class="rec-meta">
+                <span class="rec-cat-pill">${highlightedCat}</span>
+                ${p.sku ? `<span>SKU: ${highlightedSku}</span>` : ''}
+              </div>
+            </div>
+          </div>
+          <div class="rec-right">
+            <span class="rec-stock-pill ${stockStatus}">${stockLabel}</span>
+            <span class="rec-rate">Rate: ${money(rate)}</span>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  popover.innerHTML = html;
+}
+
+function closeProductSearchPopover() {
+  const popover = document.getElementById("product-search-popover");
+  if (popover) popover.style.display = "none";
+  currentSearchPopover = { input: null, query: "", items: [], activeIndex: 0, onSelect: null };
+}
+
+function selectSearchPopoverItem(idx) {
+  const { items, onSelect } = currentSearchPopover;
+  const selected = items[idx];
+  if (selected && onSelect) {
+    onSelect(selected);
+  }
+  closeProductSearchPopover();
+}
+
+function quickAddProductFromSearch(name) {
+  const trimmed = (name || "").trim();
+  if (!trimmed) return;
+  const newProd = {
+    id: Date.now(),
+    name: trimmed,
+    sku: "ITEM-" + String(state.products.length + 1).padStart(3, "0"),
+    category: "General",
+    unit: "unit",
+    stock: 0,
+    min: 5,
+    cost: 10,
+    purchaseCost: 10,
+    store: state.currentStore,
+    icon: "📦"
+  };
+  state.products.push(newProd);
+  save();
+  if (currentSearchPopover.onSelect) {
+    currentSearchPopover.onSelect(newProd);
+  }
+  closeProductSearchPopover();
+  toast(`Created and selected "${trimmed}"`);
+}
 const dateKey = d => String(d).slice(0, 10);
 const fmtDate = d => {
   if (!d) return "—";
@@ -291,7 +616,12 @@ function closeAllPopovers(exceptId) {
     if (el.id !== exceptId) el.classList.remove("open");
   });
 }
-document.addEventListener("click", () => closeAllPopovers());
+document.addEventListener("click", e => {
+  closeAllPopovers();
+  if (!e.target.closest("#product-search-popover") && !e.target.closest(".vfs-search-cell-wrap")) {
+    closeProductSearchPopover();
+  }
+});
 
 function openHelpModal() {
   openInAppModal("Keyboard Shortcuts & Guide", `
@@ -327,6 +657,7 @@ function ledgerRows(rows) {
           <th>Value</th>
           <th>User</th>
           <th>Date</th>
+          <th style="text-align:right;">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -341,11 +672,119 @@ function ledgerRows(rows) {
             <td class="num-cell"><b>${money(Math.abs(t.qty) * (t.cost || 0))}</b></td>
             <td>${t.user || "Alex Kim"}</td>
             <td>${fmtDate(t.date)}</td>
+            <td style="text-align:right;">
+              <div class="table-action-btns">
+                <button type="button" class="secondary" onclick="editTransaction('${t.id || t.ref}')">Edit</button>
+                <button type="button" class="danger-btn" onclick="deleteTransaction('${t.id || t.ref}')">Delete</button>
+              </div>
+            </td>
           </tr>
-        `).join("") || '<tr><td colspan="9" class="empty-state">No transactions found.</td></tr>'}
+        `).join("") || '<tr><td colspan="10" class="empty-state">No transactions found.</td></tr>'}
       </tbody>
     </table>
   `;
+}
+
+function editTransaction(idOrRef) {
+  const t = state.transactions.find(x => x.id === idOrRef || x.ref === idOrRef);
+  if (!t) { toast("Transaction not found"); return; }
+  openInAppModal("Edit Transaction — " + (t.ref || t.id), `
+    <div class="form-grid">
+      <div class="form-field full">
+        <label>Item / Product *</label>
+        <select id="et-product">
+          ${state.products.map(p => `<option value="${escapeQuote(p.name)}" ${p.name === t.product ? 'selected' : ''}>${escapeHtml(p.name)}</option>`).join("")}
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Transaction Type *</label>
+        <select id="et-type">
+          ${["Purchase","Stock Outward","Consumption","Adjustment","Wastage","Transfer in","Transfer out"].map(tp => `<option ${tp === t.type ? 'selected' : ''}>${tp}</option>`).join("")}
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Date *</label>
+        <input id="et-date" type="datetime-local" value="${(t.date || today).slice(0, 16)}">
+      </div>
+      <div class="form-field">
+        <label>Quantity (positive for inward, negative for outward) *</label>
+        <input id="et-qty" type="number" step="0.01" value="${t.qty}">
+      </div>
+      <div class="form-field">
+        <label>Unit Cost Rate *</label>
+        <input id="et-cost" type="number" step="0.01" value="${t.cost || 0}">
+      </div>
+      <div class="form-field">
+        <label>Warehouse</label>
+        <select id="et-store">
+          ${state.stores.map(s => `<option ${s[0] === (t.store || state.currentStore) ? 'selected' : ''}>${escapeHtml(s[0])}</option>`).join("")}
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Department</label>
+        <select id="et-dept">
+          ${["", ...departments].map(d => `<option value="${d}" ${d === (t.department || "") ? 'selected' : ''}>${escapeHtml(d || "None")}</option>`).join("")}
+        </select>
+      </div>
+      <div class="form-field full">
+        <label>Voucher / Reference #</label>
+        <input id="et-ref" value="${escapeHtml(t.ref || '')}">
+      </div>
+      <div class="form-field full">
+        <label>Remarks</label>
+        <input id="et-remarks" value="${escapeHtml(t.remarks || '')}">
+      </div>
+    </div>
+  `, `
+    <button class="danger-btn" onclick="closeModal();deleteTransaction('${t.id || t.ref}')">Delete Transaction</button>
+    <button class="secondary" onclick="closeModal()">Cancel</button>
+    <button class="primary" onclick="saveTransactionEdit('${t.id || t.ref}')">Save Changes</button>
+  `);
+}
+
+function saveTransactionEdit(idOrRef) {
+  const t = state.transactions.find(x => x.id === idOrRef || x.ref === idOrRef);
+  if (!t) return;
+  const prod = document.getElementById("et-product")?.value;
+  const type = document.getElementById("et-type")?.value;
+  const dateVal = document.getElementById("et-date")?.value;
+  const qty = Number(document.getElementById("et-qty")?.value) || 0;
+  const cost = Number(document.getElementById("et-cost")?.value) || 0;
+  const store = document.getElementById("et-store")?.value;
+  const dept = document.getElementById("et-dept")?.value;
+  const ref = document.getElementById("et-ref")?.value.trim();
+  const remarks = document.getElementById("et-remarks")?.value.trim();
+
+  if (!prod) { toast("Please select a product"); return; }
+  if (qty === 0) { toast("Quantity cannot be zero"); return; }
+
+  t.product = prod;
+  t.type = type;
+  t.date = dateVal ? (dateVal.length === 16 ? dateVal + ":00" : dateVal) : t.date;
+  t.qty = qty;
+  t.cost = cost;
+  t.store = store;
+  t.department = dept;
+  t.ref = ref;
+  t.remarks = remarks;
+
+  rebuildStock();
+  closeModal();
+  toast("Transaction updated");
+  if (currentReportType === "ledger") showView("reports");
+  else showView("inventory-ledger");
+}
+
+function deleteTransaction(idOrRef) {
+  const t = state.transactions.find(x => x.id === idOrRef || x.ref === idOrRef);
+  if (!t) return;
+  confirmModal(`Permanently delete transaction "${t.ref || t.id} — ${t.product}"? Stock will be recalculated automatically.`, () => {
+    state.transactions = state.transactions.filter(x => x !== t);
+    rebuildStock();
+    toast("Transaction deleted");
+    if (currentReportType === "ledger") showView("reports");
+    else showView("inventory-ledger");
+  });
 }
 
 // DASHBOARD
@@ -578,9 +1017,12 @@ function renderInventoryTable() {
               <td class="num-cell"><b>${money((p.stock || 0) * (p.cost || 0))}</b></td>
               <td><span class="status ${statusClass}">${statusText}</span></td>
               <td style="text-align:right;">
-                <button class="secondary" style="padding:4px 8px;font-size:11px;" onclick="viewItem(${p.id})">Details</button>
-                <button class="secondary" style="padding:4px 8px;font-size:11px;" onclick="modifyItem(${p.id})">Edit</button>
-                <button class="secondary" style="padding:4px 8px;font-size:11px;" onclick="filterLedgerForProductId(${p.id})">Ledger</button>
+                <div class="table-action-btns">
+                  <button type="button" class="secondary" onclick="viewItem(${p.id})">Details</button>
+                  <button type="button" class="secondary" onclick="modifyItem(${p.id})">Edit</button>
+                  <button type="button" class="secondary" onclick="filterLedgerForProductId(${p.id})">Ledger</button>
+                  <button type="button" class="danger-btn" onclick="deleteItem(${p.id})">Delete</button>
+                </div>
               </td>
             </tr>
           `;
@@ -718,7 +1160,7 @@ function modifyItem(id) {
         </select>
       </div>
       <div class="form-field">
-        <label>Cost / Purchase Rate ($)</label>
+        <label>Cost / Purchase Rate</label>
         <input id="edit-cost" type="number" step="0.01" value="${p.purchaseCost || p.cost || 0}">
       </div>
       <div class="form-field">
@@ -731,9 +1173,24 @@ function modifyItem(id) {
       </div>
     </div>
   `, `
+    <button class="danger-btn" onclick="closeModal();deleteItem(${id})">Delete Item</button>
     <button class="secondary" onclick="closeModal()">Cancel</button>
     <button class="primary" onclick="saveItemChanges(${id})">Save Changes</button>
   `);
+}
+
+function deleteItem(id) {
+  const p = state.products.find(x => x.id === id);
+  if (!p) return;
+  confirmModal(`Permanently delete "${p.name}" from catalog? This will remove the item record.`, () => {
+    state.products = state.products.filter(x => x.id !== id);
+    delete state.openingStock[p.name];
+    rebuildStock();
+    save();
+    toast(`Item "${p.name}" deleted`);
+    if (currentReportType === "stock") showView("reports");
+    else showView("inventory");
+  });
 }
 
 function saveItemChanges(id) {
@@ -771,134 +1228,338 @@ const nextPurchaseNo = () => `GRN-${String((state.purchases || []).length + 219)
 
 function newPurchase() {
   purchaseDraft = {
+    no: nextPurchaseNo(),
     date: today,
     supplier: state.suppliers[0] ? state.suppliers[0][0] : "Fresh Foods Co.",
     store: state.currentStore,
     reference: "",
     remarks: "",
-    items: [{ product: state.products[0]?.name || "", qty: 1, rate: state.products[0]?.purchaseCost || state.products[0]?.cost || 10 }],
+    items: [{ product: "", qty: 1, rate: 0 }],
     isNew: true
   };
+  showView("purchasing");
+  setTimeout(() => {
+    const firstInput = document.getElementById("p-search-0");
+    if (firstInput) {
+      firstInput.focus();
+      firstInput.select();
+    }
+  }, 60);
+}
+
+function exitPurchaseFullscreen() {
+  purchaseDraft.isNew = false;
+  closeProductSearchPopover();
   showView("purchasing");
 }
 
 function purchaseScreen() {
   const total = purchaseDraft.items.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.rate) || 0), 0);
-  return layout(
-    "Goods Receipt Note (GRN)",
-    "Record supplier deliveries and post stock into inventory.",
-    `<button class="secondary" onclick="showView('purchasing')">Cancel</button>
-     <button class="primary" onclick="savePurchase()">Save Purchase (F8)</button>`,
-    `
-      <div class="voucher-container">
-        <div class="voucher-command-bar">
-          <b>Goods Receipt Entry</b>
-          <span>F5: Add row</span>
-          <span>F8: Save</span>
-          <span>F9: Print preview</span>
-          <span>Esc: Cancel</span>
-        </div>
+  const totalQty = purchaseDraft.items.reduce((a, i) => a + (Number(i.qty) || 0), 0);
+  const vNo = purchaseDraft.no || nextPurchaseNo();
 
-        <div class="voucher-header-card">
-          <div class="voucher-header-top">
-            <div>
-              <span style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;">Voucher No</span>
-              <div class="voucher-no-badge">${purchaseDraft.no || nextPurchaseNo()}</div>
-            </div>
-            <span class="status ok">${purchaseDraft.no ? "POSTED" : "DRAFT"}</span>
-          </div>
-
-          <div class="voucher-grid-fields">
-            <div class="voucher-field">
-              <label>Purchase Date</label>
-              <input type="date" value="${purchaseDraft.date}" onchange="purchaseDraft.date=this.value">
-            </div>
-            <div class="voucher-field">
-              <label>Supplier</label>
-              <select onchange="purchaseDraft.supplier=this.value">
-                ${state.suppliers.map(s => `<option ${s[0] === purchaseDraft.supplier ? 'selected' : ''}>${s[0]}</option>`).join("")}
-              </select>
-            </div>
-            <div class="voucher-field">
-              <label>Receiving Warehouse</label>
-              <select onchange="purchaseDraft.store=this.value">
-                ${state.stores.map(s => `<option ${s[0] === purchaseDraft.store ? 'selected' : ''}>${s[0]}</option>`).join("")}
-              </select>
-            </div>
-            <div class="voucher-field">
-              <label>Invoice / Reference #</label>
-              <input value="${purchaseDraft.reference || ''}" placeholder="e.g. INV-9902" oninput="purchaseDraft.reference=this.value">
-            </div>
-            <div class="voucher-field">
-              <label>Remarks</label>
-              <input value="${purchaseDraft.remarks || ''}" placeholder="Delivery notes..." oninput="purchaseDraft.remarks=this.value">
-            </div>
+  return `
+    <div class="voucher-fullscreen" id="purchase-fullscreen">
+      <!-- Fullscreen Command Topbar -->
+      <div class="vfs-topbar">
+        <div class="vfs-topbar-left">
+          <button type="button" class="vfs-back-btn" onclick="exitPurchaseFullscreen()" title="Return to Register">
+            ← Exit Register <kbd>Esc</kbd>
+          </button>
+          <div class="vfs-title-group">
+            <span class="vfs-type-icon">📥</span>
+            <h2 class="vfs-heading">Goods Receipt Note (GRN)</h2>
+            <span class="vfs-badge">${vNo}</span>
+            <span class="vfs-status-pill">${purchaseDraft.no ? "POSTED" : "DRAFT ENTRY"}</span>
           </div>
         </div>
 
-        <div class="voucher-items-card">
-          <div class="panel-head">
-            <span class="panel-title">Received Items</span>
-            <button class="primary" style="padding:4px 10px;font-size:12px;" onclick="addPurchaseRow()">＋ Add Item (F5)</button>
-          </div>
-          <div class="voucher-table-wrap">
-            <table class="voucher-table">
-              <thead>
-                <tr>
-                  <th style="width:40px;">#</th>
-                  <th>Item Name</th>
-                  <th style="width:120px;">Qty</th>
-                  <th style="width:80px;">Unit</th>
-                  <th style="width:140px;">Unit Rate ($)</th>
-                  <th style="width:140px;">Amount ($)</th>
-                  <th style="width:40px;"></th>
-                </tr>
-              </thead>
-              <tbody id="purchase-items-body">
-                ${renderPurchaseTableRows()}
-              </tbody>
-            </table>
-          </div>
+        <div class="vfs-shortcuts-bar">
+          <span class="vfs-shortcut-chip"><kbd>↵ Enter</kbd> Next / Auto-Row</span>
+          <span class="vfs-shortcut-chip"><kbd>F5</kbd> Add Line</span>
+          <span class="vfs-shortcut-chip"><kbd>F8</kbd> Save Voucher</span>
+          <span class="vfs-shortcut-chip"><kbd>Esc</kbd> Exit</span>
         </div>
 
-        <div class="voucher-footer">
-          <div class="validation-note valid">
-            ✓ Items and values are recalculated automatically
+        <div class="vfs-topbar-actions">
+          <button type="button" class="vfs-btn-secondary" onclick="exitPurchaseFullscreen()">Cancel</button>
+          <button type="button" class="vfs-btn-secondary" onclick="addPurchaseRow()">＋ Add Item (F5)</button>
+          <button type="button" class="vfs-btn-primary" onclick="savePurchase()">✓ Post & Save (F8)</button>
+        </div>
+      </div>
+
+      <!-- Master Details Card -->
+      <div class="vfs-master-card">
+        <div class="vfs-master-grid">
+          <div class="vfs-field-group">
+            <label>Purchase Date</label>
+            <input type="date" class="vfs-master-input" value="${purchaseDraft.date}" onchange="purchaseDraft.date=this.value">
           </div>
-          <div class="total-box">
-            <span>Total Items: <b id="purchase-total-items">${purchaseDraft.items.length}</b></span>
-            <strong>Total Amount: <span id="purchase-total-val">${money(total)}</span></strong>
+          <div class="vfs-field-group">
+            <label>Supplier / Vendor</label>
+            <select class="vfs-master-select" onchange="purchaseDraft.supplier=this.value">
+              ${state.suppliers.map(s => `<option ${s[0] === purchaseDraft.supplier ? 'selected' : ''}>${escapeHtml(s[0])}</option>`).join("")}
+            </select>
+          </div>
+          <div class="vfs-field-group">
+            <label>Receiving Warehouse</label>
+            <select class="vfs-master-select" onchange="purchaseDraft.store=this.value;refreshPurchaseTableStock();">
+              ${state.stores.map(s => `<option ${s[0] === purchaseDraft.store ? 'selected' : ''}>${escapeHtml(s[0])}</option>`).join("")}
+            </select>
+          </div>
+          <div class="vfs-field-group">
+            <label>Invoice / Challan #</label>
+            <input class="vfs-master-input" value="${escapeHtml(purchaseDraft.reference || '')}" placeholder="e.g. INV-9902" oninput="purchaseDraft.reference=this.value">
+          </div>
+          <div class="vfs-field-group">
+            <label>Delivery Remarks / Batch Notes</label>
+            <input class="vfs-master-input" value="${escapeHtml(purchaseDraft.remarks || '')}" placeholder="Delivery remarks, batch info..." oninput="purchaseDraft.remarks=this.value">
           </div>
         </div>
       </div>
-    `
-  );
+
+      <!-- Items Grid -->
+      <div class="vfs-grid-scroll">
+        <div class="vfs-table-container">
+          <table class="vfs-table">
+            <thead>
+              <tr>
+                <th style="width:40px;text-align:center;">#</th>
+                <th style="min-width:320px;">Item Name (Type 1-2 letters to search)</th>
+                <th style="width:160px;">On Hand Stock</th>
+                <th style="width:130px;" class="th-num">Qty</th>
+                <th style="width:80px;">Unit</th>
+                <th style="width:140px;" class="th-num">Rate</th>
+                <th style="width:150px;" class="th-num">Amount</th>
+                <th style="width:44px;text-align:center;"></th>
+              </tr>
+            </thead>
+            <tbody id="purchase-items-body">
+              ${renderPurchaseTableRows()}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Docked Bottom Bar -->
+      <div class="vfs-docked-footer">
+        <div class="vfs-footer-left">
+          <div class="vfs-stat-item">
+            <span>Items:</span>
+            <b id="purchase-total-items">${purchaseDraft.items.length}</b>
+          </div>
+          <div class="vfs-stat-item">
+            <span>Total Units:</span>
+            <b id="purchase-total-qty">${numberValue(totalQty)}</b>
+          </div>
+          <span class="vfs-footer-validation valid">
+            ✓ Values recalculated live · Press [Enter] on Rate to auto-insert next row
+          </span>
+        </div>
+
+        <div class="vfs-footer-right">
+          <div class="vfs-grand-total">
+            <span>Grand Total:</span>
+            <strong id="purchase-total-val">${money(total)}</strong>
+          </div>
+          <div class="vfs-footer-actions">
+            <button type="button" class="vfs-btn-secondary" onclick="addPurchaseRow()">＋ Add Row (F5)</button>
+            <button type="button" class="vfs-btn-primary" onclick="savePurchase()">✓ Post & Save (F8)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function renderPurchaseTableRows() {
   return purchaseDraft.items.map((item, idx) => {
     const p = productByName(item.product);
+    const available = p?.stock || 0;
+    const min = p?.min || 5;
+    const sCls = !p ? '' : available <= 0 ? 'out-stock' : available <= min ? 'low-stock' : 'in-stock';
     const amount = (Number(item.qty) || 0) * (Number(item.rate) || 0);
+
     return `
       <tr data-row="${idx}">
-        <td>${idx + 1}</td>
+        <td class="vfs-row-index">${idx + 1}</td>
         <td>
-          <input list="products-datalist" value="${item.product || ''}" placeholder="Select item..." onchange="updatePurchaseItemName(${idx}, this.value)">
+          <div class="vfs-search-cell-wrap">
+            <input id="p-search-${idx}" class="vfs-item-input" value="${escapeHtml(item.product || '')}"
+              placeholder="Type 1-2 letters to search item..." autocomplete="off"
+              oninput="handlePurchaseSearchInput(event, ${idx})"
+              onfocus="handlePurchaseSearchFocus(event, ${idx})"
+              onkeydown="handlePurchaseSearchKeydown(event, ${idx})">
+          </div>
         </td>
         <td>
-          <input type="number" step="0.01" min="0" value="${item.qty}" oninput="updatePurchaseItemQty(${idx}, this.value)">
+          <span class="vfs-stock-pill ${sCls}" id="p-stock-${idx}">
+            ${p ? `${numberValue(available)} ${p.unit || 'unit'}` : '—'}
+          </span>
         </td>
-        <td style="color:#64748b;font-weight:600;">${p?.unit || 'unit'}</td>
-        <td>
-          <input type="number" step="0.01" min="0" value="${item.rate}" oninput="updatePurchaseItemRate(${idx}, this.value)">
+        <td style="width:130px;">
+          <input type="number" id="p-qty-${idx}" class="vfs-num-input" step="0.01" min="0" value="${item.qty ?? 1}"
+            oninput="updatePurchaseItemQty(${idx}, this.value)"
+            onkeydown="handlePurchaseQtyKeydown(event, ${idx})">
         </td>
-        <td class="num-cell" id="p-amount-${idx}" style="font-weight:700;">${money(amount)}</td>
-        <td>
-          <button class="row-delete" onclick="removePurchaseRow(${idx})">×</button>
+        <td class="vfs-unit-tag" id="p-unit-${idx}">${p?.unit || 'unit'}</td>
+        <td style="width:140px;">
+          <input type="number" id="p-rate-${idx}" class="vfs-num-input" step="0.01" min="0" value="${item.rate ?? 0}"
+            oninput="updatePurchaseItemRate(${idx}, this.value)"
+            onkeydown="handlePurchaseRateKeydown(event, ${idx})">
+        </td>
+        <td class="vfs-amount-cell" id="p-amount-${idx}">${money(amount)}</td>
+        <td style="width:44px;text-align:center;">
+          <button type="button" class="vfs-del-btn" onclick="removePurchaseRow(${idx})" title="Delete row">×</button>
         </td>
       </tr>
     `;
-  }).join("") || '<tr><td colspan="7" class="empty-state">No items added. Click "+ Add Item" to begin.</td></tr>';
+  }).join("") || `
+    <tr>
+      <td colspan="8" class="empty-state" style="padding:24px;text-align:center;color:var(--muted);">
+        No items added. Press <kbd style="background:#e2e8f0;padding:2px 6px;border-radius:3px;">F5</kbd> or click "+ Add Item" to begin.
+      </td>
+    </tr>
+  `;
+}
+
+function handlePurchaseSearchInput(e, idx) {
+  if (!purchaseDraft.items[idx]) return;
+  purchaseDraft.items[idx].product = e.target.value;
+  const q = e.target.value.trim();
+  if (q.length >= 1) {
+    openProductSearchPopover(e.target, q, (selectedProd) => onSelectPurchaseItem(idx, selectedProd));
+  } else {
+    closeProductSearchPopover();
+  }
+}
+
+function handlePurchaseSearchFocus(e, idx) {
+  const q = e.target.value.trim();
+  if (q.length >= 1) {
+    openProductSearchPopover(e.target, q, (selectedProd) => onSelectPurchaseItem(idx, selectedProd));
+  }
+}
+
+function handlePurchaseSearchKeydown(e, idx) {
+  const popover = document.getElementById("product-search-popover");
+  const isOpen = popover && popover.style.display !== "none" && currentSearchPopover.items.length > 0;
+
+  if (isOpen) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      currentSearchPopover.activeIndex = (currentSearchPopover.activeIndex + 1) % currentSearchPopover.items.length;
+      renderSearchPopover();
+      const activeEl = popover.querySelector(`.search-rec-item[data-idx="${currentSearchPopover.activeIndex}"]`);
+      if (activeEl) activeEl.scrollIntoView({ block: "nearest" });
+      return;
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      currentSearchPopover.activeIndex = (currentSearchPopover.activeIndex - 1 + currentSearchPopover.items.length) % currentSearchPopover.items.length;
+      renderSearchPopover();
+      const activeEl = popover.querySelector(`.search-rec-item[data-idx="${currentSearchPopover.activeIndex}"]`);
+      if (activeEl) activeEl.scrollIntoView({ block: "nearest" });
+      return;
+    }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      selectSearchPopoverItem(currentSearchPopover.activeIndex);
+      return;
+    }
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeProductSearchPopover();
+      return;
+    }
+  } else {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const qtyEl = document.getElementById(`p-qty-${idx}`);
+      if (qtyEl) {
+        qtyEl.focus();
+        qtyEl.select();
+      }
+    }
+  }
+}
+
+function handlePurchaseQtyKeydown(e, idx) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    updatePurchaseItemQty(idx, e.target.value);
+    const rateEl = document.getElementById(`p-rate-${idx}`);
+    if (rateEl) {
+      rateEl.focus();
+      rateEl.select();
+    }
+  }
+}
+
+function handlePurchaseRateKeydown(e, idx) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    updatePurchaseItemRate(idx, e.target.value);
+
+    // If last row, automatically insert new row!
+    if (idx === purchaseDraft.items.length - 1) {
+      addPurchaseRow();
+      setTimeout(() => {
+        const nextSearch = document.getElementById(`p-search-${idx + 1}`);
+        if (nextSearch) {
+          nextSearch.focus();
+          nextSearch.select();
+        }
+      }, 40);
+    } else {
+      const nextSearch = document.getElementById(`p-search-${idx + 1}`);
+      if (nextSearch) {
+        nextSearch.focus();
+        nextSearch.select();
+      }
+    }
+  }
+}
+
+function onSelectPurchaseItem(idx, product) {
+  if (!purchaseDraft.items[idx]) return;
+  purchaseDraft.items[idx].product = product.name;
+  if (!purchaseDraft.items[idx].rate) {
+    purchaseDraft.items[idx].rate = product.purchaseCost || product.cost || 0;
+  }
+
+  const searchInput = document.getElementById(`p-search-${idx}`);
+  if (searchInput) searchInput.value = product.name;
+
+  const stockPill = document.getElementById(`p-stock-${idx}`);
+  if (stockPill) {
+    const s = Number(product.stock) || 0;
+    const sCls = s <= 0 ? 'out-stock' : s <= (product.min || 5) ? 'low-stock' : 'in-stock';
+    stockPill.className = `vfs-stock-pill ${sCls}`;
+    stockPill.textContent = `${numberValue(s)} ${product.unit || 'unit'}`;
+  }
+
+  const unitCell = document.getElementById(`p-unit-${idx}`);
+  if (unitCell) unitCell.textContent = product.unit || 'unit';
+
+  const rateInput = document.getElementById(`p-rate-${idx}`);
+  if (rateInput && !Number(rateInput.value)) {
+    rateInput.value = purchaseDraft.items[idx].rate;
+  }
+
+  const amtCell = document.getElementById(`p-amount-${idx}`);
+  if (amtCell) amtCell.textContent = money((purchaseDraft.items[idx].qty || 0) * (purchaseDraft.items[idx].rate || 0));
+
+  refreshPurchaseTotals();
+
+  // Advance focus to Qty field
+  setTimeout(() => {
+    const qtyInput = document.getElementById(`p-qty-${idx}`);
+    if (qtyInput) {
+      qtyInput.focus();
+      qtyInput.select();
+    }
+  }, 30);
 }
 
 function updatePurchaseItemName(idx, name) {
@@ -908,11 +1569,17 @@ function updatePurchaseItemName(idx, name) {
   if (p && !purchaseDraft.items[idx].rate) {
     purchaseDraft.items[idx].rate = p.purchaseCost || p.cost || 0;
   }
-  const row = document.querySelector(`#purchase-items-body tr[data-row="${idx}"]`);
-  if (row) {
-    const unitCell = row.children[3];
-    if (unitCell) unitCell.textContent = p?.unit || 'unit';
+  const stockPill = document.getElementById(`p-stock-${idx}`);
+  if (stockPill && p) {
+    const s = Number(p.stock) || 0;
+    const sCls = s <= 0 ? 'out-stock' : s <= (p.min || 5) ? 'low-stock' : 'in-stock';
+    stockPill.className = `vfs-stock-pill ${sCls}`;
+    stockPill.textContent = `${numberValue(s)} ${p.unit || 'unit'}`;
   }
+  const unitCell = document.getElementById(`p-unit-${idx}`);
+  if (unitCell) unitCell.textContent = p?.unit || 'unit';
+  const rateInput = document.getElementById(`p-rate-${idx}`);
+  if (rateInput && p && !Number(rateInput.value)) rateInput.value = purchaseDraft.items[idx].rate;
   refreshPurchaseTotals();
 }
 
@@ -934,21 +1601,48 @@ function updatePurchaseItemRate(idx, val) {
 
 function refreshPurchaseTotals() {
   const total = purchaseDraft.items.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.rate) || 0), 0);
+  const totalQty = purchaseDraft.items.reduce((a, i) => a + (Number(i.qty) || 0), 0);
   const totalEl = document.getElementById("purchase-total-val");
   if (totalEl) totalEl.textContent = money(total);
   const countEl = document.getElementById("purchase-total-items");
   if (countEl) countEl.textContent = purchaseDraft.items.length;
+  const qtyEl = document.getElementById("purchase-total-qty");
+  if (qtyEl) qtyEl.textContent = numberValue(totalQty);
+}
+
+function refreshPurchaseTableStock() {
+  purchaseDraft.items.forEach((item, idx) => {
+    const p = productByName(item.product);
+    const stockPill = document.getElementById(`p-stock-${idx}`);
+    if (stockPill && p) {
+      const s = Number(p.stock) || 0;
+      const sCls = s <= 0 ? 'out-stock' : s <= (p.min || 5) ? 'low-stock' : 'in-stock';
+      stockPill.className = `vfs-stock-pill ${sCls}`;
+      stockPill.textContent = `${numberValue(s)} ${p.unit || 'unit'}`;
+    }
+  });
 }
 
 function addPurchaseRow() {
-  purchaseDraft.items.push({ product: state.products[0]?.name || "", qty: 1, rate: state.products[0]?.purchaseCost || state.products[0]?.cost || 0 });
+  purchaseDraft.items.push({ product: "", qty: 1, rate: 0 });
   const tbody = document.getElementById("purchase-items-body");
   if (tbody) tbody.innerHTML = renderPurchaseTableRows();
   refreshPurchaseTotals();
+  const newIdx = purchaseDraft.items.length - 1;
+  setTimeout(() => {
+    const newSearch = document.getElementById(`p-search-${newIdx}`);
+    if (newSearch) {
+      newSearch.focus();
+      newSearch.select();
+    }
+  }, 40);
 }
 
 function removePurchaseRow(idx) {
   purchaseDraft.items.splice(idx, 1);
+  if (purchaseDraft.items.length === 0) {
+    purchaseDraft.items.push({ product: "", qty: 1, rate: 0 });
+  }
   const tbody = document.getElementById("purchase-items-body");
   if (tbody) tbody.innerHTML = renderPurchaseTableRows();
   refreshPurchaseTotals();
@@ -964,14 +1658,25 @@ function savePurchase() {
     toast("Ensure all items have a name and quantity");
     return;
   }
-  confirmModal("Post this Goods Receipt and update stock balances?", () => {
-    const no = purchaseDraft.no || nextPurchaseNo();
+  const isEditing = Boolean(purchaseDraft.isEditing);
+  const no = purchaseDraft.no || nextPurchaseNo();
+  const confirmMsg = isEditing
+    ? `Update and save changes to Goods Receipt ${no}?`
+    : "Post this Goods Receipt and update stock balances?";
+
+  confirmModal(confirmMsg, () => {
     const items = purchaseDraft.items.map(i => ({
       ...i,
       unit: productByName(i.product)?.unit || "unit",
       amount: Number(i.qty) * Number(i.rate)
     }));
     const total = items.reduce((a, i) => a + i.amount, 0);
+
+    // If editing, clear existing transactions and previous purchase record
+    if (isEditing) {
+      state.transactions = state.transactions.filter(t => t.ref !== no);
+      state.purchases = state.purchases.filter(p => p.no !== no);
+    }
 
     items.forEach(i => {
       state.transactions.unshift({
@@ -999,12 +1704,52 @@ function savePurchase() {
       total,
       user: state.currentUser,
       status: "Posted",
-      createdAt: new Date().toISOString()
+      createdAt: purchaseDraft.createdAt || new Date().toISOString()
     });
 
     rebuildStock();
-    toast(no + " posted successfully!");
+    toast(no + (isEditing ? " updated successfully!" : " posted successfully!"));
     purchaseDraft.isNew = false;
+    purchaseDraft.isEditing = false;
+    closeProductSearchPopover();
+    showView("purchasing");
+  });
+}
+
+function editPurchaseVoucher(no) {
+  const v = state.purchases.find(p => p.no === no);
+  if (!v) { toast("Purchase voucher not found"); return; }
+  purchaseDraft = {
+    ...v,
+    items: (v.items || []).map(i => ({ ...i })),
+    isNew: true,
+    isEditing: true
+  };
+  showView("purchasing");
+}
+
+function deletePurchaseVoucher(no) {
+  confirmModal(`Permanently delete purchase voucher ${no}? Received stock will be rolled back from inventory.`, () => {
+    state.purchases = state.purchases.filter(p => p.no !== no);
+    state.transactions = state.transactions.filter(t => t.ref !== no);
+    rebuildStock();
+    save();
+    toast(`Purchase voucher ${no} deleted`);
+    if (currentReportType === "purchase") showView("reports");
+    else if (document.querySelector('.nav-item.active')?.dataset?.view === 'accounts') showView("accounts");
+    else showView("purchasing");
+  });
+}
+
+function clearAllPurchases() {
+  if (!state.purchases.length) { toast("No purchase vouchers to delete"); return; }
+  confirmModal(`⚠️ Are you sure you want to delete ALL ${state.purchases.length} purchase vouchers? Received quantities will be rolled back from warehouse inventory.`, () => {
+    const purchaseRefs = new Set(state.purchases.map(p => p.no));
+    state.transactions = state.transactions.filter(t => !purchaseRefs.has(t.ref) && t.type !== "Purchase");
+    state.purchases = [];
+    rebuildStock();
+    save();
+    toast("All purchase entries have been deleted");
     showView("purchasing");
   });
 }
@@ -1015,6 +1760,7 @@ function purchaseHistory() {
     "Goods Receipt Note register and supplier deliveries.",
     `<button class="secondary" onclick="showView('purchase-orders')">Purchase Orders</button>
      <button class="secondary" onclick="exportPurchasesCsv()">Export CSV</button>
+     <button class="danger-btn" onclick="clearAllPurchases()">Delete All Purchases</button>
      <button class="primary" onclick="newPurchase()">⊕ New Purchase</button>`,
     `
       <div class="panel">
@@ -1048,7 +1794,12 @@ function purchaseHistory() {
                   <td>${v.user}</td>
                   <td><span class="status ok">${v.status || "Posted"}</span></td>
                   <td style="text-align:right;">
-                    <button class="secondary" style="padding:4px 8px;font-size:11px;" onclick="printVoucherPreview('Purchase', '${v.no}')">Print / PDF</button>
+                    <div class="table-action-btns">
+                      <button type="button" class="secondary" onclick="viewVoucher('${v.no}', true)">View</button>
+                      <button type="button" class="secondary" onclick="editPurchaseVoucher('${v.no}')">Edit</button>
+                      <button type="button" class="secondary" onclick="printVoucherPreview('Purchase', '${v.no}')">Print</button>
+                      <button type="button" class="danger-btn" onclick="deletePurchaseVoucher('${v.no}')">Delete</button>
+                    </div>
                   </td>
                 </tr>
               `).join("") || '<tr><td colspan="9" class="empty-state">No purchases recorded yet.</td></tr>'}
@@ -1136,7 +1887,7 @@ function purchaseOrdersScreen() {
                   <th>#</th>
                   <th>Product</th>
                   <th>Order Qty</th>
-                  <th>Rate ($)</th>
+                  <th>Rate</th>
                   <th>Amount</th>
                   <th></th>
                 </tr>
@@ -1191,7 +1942,11 @@ function purchaseOrdersScreen() {
                     <td class="num-cell">${money(po.total)}</td>
                     <td><span class="status ok">${po.status}</span></td>
                     <td style="text-align:right;">
-                      <button class="primary" style="padding:4px 8px;font-size:11px;" onclick="convertPOToPurchase('${po.no}')">Convert to Purchase</button>
+                      <div class="table-action-btns">
+                        <button type="button" class="primary" onclick="convertPOToPurchase('${po.no}')">Convert</button>
+                        <button type="button" class="secondary" onclick="editPurchaseOrder('${po.no}')">Edit</button>
+                        <button type="button" class="danger-btn" onclick="deletePurchaseOrder('${po.no}')">Delete</button>
+                      </div>
                     </td>
                   </tr>
                 `).join("") || '<tr><td colspan="7" class="empty-state">No purchase orders created yet.</td></tr>'}
@@ -1202,6 +1957,26 @@ function purchaseOrdersScreen() {
       </div>
     `
   );
+}
+
+function editPurchaseOrder(no) {
+  const po = state.purchaseOrders.find(x => x.no === no);
+  if (!po) { toast("Purchase order not found"); return; }
+  poDraft = {
+    ...po,
+    items: (po.items || []).map(i => ({ ...i }))
+  };
+  showView("purchase-orders");
+  toast("Loaded " + no + " for editing");
+}
+
+function deletePurchaseOrder(no) {
+  confirmModal(`Permanently delete Purchase Order ${no}?`, () => {
+    state.purchaseOrders = state.purchaseOrders.filter(x => x.no !== no);
+    save();
+    toast(`Purchase Order ${no} deleted`);
+    showView("purchase-orders");
+  });
 }
 
 function addPORow() {
@@ -1223,12 +1998,13 @@ function savePurchaseOrder() {
   if (!poDraft.items.length) { toast("Add at least one item"); return; }
   const no = poDraft.no || nextPONo();
   const total = poDraft.items.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.rate) || 0), 0);
+  state.purchaseOrders = state.purchaseOrders.filter(x => x.no !== no);
   state.purchaseOrders.unshift({
     ...poDraft,
     no,
     total,
     status: "Ordered",
-    createdAt: new Date().toISOString()
+    createdAt: poDraft.createdAt || new Date().toISOString()
   });
   save();
   toast(no + " saved successfully");
@@ -1259,109 +2035,149 @@ const nextOutwardNo = () => `OUT-${String(state.outwards.length + 1).padStart(5,
 
 function newOutward() {
   outwardDraft = {
+    no: nextOutwardNo(),
     department: "Kitchen",
     store: state.currentStore,
     date: today,
     issuedTo: "",
     reference: "",
     remarks: "",
-    items: [{ product: state.products[0]?.name || "", qty: 1 }],
+    items: [{ product: "", qty: 1 }],
     isNew: true
   };
+  showView("outward");
+  setTimeout(() => {
+    const firstInput = document.getElementById("out-search-0");
+    if (firstInput) {
+      firstInput.focus();
+      firstInput.select();
+    }
+  }, 60);
+}
+
+function exitOutwardFullscreen() {
+  outwardDraft.isNew = false;
+  closeProductSearchPopover();
   showView("outward");
 }
 
 function outwardScreen() {
   const totalQty = outwardDraft.items.reduce((a, i) => a + (Number(i.qty) || 0), 0);
-  return layout(
-    "Stock Outward Voucher",
-    "Issue stock to kitchen, bar or bakery with real-time stock validation.",
-    `<button class="secondary" onclick="showView('outward')">Cancel</button>
-     <button class="primary" id="btn-save-outward" onclick="saveOutward()">Save Outward (F8)</button>`,
-    `
-      <div class="voucher-container">
-        <div class="voucher-command-bar">
-          <b>Stock Issue Entry</b>
-          <span>F5: Add line</span>
-          <span>F8: Save issue</span>
-          <span>Esc: Cancel</span>
-        </div>
+  const totalVal = outwardTotal();
+  const vNo = outwardDraft.no || nextOutwardNo();
 
-        <div class="voucher-header-card">
-          <div class="voucher-header-top">
-            <div>
-              <span style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;">Voucher No</span>
-              <div class="voucher-no-badge">${nextOutwardNo()}</div>
-            </div>
-            <span class="status expiry">DRAFT</span>
-          </div>
-
-          <div class="voucher-grid-fields">
-            <div class="voucher-field">
-              <label>Issue Date</label>
-              <input type="date" value="${outwardDraft.date}" onchange="outwardDraft.date=this.value">
-            </div>
-            <div class="voucher-field">
-              <label>Issuing Department</label>
-              <select onchange="outwardDraft.department=this.value">
-                ${departments.map(d => `<option ${d === outwardDraft.department ? 'selected' : ''}>${d}</option>`).join("")}
-              </select>
-            </div>
-            <div class="voucher-field">
-              <label>Source Warehouse</label>
-              <select onchange="outwardDraft.store=this.value">
-                ${state.stores.map(s => `<option ${s[0] === outwardDraft.store ? 'selected' : ''}>${s[0]}</option>`).join("")}
-              </select>
-            </div>
-            <div class="voucher-field">
-              <label>Issued To (Chef / Staff)</label>
-              <input value="${outwardDraft.issuedTo || ''}" placeholder="Staff member..." oninput="outwardDraft.issuedTo=this.value">
-            </div>
-            <div class="voucher-field">
-              <label>Remarks</label>
-              <input value="${outwardDraft.remarks || ''}" placeholder="Recipe consumption..." oninput="outwardDraft.remarks=this.value">
-            </div>
+  return `
+    <div class="voucher-fullscreen" id="outward-fullscreen">
+      <!-- Fullscreen Command Topbar -->
+      <div class="vfs-topbar">
+        <div class="vfs-topbar-left">
+          <button type="button" class="vfs-back-btn" onclick="exitOutwardFullscreen()" title="Return to Register">
+            ← Exit Register <kbd>Esc</kbd>
+          </button>
+          <div class="vfs-title-group">
+            <span class="vfs-type-icon">📤</span>
+            <h2 class="vfs-heading">Stock Outward Voucher</h2>
+            <span class="vfs-badge">${vNo}</span>
+            <span class="vfs-status-pill" style="background:#fef3c7;color:#92400e;border-color:#fde68a;">ISSUE ENTRY</span>
           </div>
         </div>
 
-        <div class="voucher-items-card">
-          <div class="panel-head">
-            <span class="panel-title">Stock Outward Lines</span>
-            <button class="primary" style="padding:4px 10px;font-size:12px;" onclick="addOutwardRow()">＋ Add Item (F5)</button>
-          </div>
-          <div class="voucher-table-wrap">
-            <table class="voucher-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Item Name</th>
-                  <th>Available Stock</th>
-                  <th style="width:140px;">Issue Qty</th>
-                  <th>Unit</th>
-                  <th>Unit Rate</th>
-                  <th>Amount</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="outward-items-body">
-                ${renderOutwardTableRows()}
-              </tbody>
-            </table>
-          </div>
+        <div class="vfs-shortcuts-bar">
+          <span class="vfs-shortcut-chip"><kbd>↵ Enter</kbd> Next / Auto-Row</span>
+          <span class="vfs-shortcut-chip"><kbd>F5</kbd> Add Line</span>
+          <span class="vfs-shortcut-chip"><kbd>F8</kbd> Save Issue</span>
+          <span class="vfs-shortcut-chip"><kbd>Esc</kbd> Exit</span>
         </div>
 
-        <div class="voucher-footer">
-          <div class="validation-note valid" id="outward-validation-box">
-            ✓ Quantities verified against warehouse stock
+        <div class="vfs-topbar-actions">
+          <button type="button" class="vfs-btn-secondary" onclick="exitOutwardFullscreen()">Cancel</button>
+          <button type="button" class="vfs-btn-secondary" onclick="addOutwardRow()">＋ Add Line (F5)</button>
+          <button type="button" class="vfs-btn-primary" id="btn-save-outward" onclick="saveOutward()">✓ Post Issue (F8)</button>
+        </div>
+      </div>
+
+      <!-- Master Details Card -->
+      <div class="vfs-master-card">
+        <div class="vfs-master-grid">
+          <div class="vfs-field-group">
+            <label>Issue Date</label>
+            <input type="date" class="vfs-master-input" value="${outwardDraft.date}" onchange="outwardDraft.date=this.value">
           </div>
-          <div class="total-box">
-            <span>Total Units: <b id="outward-total-units">${numberValue(totalQty)}</b></span>
-            <strong>Total Valuation: <span id="outward-total-amt">${money(outwardTotal())}</span></strong>
+          <div class="vfs-field-group">
+            <label>Target Department / Station</label>
+            <select class="vfs-master-select" onchange="outwardDraft.department=this.value">
+              ${departments.map(d => `<option ${d === outwardDraft.department ? 'selected' : ''}>${escapeHtml(d)}</option>`).join("")}
+            </select>
+          </div>
+          <div class="vfs-field-group">
+            <label>Source Warehouse</label>
+            <select class="vfs-master-select" onchange="outwardDraft.store=this.value;refreshOutwardTableStock();">
+              ${state.stores.map(s => `<option ${s[0] === outwardDraft.store ? 'selected' : ''}>${escapeHtml(s[0])}</option>`).join("")}
+            </select>
+          </div>
+          <div class="vfs-field-group">
+            <label>Issued To (Chef / Staff)</label>
+            <input class="vfs-master-input" value="${escapeHtml(outwardDraft.issuedTo || '')}" placeholder="e.g. Chef Marco / Head Bartender" oninput="outwardDraft.issuedTo=this.value">
+          </div>
+          <div class="vfs-field-group">
+            <label>Purpose / Recipe Remarks</label>
+            <input class="vfs-master-input" value="${escapeHtml(outwardDraft.remarks || '')}" placeholder="Menu prep, event consumption, wastage..." oninput="outwardDraft.remarks=this.value">
           </div>
         </div>
       </div>
-    `
-  );
+
+      <!-- Items Grid -->
+      <div class="vfs-grid-scroll">
+        <div class="vfs-table-container">
+          <table class="vfs-table">
+            <thead>
+              <tr>
+                <th style="width:40px;text-align:center;">#</th>
+                <th style="min-width:320px;">Item Name (Type 1-2 letters to search)</th>
+                <th style="width:160px;">Available Stock</th>
+                <th style="width:150px;" class="th-num">Issue Qty</th>
+                <th style="width:80px;">Unit</th>
+                <th style="width:140px;" class="th-num">Valuation Rate</th>
+                <th style="width:150px;" class="th-num">Amount</th>
+                <th style="width:44px;text-align:center;"></th>
+              </tr>
+            </thead>
+            <tbody id="outward-items-body">
+              ${renderOutwardTableRows()}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Docked Bottom Bar -->
+      <div class="vfs-docked-footer">
+        <div class="vfs-footer-left">
+          <div class="vfs-stat-item">
+            <span>Lines:</span>
+            <b id="outward-total-lines">${outwardDraft.items.length}</b>
+          </div>
+          <div class="vfs-stat-item">
+            <span>Total Units Issued:</span>
+            <b id="outward-total-units">${numberValue(totalQty)}</b>
+          </div>
+          <span class="vfs-footer-validation valid" id="outward-validation-box">
+            ✓ Quantities verified against warehouse stock · Press [Enter] on Issue Qty to auto-insert row
+          </span>
+        </div>
+
+        <div class="vfs-footer-right">
+          <div class="vfs-grand-total">
+            <span>Total Issue Valuation:</span>
+            <strong id="outward-total-amt">${money(totalVal)}</strong>
+          </div>
+          <div class="vfs-footer-actions">
+            <button type="button" class="vfs-btn-secondary" onclick="addOutwardRow()">＋ Add Line (F5)</button>
+            <button type="button" class="vfs-btn-primary" id="btn-save-outward-docked" onclick="saveOutward()">✓ Post Issue (F8)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function outwardTotal() {
@@ -1375,39 +2191,191 @@ function renderOutwardTableRows() {
   return outwardDraft.items.map((item, idx) => {
     const p = productByName(item.product);
     const available = p?.stock || 0;
-    const isExceeded = item.qty > available;
-    const amt = (Number(item.qty) || 0) * (Number(p?.cost) || 0);
+    const min = p?.min || 5;
+    const isExceeded = p && Number(item.qty) > available && !state.settings.inventory?.negative;
+    const sCls = !p ? '' : available <= 0 ? 'out-stock' : available <= min ? 'low-stock' : 'in-stock';
+    const rate = p?.cost || 0;
+    const amt = (Number(item.qty) || 0) * rate;
+
     return `
       <tr data-row="${idx}">
-        <td>${idx + 1}</td>
+        <td class="vfs-row-index">${idx + 1}</td>
         <td>
-          <input list="products-datalist" value="${item.product || ''}" placeholder="Select item..." onchange="updateOutwardItemName(${idx}, this.value)">
+          <div class="vfs-search-cell-wrap">
+            <input id="out-search-${idx}" class="vfs-item-input" value="${escapeHtml(item.product || '')}"
+              placeholder="Type 1-2 letters to search item..." autocomplete="off"
+              oninput="handleOutwardSearchInput(event, ${idx})"
+              onfocus="handleOutwardSearchFocus(event, ${idx})"
+              onkeydown="handleOutwardSearchKeydown(event, ${idx})">
+          </div>
         </td>
         <td>
-          <span class="pill" id="out-avail-${idx}" style="${available <= 0 ? 'background:var(--red-soft);color:var(--red);' : ''}">${numberValue(available)} ${p?.unit || 'unit'}</span>
+          <span class="vfs-stock-pill ${sCls}" id="out-avail-${idx}">
+            ${p ? `${numberValue(available)} ${p.unit || 'unit'}` : '—'}
+          </span>
         </td>
-        <td>
-          <input type="number" step="0.01" min="0" value="${item.qty}" oninput="updateOutwardItemQty(${idx}, this.value)" style="${isExceeded ? 'border-color:var(--red);' : ''}">
+        <td style="width:150px;">
+          <input type="number" id="out-qty-${idx}" class="vfs-num-input ${isExceeded ? 'has-error' : ''}"
+            step="0.01" min="0" value="${item.qty ?? 1}"
+            oninput="updateOutwardItemQty(${idx}, this.value)"
+            onkeydown="handleOutwardQtyKeydown(event, ${idx})">
         </td>
-        <td style="color:#64748b;font-weight:600;">${p?.unit || 'unit'}</td>
-        <td class="num-cell">${money(p?.cost || 0)}</td>
-        <td class="num-cell" id="out-amt-${idx}" style="font-weight:700;">${money(amt)}</td>
-        <td>
-          <button class="row-delete" onclick="removeOutwardRow(${idx})">×</button>
+        <td class="vfs-unit-tag" id="out-unit-${idx}">${p?.unit || 'unit'}</td>
+        <td class="vfs-amount-cell" id="out-rate-${idx}">${money(rate)}</td>
+        <td class="vfs-amount-cell" id="out-amt-${idx}">${money(amt)}</td>
+        <td style="width:44px;text-align:center;">
+          <button type="button" class="vfs-del-btn" onclick="removeOutwardRow(${idx})" title="Delete row">×</button>
         </td>
       </tr>
     `;
-  }).join("") || '<tr><td colspan="8" class="empty-state">No items. Click "+ Add Item" to issue stock.</td></tr>';
+  }).join("") || `
+    <tr>
+      <td colspan="8" class="empty-state" style="padding:24px;text-align:center;color:var(--muted);">
+        No items. Press <kbd style="background:#e2e8f0;padding:2px 6px;border-radius:3px;">F5</kbd> or click "+ Add Line" to issue stock.
+      </td>
+    </tr>
+  `;
+}
+
+function handleOutwardSearchInput(e, idx) {
+  if (!outwardDraft.items[idx]) return;
+  outwardDraft.items[idx].product = e.target.value;
+  const q = e.target.value.trim();
+  if (q.length >= 1) {
+    openProductSearchPopover(e.target, q, (selectedProd) => onSelectOutwardItem(idx, selectedProd));
+  } else {
+    closeProductSearchPopover();
+  }
+}
+
+function handleOutwardSearchFocus(e, idx) {
+  const q = e.target.value.trim();
+  if (q.length >= 1) {
+    openProductSearchPopover(e.target, q, (selectedProd) => onSelectOutwardItem(idx, selectedProd));
+  }
+}
+
+function handleOutwardSearchKeydown(e, idx) {
+  const popover = document.getElementById("product-search-popover");
+  const isOpen = popover && popover.style.display !== "none" && currentSearchPopover.items.length > 0;
+
+  if (isOpen) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      currentSearchPopover.activeIndex = (currentSearchPopover.activeIndex + 1) % currentSearchPopover.items.length;
+      renderSearchPopover();
+      const activeEl = popover.querySelector(`.search-rec-item[data-idx="${currentSearchPopover.activeIndex}"]`);
+      if (activeEl) activeEl.scrollIntoView({ block: "nearest" });
+      return;
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      currentSearchPopover.activeIndex = (currentSearchPopover.activeIndex - 1 + currentSearchPopover.items.length) % currentSearchPopover.items.length;
+      renderSearchPopover();
+      const activeEl = popover.querySelector(`.search-rec-item[data-idx="${currentSearchPopover.activeIndex}"]`);
+      if (activeEl) activeEl.scrollIntoView({ block: "nearest" });
+      return;
+    }
+    if (e.key === "Enter") {
+      e.preventDefault();
+      selectSearchPopoverItem(currentSearchPopover.activeIndex);
+      return;
+    }
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeProductSearchPopover();
+      return;
+    }
+  } else {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const qtyEl = document.getElementById(`out-qty-${idx}`);
+      if (qtyEl) {
+        qtyEl.focus();
+        qtyEl.select();
+      }
+    }
+  }
+}
+
+function handleOutwardQtyKeydown(e, idx) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    updateOutwardItemQty(idx, e.target.value);
+
+    // In Outward, Issue Qty is the last input in the row!
+    // If last row (including row 0), automatically insert a new row!
+    if (idx === outwardDraft.items.length - 1) {
+      addOutwardRow();
+      setTimeout(() => {
+        const nextSearch = document.getElementById(`out-search-${idx + 1}`);
+        if (nextSearch) {
+          nextSearch.focus();
+          nextSearch.select();
+        }
+      }, 40);
+    } else {
+      const nextSearch = document.getElementById(`out-search-${idx + 1}`);
+      if (nextSearch) {
+        nextSearch.focus();
+        nextSearch.select();
+      }
+    }
+  }
+}
+
+function onSelectOutwardItem(idx, product) {
+  if (!outwardDraft.items[idx]) return;
+  outwardDraft.items[idx].product = product.name;
+
+  const searchInput = document.getElementById(`out-search-${idx}`);
+  if (searchInput) searchInput.value = product.name;
+
+  const availPill = document.getElementById(`out-avail-${idx}`);
+  if (availPill) {
+    const s = Number(product.stock) || 0;
+    const sCls = s <= 0 ? 'out-stock' : s <= (product.min || 5) ? 'low-stock' : 'in-stock';
+    availPill.className = `vfs-stock-pill ${sCls}`;
+    availPill.textContent = `${numberValue(s)} ${product.unit || 'unit'}`;
+  }
+
+  const unitCell = document.getElementById(`out-unit-${idx}`);
+  if (unitCell) unitCell.textContent = product.unit || 'unit';
+
+  const rateCell = document.getElementById(`out-rate-${idx}`);
+  if (rateCell) rateCell.textContent = money(product.cost || 0);
+
+  const amtCell = document.getElementById(`out-amt-${idx}`);
+  if (amtCell) amtCell.textContent = money((outwardDraft.items[idx].qty || 0) * (product.cost || 0));
+
+  refreshOutwardTotals();
+
+  // Advance focus to Qty field
+  setTimeout(() => {
+    const qtyInput = document.getElementById(`out-qty-${idx}`);
+    if (qtyInput) {
+      qtyInput.focus();
+      qtyInput.select();
+    }
+  }, 30);
 }
 
 function updateOutwardItemName(idx, name) {
   if (!outwardDraft.items[idx]) return;
   outwardDraft.items[idx].product = name;
   const p = productByName(name);
-  const row = document.querySelector(`#outward-items-body tr[data-row="${idx}"]`);
-  if (row && p) {
+  if (p) {
     const availPill = document.getElementById(`out-avail-${idx}`);
-    if (availPill) availPill.textContent = `${numberValue(p.stock)} ${p.unit}`;
+    if (availPill) {
+      const s = Number(p.stock) || 0;
+      const sCls = s <= 0 ? 'out-stock' : s <= (p.min || 5) ? 'low-stock' : 'in-stock';
+      availPill.className = `vfs-stock-pill ${sCls}`;
+      availPill.textContent = `${numberValue(s)} ${p.unit || 'unit'}`;
+    }
+    const unitCell = document.getElementById(`out-unit-${idx}`);
+    if (unitCell) unitCell.textContent = p.unit || 'unit';
+    const rateCell = document.getElementById(`out-rate-${idx}`);
+    if (rateCell) rateCell.textContent = money(p.cost || 0);
   }
   refreshOutwardTotals();
 }
@@ -1418,6 +2386,14 @@ function updateOutwardItemQty(idx, val) {
   const p = productByName(outwardDraft.items[idx].product);
   const amtCell = document.getElementById(`out-amt-${idx}`);
   if (amtCell) amtCell.textContent = money(outwardDraft.items[idx].qty * (p?.cost || 0));
+
+  const qtyInput = document.getElementById(`out-qty-${idx}`);
+  const isExceeded = p && outwardDraft.items[idx].qty > p.stock && !state.settings.inventory?.negative;
+  if (qtyInput) {
+    if (isExceeded) qtyInput.classList.add("has-error");
+    else qtyInput.classList.remove("has-error");
+  }
+
   refreshOutwardTotals();
 }
 
@@ -1427,6 +2403,8 @@ function refreshOutwardTotals() {
   if (qtyEl) qtyEl.textContent = numberValue(totalQty);
   const valEl = document.getElementById("outward-total-amt");
   if (valEl) valEl.textContent = money(outwardTotal());
+  const linesEl = document.getElementById("outward-total-lines");
+  if (linesEl) linesEl.textContent = outwardDraft.items.length;
 
   const hasExceeded = outwardDraft.items.some(i => {
     const p = productByName(i.product);
@@ -1434,22 +2412,51 @@ function refreshOutwardTotals() {
   });
   const vBox = document.getElementById("outward-validation-box");
   const saveBtn = document.getElementById("btn-save-outward");
+  const saveBtnDocked = document.getElementById("btn-save-outward-docked");
+
   if (vBox) {
-    vBox.className = "validation-note " + (hasExceeded ? "has-error" : "valid");
-    vBox.textContent = hasExceeded ? "⚠ Some items exceed available warehouse stock" : "✓ Quantities verified against warehouse stock";
+    vBox.className = "vfs-footer-validation " + (hasExceeded ? "has-error" : "valid");
+    vBox.textContent = hasExceeded
+      ? "⚠ Some items exceed warehouse on-hand stock"
+      : "✓ Quantities verified against warehouse stock · Press [Enter] on Issue Qty to auto-insert row";
   }
   if (saveBtn) saveBtn.disabled = hasExceeded;
+  if (saveBtnDocked) saveBtnDocked.disabled = hasExceeded;
+}
+
+function refreshOutwardTableStock() {
+  outwardDraft.items.forEach((item, idx) => {
+    const p = productByName(item.product);
+    const availPill = document.getElementById(`out-avail-${idx}`);
+    if (availPill && p) {
+      const s = Number(p.stock) || 0;
+      const sCls = s <= 0 ? 'out-stock' : s <= (p.min || 5) ? 'low-stock' : 'in-stock';
+      availPill.className = `vfs-stock-pill ${sCls}`;
+      availPill.textContent = `${numberValue(s)} ${p.unit || 'unit'}`;
+    }
+  });
 }
 
 function addOutwardRow() {
-  outwardDraft.items.push({ product: state.products[0]?.name || "", qty: 1 });
+  outwardDraft.items.push({ product: "", qty: 1 });
   const tbody = document.getElementById("outward-items-body");
   if (tbody) tbody.innerHTML = renderOutwardTableRows();
   refreshOutwardTotals();
+  const newIdx = outwardDraft.items.length - 1;
+  setTimeout(() => {
+    const newSearch = document.getElementById(`out-search-${newIdx}`);
+    if (newSearch) {
+      newSearch.focus();
+      newSearch.select();
+    }
+  }, 40);
 }
 
 function removeOutwardRow(idx) {
   outwardDraft.items.splice(idx, 1);
+  if (outwardDraft.items.length === 0) {
+    outwardDraft.items.push({ product: "", qty: 1 });
+  }
   const tbody = document.getElementById("outward-items-body");
   if (tbody) tbody.innerHTML = renderOutwardTableRows();
   refreshOutwardTotals();
@@ -1457,6 +2464,8 @@ function removeOutwardRow(idx) {
 
 function saveOutward() {
   if (!outwardDraft.items.length) { toast("Add at least one item to issue"); return; }
+  const isEditing = Boolean(outwardDraft.isEditing);
+  const no = outwardDraft.no || nextOutwardNo();
   const invalid = outwardDraft.items.some(i => {
     const p = productByName(i.product);
     return !p || !i.qty || (i.qty > p.stock && !state.settings.inventory?.negative);
@@ -1465,8 +2474,11 @@ function saveOutward() {
     toast("Please resolve stock errors before saving");
     return;
   }
-  confirmModal("Post Stock Outward voucher and deduct from inventory?", () => {
-    const no = nextOutwardNo();
+  const confirmMsg = isEditing
+    ? `Update and save changes to Stock Outward voucher ${no}?`
+    : "Post Stock Outward voucher and deduct from inventory?";
+
+  confirmModal(confirmMsg, () => {
     const now = new Date().toISOString();
     const items = outwardDraft.items.map(i => {
       const p = productByName(i.product);
@@ -1478,6 +2490,12 @@ function saveOutward() {
       };
     });
     const total = items.reduce((a, i) => a + i.amount, 0);
+
+    // If editing, clear existing transactions and previous outward record
+    if (isEditing) {
+      state.transactions = state.transactions.filter(t => t.ref !== no);
+      state.outwards = state.outwards.filter(o => o.no !== no);
+    }
 
     items.forEach(i => {
       state.transactions.unshift({
@@ -1501,12 +2519,51 @@ function saveOutward() {
       total,
       user: state.currentUser,
       status: "Posted",
-      createdAt: now
+      createdAt: outwardDraft.createdAt || now
     });
 
     rebuildStock();
-    toast(no + " posted successfully!");
+    toast(no + (isEditing ? " updated successfully!" : " posted successfully!"));
     outwardDraft.isNew = false;
+    outwardDraft.isEditing = false;
+    closeProductSearchPopover();
+    showView("outward");
+  });
+}
+
+function editOutwardVoucher(no) {
+  const v = state.outwards.find(o => o.no === no);
+  if (!v) { toast("Outward voucher not found"); return; }
+  outwardDraft = {
+    ...v,
+    items: (v.items || []).map(i => ({ ...i })),
+    isNew: true,
+    isEditing: true
+  };
+  showView("outward");
+}
+
+function deleteOutwardVoucher(no) {
+  confirmModal(`Permanently delete outward voucher ${no}? Issued stock quantities will be restored back to warehouse.`, () => {
+    state.outwards = state.outwards.filter(o => o.no !== no);
+    state.transactions = state.transactions.filter(t => t.ref !== no);
+    rebuildStock();
+    save();
+    toast(`Outward voucher ${no} deleted`);
+    if (currentReportType === "outward") showView("reports");
+    else showView("outward");
+  });
+}
+
+function clearAllOutwards() {
+  if (!state.outwards.length) { toast("No outward vouchers to delete"); return; }
+  confirmModal(`⚠️ Are you sure you want to delete ALL ${state.outwards.length} outward vouchers? Issued quantities will be restored to warehouse inventory.`, () => {
+    const outwardRefs = new Set(state.outwards.map(o => o.no));
+    state.transactions = state.transactions.filter(t => !outwardRefs.has(t.ref) && t.type !== "Stock Outward");
+    state.outwards = [];
+    rebuildStock();
+    save();
+    toast("All outward entries have been deleted");
     showView("outward");
   });
 }
@@ -1516,6 +2573,7 @@ function outwardHistory() {
     "Stock Outward",
     "Department issues, consumption records and outward registers.",
     `<button class="secondary" onclick="exportOutwardCsv()">Export CSV</button>
+     <button class="danger-btn" onclick="clearAllOutwards()">Delete All Outwards</button>
      <button class="primary" onclick="newOutward()">⊕ New Outward</button>`,
     `
       <div class="panel">
@@ -1551,7 +2609,12 @@ function outwardHistory() {
                   <td>${v.user}</td>
                   <td><span class="status ok">${v.status || "Posted"}</span></td>
                   <td style="text-align:right;">
-                    <button class="secondary" style="padding:4px 8px;font-size:11px;" onclick="printVoucherPreview('Outward', '${v.no}')">Print / PDF</button>
+                    <div class="table-action-btns">
+                      <button type="button" class="secondary" onclick="viewVoucher('${v.no}', false)">View</button>
+                      <button type="button" class="secondary" onclick="editOutwardVoucher('${v.no}')">Edit</button>
+                      <button type="button" class="secondary" onclick="printVoucherPreview('Outward', '${v.no}')">Print</button>
+                      <button type="button" class="danger-btn" onclick="deleteOutwardVoucher('${v.no}')">Delete</button>
+                    </div>
                   </td>
                 </tr>
               `).join("") || '<tr><td colspan="10" class="empty-state">No outward vouchers posted yet.</td></tr>'}
@@ -1572,6 +2635,10 @@ function exportOutwardCsv() {
 }
 
 // IN-APP PRINT & PDF PREVIEW
+function viewVoucher(no, isPurchase) {
+  printVoucherPreview(isPurchase ? "Purchase" : "Outward", no);
+}
+
 function printVoucherPreview(kind, no) {
   const isPurchase = kind === "Purchase";
   const voucher = isPurchase ? state.purchases.find(x => x.no === no) : state.outwards.find(x => x.no === no);
@@ -1634,6 +2701,8 @@ function printVoucherPreview(kind, no) {
     </div>
   `, `
     <button class="secondary" onclick="closeModal()">Close</button>
+    <button class="secondary" onclick="closeModal();${isPurchase ? `editPurchaseVoucher('${voucher.no}')` : `editOutwardVoucher('${voucher.no}')`}">Edit / Modify</button>
+    <button class="danger-btn" onclick="closeModal();${isPurchase ? `deletePurchaseVoucher('${voucher.no}')` : `deleteOutwardVoucher('${voucher.no}')`}">Delete</button>
     <button class="primary" onclick="window.print()">Print Document</button>
   `);
 }
@@ -1672,7 +2741,11 @@ function suppliersScreen() {
                   <td class="num-cell"><b>${money(s[4] || 0)}</b></td>
                   <td><span class="status ok">Active</span></td>
                   <td style="text-align:right;">
-                    <button class="secondary" style="padding:4px 8px;font-size:11px;" onclick="newPurchaseOrder([{product:state.products[0]?.name||'',qty:10,rate:10}])">Create PO</button>
+                    <div class="table-action-btns">
+                      <button type="button" class="secondary" onclick="openModal('supplier', ${idx})">Edit</button>
+                      <button type="button" class="secondary" onclick="newPurchaseOrder([{product:state.products[0]?.name||'',qty:10,rate:10}])">Create PO</button>
+                      <button type="button" class="danger-btn" onclick="deleteSupplier(${idx})">Delete</button>
+                    </div>
                   </td>
                 </tr>
               `).join("")}
@@ -1684,77 +2757,1461 @@ function suppliersScreen() {
   );
 }
 
-// REPORTS & ANALYTICS
-let reportFiltersState = { range: "This Month", department: "All", type: "All", search: "" };
+// ==========================================
+// ACCOUNTS & SUPPLIER DUES MANAGEMENT
+// ==========================================
 
-function universalReports() {
-  const types = ["All", "Purchase", "Stock Outward", "Transfer in", "Transfer out", "Adjustment", "Wastage", "Consumption"];
-  const rows = getFilteredReportRows();
+let accountsFilterState = {
+  month: "current", // "current", "last", "all", or "YYYY-MM"
+  supplier: "All",
+  status: "All",
+  search: ""
+};
 
-  const purchaseVal = rows.filter(t => t.type === "Purchase").reduce((a, t) => a + Math.abs(t.qty) * (t.cost || 0), 0);
-  const issueVal = rows.filter(t => t.type === "Stock Outward" || t.type === "Consumption").reduce((a, t) => a + Math.abs(t.qty) * (t.cost || 0), 0);
-  const qtyTotal = rows.reduce((a, t) => a + Math.abs(t.qty), 0);
+function getSupplierFinancials(supplierName) {
+  const sup = state.suppliers.find(s => s[0] === supplierName);
+  const openingDue = Number(sup?.[4] || 0);
+  const curMonth = monthKey(today);
+
+  const supPurchases = state.purchases.filter(p => p.supplier === supplierName);
+  const totalInvoiced = supPurchases.reduce((sum, p) => sum + Number(p.total || 0), 0);
+  const currentMonthInvoiced = supPurchases
+    .filter(p => monthKey(p.date) === curMonth)
+    .reduce((sum, p) => sum + Number(p.total || 0), 0);
+
+  const supPayments = (state.payments || []).filter(p => p.supplier === supplierName);
+  const totalPaid = supPayments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
+  const currentMonthPaid = supPayments
+    .filter(p => monthKey(p.date) === curMonth)
+    .reduce((sum, p) => sum + Number(p.amount || 0), 0);
+
+  const netDue = openingDue + totalInvoiced - totalPaid;
+
+  return {
+    supplier: supplierName,
+    category: sup?.[1] || "General",
+    contact: sup?.[2] || "—",
+    leadTime: sup?.[3] || 3,
+    openingDue,
+    currentMonthInvoiced,
+    currentMonthPaid,
+    totalInvoiced,
+    totalPaid,
+    netDue,
+    status: netDue <= 0 ? "settled" : (totalPaid > 0 ? "partial" : "pending")
+  };
+}
+
+function onPaymentSupplierChange(supplierName) {
+  const amtInput = document.getElementById("m-pay-amount");
+  if (!amtInput) return;
+  const fin = getSupplierFinancials(supplierName);
+  amtInput.value = fin.netDue > 0 ? fin.netDue : "";
+}
+
+function submitPayment() {
+  const supplier = document.getElementById("m-pay-supplier")?.value;
+  const date = document.getElementById("m-pay-date")?.value || today;
+  const amount = Number(document.getElementById("m-pay-amount")?.value) || 0;
+  const mode = document.getElementById("m-pay-mode")?.value || "Bank Transfer";
+  const ref = document.getElementById("m-pay-ref")?.value.trim() || ("TXN-" + Date.now().toString().slice(-6));
+  const notes = document.getElementById("m-pay-notes")?.value.trim() || "";
+
+  if (!supplier) { toast("Please select a supplier"); return; }
+  if (amount <= 0) { toast("Please enter a valid payment amount"); return; }
+
+  const id = "PAY-" + String((state.payments.length + 101)).padStart(5, "0");
+  state.payments.unshift({
+    id,
+    date,
+    supplier,
+    amount,
+    mode,
+    ref,
+    notes,
+    recordedBy: state.currentUser,
+    createdAt: new Date().toISOString()
+  });
+
+  save();
+  closeModal();
+  toast(`Payment of ${money(amount)} recorded for ${supplier}`);
+  showView("accounts");
+}
+
+function deletePayment(payId) {
+  confirmModal("Are you sure you want to void / delete payment voucher " + payId + "?", () => {
+    state.payments = state.payments.filter(p => p.id !== payId);
+    save();
+    toast("Payment voucher " + payId + " voided");
+    showView("accounts");
+  });
+}
+
+function editPayment(payId) {
+  const p = state.payments.find(x => x.id === payId);
+  if (!p) { toast("Payment voucher not found"); return; }
+  openInAppModal("Edit Payment Voucher — " + p.id, `
+    <div class="form-grid">
+      <div class="form-field full">
+        <label>Supplier *</label>
+        <select id="m-pay-edit-supplier">
+          ${state.suppliers.map(s => `<option value="${escapeQuote(s[0])}" ${s[0] === p.supplier ? 'selected' : ''}>${escapeHtml(s[0])}</option>`).join("")}
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Payment Date *</label>
+        <input id="m-pay-edit-date" type="date" value="${(p.date || today).slice(0, 10)}">
+      </div>
+      <div class="form-field">
+        <label>Amount Paid *</label>
+        <input id="m-pay-edit-amount" type="number" step="0.01" value="${p.amount}">
+      </div>
+      <div class="form-field">
+        <label>Payment Mode</label>
+        <select id="m-pay-edit-mode">
+          ${["Bank Transfer", "Cheque", "Cash", "UPI / Card", "NEFT / RTGS"].map(m => `<option ${m === p.mode ? 'selected' : ''}>${m}</option>`).join("")}
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Ref / Cheque / UTR #</label>
+        <input id="m-pay-edit-ref" value="${escapeHtml(p.ref || '')}">
+      </div>
+      <div class="form-field full">
+        <label>Notes / Remarks</label>
+        <input id="m-pay-edit-notes" value="${escapeHtml(p.notes || '')}">
+      </div>
+    </div>
+  `, `
+    <button class="danger-btn" onclick="closeModal();deletePayment('${p.id}')">Delete Voucher</button>
+    <button class="secondary" onclick="closeModal()">Cancel</button>
+    <button class="primary" onclick="savePaymentEdit('${p.id}')">Save Changes</button>
+  `);
+}
+
+function savePaymentEdit(payId) {
+  const p = state.payments.find(x => x.id === payId);
+  if (!p) return;
+  const supplier = document.getElementById("m-pay-edit-supplier")?.value;
+  const date = document.getElementById("m-pay-edit-date")?.value;
+  const amount = Number(document.getElementById("m-pay-edit-amount")?.value) || 0;
+  const mode = document.getElementById("m-pay-edit-mode")?.value;
+  const ref = document.getElementById("m-pay-edit-ref")?.value.trim();
+  const notes = document.getElementById("m-pay-edit-notes")?.value.trim();
+
+  if (!supplier) { toast("Please select a supplier"); return; }
+  if (amount <= 0) { toast("Amount must be greater than zero"); return; }
+
+  p.supplier = supplier;
+  p.date = date;
+  p.amount = amount;
+  p.mode = mode;
+  p.ref = ref;
+  p.notes = notes;
+
+  save();
+  closeModal();
+  toast("Payment voucher updated");
+  showView("accounts");
+}
+
+function editSupplierByName(name) {
+  const idx = state.suppliers.findIndex(s => s[0] === name);
+  if (idx >= 0) openModal("supplier", idx);
+}
+
+function deleteSupplierByName(name) {
+  const idx = state.suppliers.findIndex(s => s[0] === name);
+  if (idx >= 0) deleteSupplier(idx);
+}
+
+function viewSupplierStatement(supplierName) {
+  const fin = getSupplierFinancials(supplierName);
+  const supPurchases = state.purchases.filter(p => p.supplier === supplierName).map(p => ({
+    date: p.date,
+    type: "Bill (GRN)",
+    ref: p.no,
+    notes: p.reference ? `Invoice Ref: ${p.reference}` : (p.remarks || "Goods Receipt Note"),
+    debit: Number(p.total || 0),
+    credit: 0
+  }));
+
+  const supPayments = (state.payments || []).filter(p => p.supplier === supplierName).map(p => ({
+    date: p.date,
+    type: "Payment",
+    ref: p.id + (p.ref ? ` (${p.ref})` : ""),
+    notes: `${p.mode} - ${p.notes || "Supplier Disbursement"}`,
+    debit: 0,
+    credit: Number(p.amount || 0)
+  }));
+
+  const rows = [
+    { date: "Opening", type: "Opening Balance", ref: "—", notes: "Initial Supplier Opening Balance", debit: fin.openingDue, credit: 0 },
+    ...supPurchases,
+    ...supPayments
+  ].sort((a, b) => (a.date === "Opening" ? -1 : b.date === "Opening" ? 1 : new Date(a.date) - new Date(b.date)));
+
+  let running = 0;
+  const computedRows = rows.map(r => {
+    running = running + r.debit - r.credit;
+    return { ...r, running };
+  });
+
+  openInAppModal(`Statement — ${supplierName}`, `
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#f8fafc;border-radius:8px;border:1px solid var(--line);">
+        <div>
+          <b style="font-size:15px;color:#0f172a;">${supplierName}</b>
+          <div style="color:#64748b;font-size:12px;margin-top:2px;">Category: ${fin.category} · Credit Terms: ${fin.leadTime} days</div>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:11px;color:#64748b;display:block;">Current Outstanding Due:</span>
+          <b style="font-size:18px;font-family:'JetBrains Mono';color:${fin.netDue > 0 ? 'var(--red)' : 'var(--green-text)'}">${money(fin.netDue)}</b>
+        </div>
+      </div>
+    </div>
+    <div style="max-height:360px;overflow-y:auto;border:1px solid var(--line);border-radius:6px;">
+      <table class="table" style="font-size:12px;">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Reference</th>
+            <th>Particulars</th>
+            <th style="text-align:right;">Billed (Debit)</th>
+            <th style="text-align:right;">Paid (Credit)</th>
+            <th style="text-align:right;">Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${computedRows.map(r => `
+            <tr>
+              <td>${r.date === "Opening" ? "Opening" : fmtDate(r.date)}</td>
+              <td><span class="tag">${r.type}</span></td>
+              <td><b>${r.ref}</b></td>
+              <td>${escapeHtml(r.notes)}</td>
+              <td class="num-cell">${r.debit ? money(r.debit) : "—"}</td>
+              <td class="num-cell" style="color:var(--green-text);font-weight:600;">${r.credit ? money(r.credit) : "—"}</td>
+              <td class="num-cell" style="font-weight:700;color:${r.running > 0 ? 'var(--red)' : 'var(--green-text)'}">${money(r.running)}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `, `
+    <button class="secondary" onclick="window.print()">Print Statement</button>
+    <button class="primary" onclick="closeModal();openModal('payment', '${escapeQuote(supplierName)}')">Record Payment</button>
+  `);
+}
+
+function exportAccountsCsv() {
+  const curMonth = monthKey(today);
+  const rows = [
+    ["Supplier", "Category", "Contact", "Credit Terms (Days)", "Opening Due", "Current Month Purchases", "Total Invoiced", "Total Paid", "Net Due Balance", "Status"],
+    ...state.suppliers.map(s => {
+      const f = getSupplierFinancials(s[0]);
+      return [s[0], f.category, f.contact, f.leadTime, f.openingDue.toFixed(2), f.currentMonthInvoiced.toFixed(2), f.totalInvoiced.toFixed(2), f.totalPaid.toFixed(2), f.netDue.toFixed(2), f.status];
+    })
+  ];
+  downloadCsv("stocksense-accounts-statement.csv", rows);
+}
+
+function accountsScreen() {
+  const curMonth = monthKey(today);
+  const prevDate = new Date();
+  prevDate.setMonth(prevDate.getMonth() - 1);
+  const lastMonth = monthKey(prevDate.toISOString());
+
+  // Determine active month filter key
+  let selectedMonthKey = "";
+  if (accountsFilterState.month === "current") selectedMonthKey = curMonth;
+  else if (accountsFilterState.month === "last") selectedMonthKey = lastMonth;
+  else if (accountsFilterState.month === "all") selectedMonthKey = "";
+  else selectedMonthKey = accountsFilterState.month;
+
+  const q = accountsFilterState.search.toLowerCase().trim();
+
+  // Compute supplier financials
+  const allSuppliersFin = state.suppliers.map(s => {
+    const name = s[0];
+    const openingDue = Number(s[4] || 0);
+
+    const purchases = state.purchases.filter(p => p.supplier === name);
+    const totalPurchases = purchases.reduce((sum, p) => sum + Number(p.total || 0), 0);
+    const periodPurchases = selectedMonthKey
+      ? purchases.filter(p => monthKey(p.date) === selectedMonthKey).reduce((sum, p) => sum + Number(p.total || 0), 0)
+      : totalPurchases;
+
+    const payments = (state.payments || []).filter(p => p.supplier === name);
+    const totalPayments = payments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
+    const periodPayments = selectedMonthKey
+      ? payments.filter(p => monthKey(p.date) === selectedMonthKey).reduce((sum, p) => sum + Number(p.amount || 0), 0)
+      : totalPayments;
+
+    const netDue = openingDue + totalPurchases - totalPayments;
+    const status = netDue <= 0 ? "settled" : (totalPayments > 0 ? "partial" : "pending");
+
+    return {
+      name,
+      category: s[1] || "General",
+      contact: s[2] || "—",
+      leadTime: s[3] || 3,
+      openingDue,
+      periodPurchases,
+      totalPurchases,
+      periodPayments,
+      totalPayments,
+      netDue,
+      status
+    };
+  });
+
+  // Filtered suppliers
+  const filteredSuppliers = allSuppliersFin.filter(s => {
+    const matchSup = accountsFilterState.supplier === "All" || s.name === accountsFilterState.supplier;
+    const matchStatus = accountsFilterState.status === "All" ||
+      (accountsFilterState.status === "due" && s.netDue > 0) ||
+      (accountsFilterState.status === "settled" && s.netDue <= 0);
+    const matchSearch = !q || s.name.toLowerCase().includes(q) || s.category.toLowerCase().includes(q) || s.contact.toLowerCase().includes(q);
+    return matchSup && matchStatus && matchSearch;
+  });
+
+  // Overall KPIs
+  const totalDueAcrossAll = allSuppliersFin.reduce((sum, s) => sum + Math.max(0, s.netDue), 0);
+  const periodPurchasesTotal = filteredSuppliers.reduce((sum, s) => sum + s.periodPurchases, 0);
+  const totalPaidOverall = (state.payments || [])
+    .filter(p => accountsFilterState.supplier === "All" || p.supplier === accountsFilterState.supplier)
+    .filter(p => !selectedMonthKey || monthKey(p.date) === selectedMonthKey)
+    .reduce((sum, p) => sum + Number(p.amount || 0), 0);
+  const dueSuppliersCount = allSuppliersFin.filter(s => s.netDue > 0).length;
+
+  // Filtered Payments ledger
+  const filteredPayments = (state.payments || []).filter(p => {
+    const matchSup = accountsFilterState.supplier === "All" || p.supplier === accountsFilterState.supplier;
+    const matchMonth = !selectedMonthKey || monthKey(p.date) === selectedMonthKey;
+    const matchSearch = !q || p.supplier.toLowerCase().includes(q) || p.id.toLowerCase().includes(q) || (p.ref || "").toLowerCase().includes(q);
+    return matchSup && matchMonth && matchSearch;
+  });
+
+  // Filtered Invoices
+  const filteredInvoices = state.purchases.filter(p => {
+    const matchSup = accountsFilterState.supplier === "All" || p.supplier === accountsFilterState.supplier;
+    const matchMonth = !selectedMonthKey || monthKey(p.date) === selectedMonthKey;
+    const matchSearch = !q || p.supplier.toLowerCase().includes(q) || p.no.toLowerCase().includes(q) || (p.reference || "").toLowerCase().includes(q);
+    return matchSup && matchMonth && matchSearch;
+  });
+
+  const periodLabel = selectedMonthKey ? monthName(selectedMonthKey) : "All Time";
 
   return layout(
-    "Analytics & Reports",
-    "Audited ledger transactions and comprehensive inventory activity.",
-    `<button class="secondary" onclick="exportReportData()">Export Filtered CSV</button>
-     <button class="secondary" onclick="window.print()">Print</button>`,
+    "Accounts & Supplier Dues",
+    "Track supplier due amounts, monthly purchase totals with active filters, and settlement payments.",
+    `<button class="secondary" onclick="exportAccountsCsv()">Export Accounts CSV</button>
+     <button class="secondary" onclick="window.print()">Print</button>
+     <button class="primary" onclick="openModal('payment')">＋ Record Supplier Payment</button>`,
     `
-      <div class="filterbar">
-        <select onchange="reportFiltersState.range=this.value;showView('reports')">
-          <option ${reportFiltersState.range === 'This Month' ? 'selected' : ''}>This Month</option>
-          <option ${reportFiltersState.range === 'Today' ? 'selected' : ''}>Today</option>
-          <option ${reportFiltersState.range === 'All Time' ? 'selected' : ''}>All Time</option>
-        </select>
-        <select onchange="reportFiltersState.type=this.value;showView('reports')">
-          ${types.map(t => `<option ${reportFiltersState.type === t ? 'selected' : ''}>${t}</option>`).join("")}
-        </select>
-        <select onchange="reportFiltersState.department=this.value;showView('reports')">
-          <option value="All">All Departments</option>
-          ${departments.map(d => `<option ${reportFiltersState.department === d ? 'selected' : ''}>${d}</option>`).join("")}
-        </select>
-        <input placeholder="Search item or user..." value="${reportFiltersState.search}" oninput="reportFiltersState.search=this.value;showView('reports')">
-      </div>
-
       <div class="metrics">
-        ${metric("Matching Records", rows.length, "⌁", "blue", "Filtered transactions")}
-        ${metric("Total Units", numberValue(qtyTotal), "▣", "green", "Movement quantity")}
-        ${metric("Purchases Value", money(purchaseVal), "↗", "green", "Received into stock")}
-        ${metric("Issues Value", money(issueVal), "↘", "amber", "Departmental usage")}
+        ${metric("Supplier Due Amount", money(totalDueAcrossAll), "💳", totalDueAcrossAll > 0 ? "amber" : "green", `${dueSuppliersCount} vendors with pending balance`)}
+        ${metric("Purchases (" + periodLabel + ")", money(periodPurchasesTotal), "↗", "blue", "Total bills in selected filter")}
+        ${metric("Total Paid Amount", money(totalPaidOverall), "✓", "green", "Disbursed settlements in period")}
+        ${metric("Active Suppliers", state.suppliers.length, "🚚", "neutral", `${dueSuppliersCount} pending dues`)}
       </div>
 
-      <div class="panel">
+      <div class="filterbar">
+        <select onchange="accountsFilterState.month=this.value;showView('accounts')">
+          <option value="current" ${accountsFilterState.month === 'current' ? 'selected' : ''}>Current Month (${monthName(curMonth)})</option>
+          <option value="last" ${accountsFilterState.month === 'last' ? 'selected' : ''}>Last Month (${monthName(lastMonth)})</option>
+          <option value="all" ${accountsFilterState.month === 'all' ? 'selected' : ''}>All Time</option>
+        </select>
+        <select onchange="accountsFilterState.supplier=this.value;showView('accounts')">
+          <option value="All">All Suppliers</option>
+          ${state.suppliers.map(s => `<option value="${escapeQuote(s[0])}" ${accountsFilterState.supplier === s[0] ? 'selected' : ''}>${s[0]}</option>`).join("")}
+        </select>
+        <select onchange="accountsFilterState.status=this.value;showView('accounts')">
+          <option value="All" ${accountsFilterState.status === 'All' ? 'selected' : ''}>All Statuses</option>
+          <option value="due" ${accountsFilterState.status === 'due' ? 'selected' : ''}>Pending Dues Only</option>
+          <option value="settled" ${accountsFilterState.status === 'settled' ? 'selected' : ''}>Fully Settled Only</option>
+        </select>
+        <input placeholder="Search supplier, bill ref, or voucher..." value="${escapeHtml(accountsFilterState.search)}" oninput="accountsFilterState.search=this.value;showView('accounts')">
+      </div>
+
+      <div class="panel" style="margin-bottom:24px;">
         <div class="panel-head">
-          <span class="panel-title">Audit Ledger</span>
-          <span class="pill">${rows.length} transactions</span>
+          <span class="panel-title">Supplier Balances & Dues Matrix</span>
+          <span class="pill">${filteredSuppliers.length} suppliers</span>
         </div>
         <div class="view-table">
-          ${ledgerRows(rows)}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Supplier</th>
+                <th>Category</th>
+                <th>Credit Terms</th>
+                <th style="text-align:right;">Opening Due</th>
+                <th style="text-align:right;">${periodLabel} Bills</th>
+                <th style="text-align:right;">Total Invoiced</th>
+                <th style="text-align:right;">Total Paid</th>
+                <th style="text-align:right;">Outstanding Due</th>
+                <th>Status</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${filteredSuppliers.map(s => `
+                <tr>
+                  <td>
+                    <b>${s.name}</b>
+                    <div style="font-size:11px;color:#64748b;">${s.contact}</div>
+                  </td>
+                  <td>${s.category}</td>
+                  <td>${s.leadTime} days</td>
+                  <td class="num-cell">${money(s.openingDue)}</td>
+                  <td class="num-cell"><b>${money(s.periodPurchases)}</b></td>
+                  <td class="num-cell">${money(s.totalPurchases)}</td>
+                  <td class="num-cell" style="color:var(--green-text);font-weight:600;">${money(s.totalPayments)}</td>
+                  <td class="num-cell" style="font-weight:800;color:${s.netDue > 0 ? 'var(--red)' : 'var(--green-text)'}">
+                    ${money(s.netDue)}
+                  </td>
+                  <td>
+                    <span class="due-badge ${s.status}">
+                      ${s.status === 'settled' ? '✓ Settled' : s.status === 'partial' ? '◐ Partial' : '● Due'}
+                    </span>
+                  </td>
+                  <td style="text-align:right;">
+                    <div class="table-action-btns">
+                      <button type="button" class="primary" onclick="openModal('payment', '${escapeQuote(s.name)}')">Pay</button>
+                      <button type="button" class="secondary" onclick="viewSupplierStatement('${escapeQuote(s.name)}')">Statement</button>
+                      <button type="button" class="secondary" onclick="editSupplierByName('${escapeQuote(s.name)}')">Edit</button>
+                      <button type="button" class="danger-btn" onclick="deleteSupplierByName('${escapeQuote(s.name)}')">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              `).join("") || '<tr><td colspan="10" class="empty-state">No matching suppliers found.</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:20px;">
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">Payment Vouchers History</span>
+            <span class="pill">${filteredPayments.length} records</span>
+          </div>
+          <div class="view-table">
+            <table class="table" style="font-size:12px;">
+              <thead>
+                <tr>
+                  <th>Voucher #</th>
+                  <th>Date</th>
+                  <th>Supplier</th>
+                  <th>Mode</th>
+                  <th>Ref / UTR</th>
+                  <th style="text-align:right;">Amount Paid</th>
+                  <th style="text-align:right;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${filteredPayments.map(p => `
+                  <tr>
+                    <td><b>${p.id}</b></td>
+                    <td>${fmtDate(p.date)}</td>
+                    <td><b>${p.supplier}</b></td>
+                    <td><span class="payment-mode-tag">${p.mode}</span></td>
+                    <td>${p.ref || '—'}</td>
+                    <td class="num-cell" style="font-weight:700;color:var(--green-text);">${money(p.amount)}</td>
+                    <td style="text-align:right;">
+                      <div class="table-action-btns">
+                        <button type="button" class="secondary" onclick="editPayment('${p.id}')">Edit</button>
+                        <button type="button" class="danger-btn" onclick="deletePayment('${p.id}')">Void</button>
+                      </div>
+                    </td>
+                  </tr>
+                `).join("") || '<tr><td colspan="7" class="empty-state">No payments found in this period.</td></tr>'}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">Purchase Invoices (${periodLabel})</span>
+            <span class="pill">${filteredInvoices.length} GRNs</span>
+          </div>
+          <div class="view-table">
+            <table class="table" style="font-size:12px;">
+              <thead>
+                <tr>
+                  <th>GRN #</th>
+                  <th>Date</th>
+                  <th>Supplier</th>
+                  <th>Reference</th>
+                  <th style="text-align:right;">Bill Amount</th>
+                  <th style="text-align:right;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${filteredInvoices.map(p => `
+                  <tr>
+                    <td><b>${p.no}</b></td>
+                    <td>${fmtDate(p.date)}</td>
+                    <td><b>${p.supplier}</b></td>
+                    <td>${p.reference || '—'}</td>
+                    <td class="num-cell"><b>${money(p.total)}</b></td>
+                    <td style="text-align:right;">
+                      <div class="table-action-btns">
+                        <button type="button" class="secondary" onclick="viewVoucher('${p.no}', true)">View</button>
+                        <button type="button" class="secondary" onclick="editPurchaseVoucher('${p.no}')">Edit</button>
+                        <button type="button" class="danger-btn" onclick="deletePurchaseVoucher('${p.no}')">Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                `).join("") || '<tr><td colspan="6" class="empty-state">No purchase bills found in this period.</td></tr>'}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     `
   );
 }
 
-function getFilteredReportRows() {
-  const q = reportFiltersState.search.toLowerCase();
-  return state.transactions.filter(t => {
-    const matchQ = !q || t.product.toLowerCase().includes(q) || (t.user || "").toLowerCase().includes(q) || (t.ref || "").toLowerCase().includes(q);
-    const matchType = reportFiltersState.type === "All" || t.type === reportFiltersState.type;
-    const matchDept = reportFiltersState.department === "All" || t.department === reportFiltersState.department;
-    let matchRange = true;
-    if (reportFiltersState.range === "Today") matchRange = dateKey(t.date) === today;
-    return matchQ && matchType && matchDept && matchRange;
-  });
+// ==========================================
+// 6-REPORT SYSTEM (REPORTS TAB NAVIGATION)
+// ==========================================
+
+let currentReportType = "stock"; // "stock", "ledger", "purchase", "outward", "consumption", "deadstock"
+let reportFilters = {
+  stock: { category: "All", store: "All", status: "All", search: "" },
+  ledger: { product: "All", store: "All", range: "This Month", type: "All", search: "" },
+  purchase: { supplier: "All", store: "All", range: "This Month", search: "" },
+  outward: { department: "All", store: "All", range: "This Month", search: "" },
+  consumption: { department: "All", store: "All", range: "This Month" },
+  deadstock: { days: 30, store: "All", category: "All", search: "" }
+};
+
+function setReportType(type) {
+  currentReportType = type;
+  showView("reports");
 }
 
-function exportReportData() {
+function universalReports() {
+  let contentHtml = "";
+  if (currentReportType === "stock") contentHtml = renderStockReport();
+  else if (currentReportType === "ledger") contentHtml = renderStockLedgerReport();
+  else if (currentReportType === "purchase") contentHtml = renderPurchaseReport();
+  else if (currentReportType === "outward") contentHtml = renderOutwardReport();
+  else if (currentReportType === "consumption") contentHtml = renderDepartmentConsumptionReport();
+  else if (currentReportType === "deadstock") contentHtml = renderDeadStockReport();
+  else contentHtml = renderStockReport();
+
+  return layout(
+    "Reports & Analytics",
+    "Comprehensive inventory statements, valuation audits, movement ledgers, and dead stock analysis.",
+    `<button class="secondary" onclick="exportCurrentReportCsv()">Export Active CSV</button>
+     <button class="secondary" onclick="window.print()">Print Report</button>`,
+    `
+      <div class="report-types-bar">
+        <button class="report-type-btn ${currentReportType === 'stock' ? 'active' : ''}" onclick="setReportType('stock')">
+          <span class="rt-icon">📦</span> Stock Report
+          <span class="rt-count">${state.products.length}</span>
+        </button>
+        <button class="report-type-btn ${currentReportType === 'ledger' ? 'active' : ''}" onclick="setReportType('ledger')">
+          <span class="rt-icon">📑</span> Stock Ledger
+          <span class="rt-count">${state.transactions.length}</span>
+        </button>
+        <button class="report-type-btn ${currentReportType === 'purchase' ? 'active' : ''}" onclick="setReportType('purchase')">
+          <span class="rt-icon">🛒</span> Purchase Report
+          <span class="rt-count">${state.purchases.length}</span>
+        </button>
+        <button class="report-type-btn ${currentReportType === 'outward' ? 'active' : ''}" onclick="setReportType('outward')">
+          <span class="rt-icon">📤</span> Outward Report
+          <span class="rt-count">${state.outwards.length}</span>
+        </button>
+        <button class="report-type-btn ${currentReportType === 'consumption' ? 'active' : ''}" onclick="setReportType('consumption')">
+          <span class="rt-icon">🏢</span> Department Consumption
+        </button>
+        <button class="report-type-btn ${currentReportType === 'deadstock' ? 'active' : ''}" onclick="setReportType('deadstock')">
+          <span class="rt-icon">⏳</span> Dead Stock
+        </button>
+      </div>
+
+      ${contentHtml}
+    `
+  );
+}
+
+// 1. Stock Report
+function renderStockReport() {
+  const f = reportFilters.stock;
+  const categories = [...new Set(state.products.map(p => p.category || "General"))];
+  const q = f.search.toLowerCase().trim();
+
+  const filtered = state.products.filter(p => {
+    const matchCat = f.category === "All" || (p.category || "General") === f.category;
+    const matchStore = f.store === "All" || (p.store || state.currentStore) === f.store;
+    let matchStatus = true;
+    if (f.status === "low") matchStatus = p.stock > 0 && p.stock <= (p.min || 10);
+    else if (f.status === "reorder") matchStatus = p.stock <= (p.reorder || p.min || 10);
+    else if (f.status === "out") matchStatus = p.stock <= 0;
+    else if (f.status === "ok") matchStatus = p.stock > (p.min || 10);
+    const matchSearch = !q || p.name.toLowerCase().includes(q) || (p.category || "").toLowerCase().includes(q);
+    return matchCat && matchStore && matchStatus && matchSearch;
+  });
+
+  const totalUnits = filtered.reduce((a, b) => a + (Number(b.stock) || 0), 0);
+  const totalValuation = filtered.reduce((a, b) => a + ((Number(b.stock) || 0) * (Number(b.cost) || 0)), 0);
+  const lowStockCount = filtered.filter(p => p.stock <= (p.min || 10)).length;
+
+  return `
+    <div class="metrics">
+      ${metric("Catalog Items", filtered.length, "📦", "blue", "Matching inventory items")}
+      ${metric("Physical Quantity", numberValue(totalUnits), "▣", "green", "Total units on hand")}
+      ${metric("Stock Valuation", money(totalValuation), "$", "green", "Total asset value on floor")}
+      ${metric("Low / Out of Stock", lowStockCount, "⚠", lowStockCount > 0 ? "amber" : "green", "Requires vendor replenishment")}
+    </div>
+
+    <div class="filterbar">
+      <select onchange="reportFilters.stock.category=this.value;showView('reports')">
+        <option value="All">All Categories</option>
+        ${categories.map(c => `<option value="${escapeQuote(c)}" ${f.category === c ? 'selected' : ''}>${c}</option>`).join("")}
+      </select>
+      <select onchange="reportFilters.stock.store=this.value;showView('reports')">
+        <option value="All">All Warehouses</option>
+        ${state.stores.map(s => `<option value="${escapeQuote(s[0])}" ${f.store === s[0] ? 'selected' : ''}>${s[0]}</option>`).join("")}
+      </select>
+      <select onchange="reportFilters.stock.status=this.value;showView('reports')">
+        <option value="All" ${f.status === 'All' ? 'selected' : ''}>All Stock Statuses</option>
+        <option value="ok" ${f.status === 'ok' ? 'selected' : ''}>Healthy Stock (> Min)</option>
+        <option value="low" ${f.status === 'low' ? 'selected' : ''}>Low Stock (≤ Min)</option>
+        <option value="reorder" ${f.status === 'reorder' ? 'selected' : ''}>Reorder Point Reached</option>
+        <option value="out" ${f.status === 'out' ? 'selected' : ''}>Out of Stock (0)</option>
+      </select>
+      <input placeholder="Search item name or SKU..." value="${escapeHtml(f.search)}" oninput="reportFilters.stock.search=this.value;showView('reports')">
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">Current Stock Valuation Report</span>
+        <span class="pill">${filtered.length} products listed</span>
+      </div>
+      <div class="view-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Category</th>
+              <th>Warehouse</th>
+              <th style="text-align:right;">Stock On Hand</th>
+              <th style="text-align:right;">Min Level</th>
+              <th style="text-align:right;">Reorder Pt</th>
+              <th style="text-align:right;">Cost Rate</th>
+              <th style="text-align:right;">Total Valuation</th>
+              <th>Status</th>
+              <th style="text-align:right;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtered.map(p => {
+              const val = (Number(p.stock) || 0) * (Number(p.cost) || 0);
+              const isOut = p.stock <= 0;
+              const isLow = p.stock <= (p.min || 10);
+              return `
+                <tr>
+                  <td>
+                    <span style="margin-right:6px;">${p.icon || '📦'}</span>
+                    <b>${p.name}</b>
+                  </td>
+                  <td>${p.category || 'General'}</td>
+                  <td>${p.store || state.currentStore}</td>
+                  <td class="num-cell"><b>${numberValue(p.stock)}</b> ${p.unit}</td>
+                  <td class="num-cell">${numberValue(p.min || 0)}</td>
+                  <td class="num-cell">${numberValue(p.reorder || ((p.min || 0) + 5))}</td>
+                  <td class="num-cell">${money(p.cost || 0)}</td>
+                  <td class="num-cell" style="font-weight:700;">${money(val)}</td>
+                  <td>
+                    <span class="status ${isOut ? 'danger' : isLow ? 'warning' : 'ok'}">
+                      ${isOut ? 'Out of Stock' : isLow ? 'Low Stock' : 'Healthy'}
+                    </span>
+                  </td>
+                  <td style="text-align:right;">
+                    <div class="table-action-btns">
+                      <button type="button" class="secondary" onclick="modifyItem('${p.id}')">Edit</button>
+                      <button type="button" class="danger-btn" onclick="deleteItem('${p.id}')">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              `;
+            }).join("") || '<tr><td colspan="10" class="empty-state">No matching stock records found.</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// 2. Stock Ledger
+function renderStockLedgerReport() {
+  const f = reportFilters.ledger;
+  const types = ["All", "Purchase", "Stock Outward", "Transfer in", "Transfer out", "Adjustment", "Wastage", "Consumption"];
+  const q = f.search.toLowerCase().trim();
+
+  const filtered = state.transactions.filter(t => {
+    const matchProd = f.product === "All" || t.product === f.product;
+    const matchType = f.type === "All" || t.type === f.type;
+    const matchStore = f.store === "All" || (t.store || state.currentStore) === f.store;
+    let matchRange = true;
+    if (f.range === "Today") matchRange = dateKey(t.date) === today;
+    else if (f.range === "This Month") matchRange = monthKey(t.date) === monthKey(today);
+    else if (f.range === "Last Month") {
+      const prevDate = new Date();
+      prevDate.setMonth(prevDate.getMonth() - 1);
+      matchRange = monthKey(t.date) === monthKey(prevDate.toISOString());
+    }
+    const matchSearch = !q || t.product.toLowerCase().includes(q) || (t.ref || "").toLowerCase().includes(q) || (t.user || "").toLowerCase().includes(q) || (t.remarks || "").toLowerCase().includes(q);
+    return matchProd && matchType && matchStore && matchRange && matchSearch;
+  });
+
+  const inwardQty = filtered.filter(t => t.qty > 0).reduce((a, t) => a + t.qty, 0);
+  const outwardQty = filtered.filter(t => t.qty < 0).reduce((a, t) => a + Math.abs(t.qty), 0);
+  const inwardVal = filtered.filter(t => t.qty > 0).reduce((a, t) => a + t.qty * (t.cost || 0), 0);
+  const outwardVal = filtered.filter(t => t.qty < 0).reduce((a, t) => a + Math.abs(t.qty) * (t.cost || 0), 0);
+
+  return `
+    <div class="metrics">
+      ${metric("Transactions", filtered.length, "📑", "blue", "Matching ledger rows")}
+      ${metric("Total Inward", `+${numberValue(inwardQty)}`, "↗", "green", money(inwardVal) + " received")}
+      ${metric("Total Outward", `-${numberValue(outwardQty)}`, "↘", "amber", money(outwardVal) + " disbursed")}
+      ${metric("Net Movement", numberValue(inwardQty - outwardQty), "▣", "neutral", "Net change in units")}
+    </div>
+
+    <div class="filterbar">
+      <select onchange="reportFilters.ledger.product=this.value;showView('reports')">
+        <option value="All">All Items (Catalog)</option>
+        ${state.products.map(p => `<option value="${escapeQuote(p.name)}" ${f.product === p.name ? 'selected' : ''}>${p.name}</option>`).join("")}
+      </select>
+      <select onchange="reportFilters.ledger.type=this.value;showView('reports')">
+        ${types.map(t => `<option value="${escapeQuote(t)}" ${f.type === t ? 'selected' : ''}>${t === 'All' ? 'All Movement Types' : t}</option>`).join("")}
+      </select>
+      <select onchange="reportFilters.ledger.range=this.value;showView('reports')">
+        <option ${f.range === 'This Month' ? 'selected' : ''}>This Month</option>
+        <option ${f.range === 'Today' ? 'selected' : ''}>Today</option>
+        <option ${f.range === 'Last Month' ? 'selected' : ''}>Last Month</option>
+        <option ${f.range === 'All Time' ? 'selected' : ''}>All Time</option>
+      </select>
+      <select onchange="reportFilters.ledger.store=this.value;showView('reports')">
+        <option value="All">All Warehouses</option>
+        ${state.stores.map(s => `<option value="${escapeQuote(s[0])}" ${f.store === s[0] ? 'selected' : ''}>${s[0]}</option>`).join("")}
+      </select>
+      <input placeholder="Search ref, user, remarks..." value="${escapeHtml(f.search)}" oninput="reportFilters.ledger.search=this.value;showView('reports')">
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">Stock Movement Ledger</span>
+        <span class="pill">${filtered.length} audited records</span>
+      </div>
+      <div class="view-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Voucher Ref</th>
+              <th>Type</th>
+              <th>Product</th>
+              <th>Warehouse</th>
+              <th>Party / Dept</th>
+              <th style="text-align:right;">Inward (+)</th>
+              <th style="text-align:right;">Outward (-)</th>
+              <th style="text-align:right;">Rate</th>
+              <th style="text-align:right;">Total Value</th>
+              <th>User</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtered.map(t => `
+              <tr>
+                <td>${fmtDate(t.date)}</td>
+                <td><b>${t.ref || '—'}</b></td>
+                <td><span class="tag ${t.type.toLowerCase().replace(/\s+/g,'-')}">${t.type}</span></td>
+                <td><b>${t.product}</b></td>
+                <td>${t.store || state.currentStore}</td>
+                <td>${t.department || '—'}</td>
+                <td class="num-cell" style="color:var(--green-text);font-weight:600;">${t.qty > 0 ? `+${numberValue(t.qty)}` : '—'}</td>
+                <td class="num-cell" style="color:var(--red);font-weight:600;">${t.qty < 0 ? `-${numberValue(Math.abs(t.qty))}` : '—'}</td>
+                <td class="num-cell">${money(t.cost || 0)}</td>
+                <td class="num-cell"><b>${money(Math.abs(t.qty) * (t.cost || 0))}</b></td>
+                <td>${t.user || 'System'}</td>
+                <td style="text-align:right;">
+                  <div class="table-action-btns">
+                    <button type="button" class="secondary" onclick="editTransaction('${t.id || t.ref}')">Edit</button>
+                    <button type="button" class="danger-btn" onclick="deleteTransaction('${t.id || t.ref}')">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            `).join("") || '<tr><td colspan="12" class="empty-state">No matching transactions found in this period.</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// 3. Purchase Report
+function renderPurchaseReport() {
+  const f = reportFilters.purchase;
+  const q = f.search.toLowerCase().trim();
+
+  const filtered = state.purchases.filter(p => {
+    const matchSup = f.supplier === "All" || p.supplier === f.supplier;
+    const matchStore = f.store === "All" || (p.store || state.currentStore) === f.store;
+    let matchRange = true;
+    if (f.range === "Today") matchRange = dateKey(p.date) === today;
+    else if (f.range === "This Month") matchRange = monthKey(p.date) === monthKey(today);
+    else if (f.range === "Last Month") {
+      const prevDate = new Date();
+      prevDate.setMonth(prevDate.getMonth() - 1);
+      matchRange = monthKey(p.date) === monthKey(prevDate.toISOString());
+    }
+    const matchSearch = !q || p.supplier.toLowerCase().includes(q) || p.no.toLowerCase().includes(q) || (p.reference || "").toLowerCase().includes(q);
+    return matchSup && matchStore && matchRange && matchSearch;
+  });
+
+  const totalValue = filtered.reduce((a, b) => a + Number(b.total || 0), 0);
+  const totalUnits = filtered.reduce((a, b) => a + (b.items || []).reduce((sub, it) => sub + Number(it.qty || 0), 0), 0);
+
+  // Top supplier by spend
+  const supplierSpend = {};
+  filtered.forEach(p => {
+    supplierSpend[p.supplier] = (supplierSpend[p.supplier] || 0) + Number(p.total || 0);
+  });
+  let topSupplier = "—";
+  let topSupplierSpend = 0;
+  Object.entries(supplierSpend).forEach(([sup, amt]) => {
+    if (amt > topSupplierSpend) { topSupplierSpend = amt; topSupplier = sup; }
+  });
+
+  return `
+    <div class="metrics">
+      ${metric("Purchases Value", money(totalValue), "↗", "green", "Total billed spend")}
+      ${metric("GRN Invoices", filtered.length, "🛒", "blue", "Goods received vouchers")}
+      ${metric("Units Received", numberValue(totalUnits), "▣", "green", "Total product quantity")}
+      ${metric("Top Supplier", topSupplier, "🚚", "neutral", topSupplierSpend > 0 ? money(topSupplierSpend) + " spend" : "No orders")}
+    </div>
+
+    <div class="filterbar">
+      <select onchange="reportFilters.purchase.supplier=this.value;showView('reports')">
+        <option value="All">All Suppliers</option>
+        ${state.suppliers.map(s => `<option value="${escapeQuote(s[0])}" ${f.supplier === s[0] ? 'selected' : ''}>${s[0]}</option>`).join("")}
+      </select>
+      <select onchange="reportFilters.purchase.range=this.value;showView('reports')">
+        <option ${f.range === 'This Month' ? 'selected' : ''}>This Month</option>
+        <option ${f.range === 'Today' ? 'selected' : ''}>Today</option>
+        <option ${f.range === 'Last Month' ? 'selected' : ''}>Last Month</option>
+        <option ${f.range === 'All Time' ? 'selected' : ''}>All Time</option>
+      </select>
+      <select onchange="reportFilters.purchase.store=this.value;showView('reports')">
+        <option value="All">All Warehouses</option>
+        ${state.stores.map(s => `<option value="${escapeQuote(s[0])}" ${f.store === s[0] ? 'selected' : ''}>${s[0]}</option>`).join("")}
+      </select>
+      <input placeholder="Search GRN, invoice ref, supplier..." value="${escapeHtml(f.search)}" oninput="reportFilters.purchase.search=this.value;showView('reports')">
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">Goods Receipt Notes (GRN Purchase Vouchers)</span>
+        <span class="pill">${filtered.length} vouchers</span>
+      </div>
+      <div class="view-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>GRN #</th>
+              <th>Date</th>
+              <th>Supplier</th>
+              <th>Invoice Ref</th>
+              <th>Warehouse</th>
+              <th>Items Received</th>
+              <th style="text-align:right;">Total Qty</th>
+              <th style="text-align:right;">Invoice Total</th>
+              <th>User</th>
+              <th style="text-align:right;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtered.map(p => {
+              const itemsCount = p.items?.length || 0;
+              const unitsCount = (p.items || []).reduce((acc, it) => acc + Number(it.qty || 0), 0);
+              const summaryText = (p.items || []).map(it => `${it.product} (${it.qty} ${it.unit})`).slice(0, 2).join(", ") + (itemsCount > 2 ? ` +${itemsCount - 2} more` : "");
+              return `
+                <tr>
+                  <td><b>${p.no}</b></td>
+                  <td>${fmtDate(p.date)}</td>
+                  <td><b>${p.supplier}</b></td>
+                  <td>${p.reference || '—'}</td>
+                  <td>${p.store || state.currentStore}</td>
+                  <td><span style="font-size:12px;color:#334155;">${escapeHtml(summaryText)}</span></td>
+                  <td class="num-cell"><b>${numberValue(unitsCount)}</b></td>
+                  <td class="num-cell" style="font-weight:700;color:var(--navy);">${money(p.total)}</td>
+                  <td>${p.user || 'Alex Kim'}</td>
+                  <td style="text-align:right;">
+                    <div class="table-action-btns">
+                      <button type="button" class="secondary" onclick="viewVoucher('${p.no}', true)">View</button>
+                      <button type="button" class="secondary" onclick="editPurchaseVoucher('${p.no}')">Edit</button>
+                      <button type="button" class="danger-btn" onclick="deletePurchaseVoucher('${p.no}')">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              `;
+            }).join("") || '<tr><td colspan="10" class="empty-state">No purchase vouchers found for this filter.</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// 4. Outward Report
+function renderOutwardReport() {
+  const f = reportFilters.outward;
+  const q = f.search.toLowerCase().trim();
+
+  const filtered = state.outwards.filter(o => {
+    const matchDept = f.department === "All" || o.department === f.department;
+    const matchStore = f.store === "All" || (o.store || state.currentStore) === f.store;
+    let matchRange = true;
+    if (f.range === "Today") matchRange = dateKey(o.date) === today;
+    else if (f.range === "This Month") matchRange = monthKey(o.date) === monthKey(today);
+    else if (f.range === "Last Month") {
+      const prevDate = new Date();
+      prevDate.setMonth(prevDate.getMonth() - 1);
+      matchRange = monthKey(o.date) === monthKey(prevDate.toISOString());
+    }
+    const matchSearch = !q || (o.department || "").toLowerCase().includes(q) || o.no.toLowerCase().includes(q) || (o.issuedTo || "").toLowerCase().includes(q) || (o.remarks || "").toLowerCase().includes(q);
+    return matchDept && matchStore && matchRange && matchSearch;
+  });
+
+  const totalValue = filtered.reduce((a, b) => a + Number(b.total || 0), 0);
+  const totalUnits = filtered.reduce((a, b) => a + (b.items || []).reduce((sub, it) => sub + Number(it.qty || 0), 0), 0);
+
+  // Leading department
+  const deptSpend = {};
+  filtered.forEach(o => {
+    deptSpend[o.department] = (deptSpend[o.department] || 0) + Number(o.total || 0);
+  });
+  let topDept = "—";
+  let topDeptVal = 0;
+  Object.entries(deptSpend).forEach(([dept, amt]) => {
+    if (amt > topDeptVal) { topDeptVal = amt; topDept = dept; }
+  });
+
+  return `
+    <div class="metrics">
+      ${metric("Outward Valuation", money(totalValue), "↘", "amber", "Value of stock issued")}
+      ${metric("Units Issued", numberValue(totalUnits), "▣", "blue", "Total physical units")}
+      ${metric("Issue Vouchers", filtered.length, "📤", "neutral", "Dispatched requisitions")}
+      ${metric("Top Department", topDept, "🏢", "neutral", topDeptVal > 0 ? money(topDeptVal) + " issued" : "None")}
+    </div>
+
+    <div class="filterbar">
+      <select onchange="reportFilters.outward.department=this.value;showView('reports')">
+        <option value="All">All Departments</option>
+        ${departments.map(d => `<option value="${escapeQuote(d)}" ${f.department === d ? 'selected' : ''}>${d}</option>`).join("")}
+      </select>
+      <select onchange="reportFilters.outward.range=this.value;showView('reports')">
+        <option ${f.range === 'This Month' ? 'selected' : ''}>This Month</option>
+        <option ${f.range === 'Today' ? 'selected' : ''}>Today</option>
+        <option ${f.range === 'Last Month' ? 'selected' : ''}>Last Month</option>
+        <option ${f.range === 'All Time' ? 'selected' : ''}>All Time</option>
+      </select>
+      <select onchange="reportFilters.outward.store=this.value;showView('reports')">
+        <option value="All">All Warehouses</option>
+        ${state.stores.map(s => `<option value="${escapeQuote(s[0])}" ${f.store === s[0] ? 'selected' : ''}>${s[0]}</option>`).join("")}
+      </select>
+      <input placeholder="Search voucher #, chef, department..." value="${escapeHtml(f.search)}" oninput="reportFilters.outward.search=this.value;showView('reports')">
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">Stock Outward & Kitchen Issue Register</span>
+        <span class="pill">${filtered.length} issues</span>
+      </div>
+      <div class="view-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Voucher #</th>
+              <th>Date</th>
+              <th>Department</th>
+              <th>Issued To</th>
+              <th>Warehouse</th>
+              <th>Items Issued</th>
+              <th style="text-align:right;">Total Qty</th>
+              <th style="text-align:right;">Valuation</th>
+              <th>Remarks</th>
+              <th style="text-align:right;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtered.map(o => {
+              const itemsCount = o.items?.length || 0;
+              const unitsCount = (o.items || []).reduce((acc, it) => acc + Number(it.qty || 0), 0);
+              const summaryText = (o.items || []).map(it => `${it.product} (${it.qty} ${it.unit})`).slice(0, 2).join(", ") + (itemsCount > 2 ? ` +${itemsCount - 2} more` : "");
+              return `
+                <tr>
+                  <td><b>${o.no}</b></td>
+                  <td>${fmtDate(o.date)}</td>
+                  <td><span class="tag">${o.department}</span></td>
+                  <td><b>${o.issuedTo || 'Staff'}</b></td>
+                  <td>${o.store || state.currentStore}</td>
+                  <td><span style="font-size:12px;color:#334155;">${escapeHtml(summaryText)}</span></td>
+                  <td class="num-cell"><b>${numberValue(unitsCount)}</b></td>
+                  <td class="num-cell" style="font-weight:700;color:var(--amber);">${money(o.total)}</td>
+                  <td style="font-size:12px;color:#64748b;">${escapeHtml(o.remarks || '—')}</td>
+                  <td style="text-align:right;">
+                    <div class="table-action-btns">
+                      <button type="button" class="secondary" onclick="viewVoucher('${o.no}', false)">View</button>
+                      <button type="button" class="secondary" onclick="editOutwardVoucher('${o.no}')">Edit</button>
+                      <button type="button" class="danger-btn" onclick="deleteOutwardVoucher('${o.no}')">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              `;
+            }).join("") || '<tr><td colspan="10" class="empty-state">No outward vouchers found for this filter.</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// 5. Department Consumption Report
+function renderDepartmentConsumptionReport() {
+  const f = reportFilters.consumption;
+
+  // Filter outwards
+  const filteredOutwards = state.outwards.filter(o => {
+    const matchDept = f.department === "All" || o.department === f.department;
+    const matchStore = f.store === "All" || (o.store || state.currentStore) === f.store;
+    let matchRange = true;
+    if (f.range === "Today") matchRange = dateKey(o.date) === today;
+    else if (f.range === "This Month") matchRange = monthKey(o.date) === monthKey(today);
+    else if (f.range === "Last Month") {
+      const prevDate = new Date();
+      prevDate.setMonth(prevDate.getMonth() - 1);
+      matchRange = monthKey(o.date) === monthKey(prevDate.toISOString());
+    }
+    return matchDept && matchStore && matchRange;
+  });
+
+  // Calculate department aggregates
+  const deptStats = {};
+  const itemizedByDept = {};
+  let overallConsumptionVal = 0;
+
+  filteredOutwards.forEach(o => {
+    const dept = o.department || "Kitchen";
+    deptStats[dept] = deptStats[dept] || { name: dept, requisitions: 0, units: 0, cost: 0, items: {} };
+    deptStats[dept].requisitions += 1;
+
+    (o.items || []).forEach(it => {
+      const q = Number(it.qty || 0);
+      const c = Number(it.amount || (q * (it.rate || 0)));
+      deptStats[dept].units += q;
+      deptStats[dept].cost += c;
+      overallConsumptionVal += c;
+      deptStats[dept].items[it.product] = (deptStats[dept].items[it.product] || 0) + c;
+
+      // Itemized
+      itemizedByDept[dept] = itemizedByDept[dept] || [];
+      const existing = itemizedByDept[dept].find(x => x.product === it.product);
+      if (existing) {
+        existing.qty += q;
+        existing.cost += c;
+      } else {
+        itemizedByDept[dept].push({ product: it.product, unit: it.unit || 'unit', qty: q, cost: c, rate: it.rate || 0 });
+      }
+    });
+  });
+
+  const sortedDepts = Object.values(deptStats).sort((a, b) => b.cost - a.cost);
+  const leadingDept = sortedDepts[0]?.name || "—";
+  const totalRequisitions = filteredOutwards.length;
+
+  return `
+    <div class="metrics">
+      ${metric("Kitchen Consumption", money(overallConsumptionVal), "🏢", "amber", "Total ingredient consumption value")}
+      ${metric("Issue Batches", totalRequisitions, "📤", "blue", "Requisitions processed")}
+      ${metric("Leading Department", leadingDept, "👨‍🍳", "neutral", sortedDepts[0] ? money(sortedDepts[0].cost) + " consumed" : "None")}
+      ${metric("Active Departments", sortedDepts.length, "🏷", "green", "Requesting kitchen sections")}
+    </div>
+
+    <div class="filterbar">
+      <select onchange="reportFilters.consumption.range=this.value;showView('reports')">
+        <option ${f.range === 'This Month' ? 'selected' : ''}>This Month</option>
+        <option ${f.range === 'Today' ? 'selected' : ''}>Today</option>
+        <option ${f.range === 'Last Month' ? 'selected' : ''}>Last Month</option>
+        <option ${f.range === 'All Time' ? 'selected' : ''}>All Time</option>
+      </select>
+      <select onchange="reportFilters.consumption.department=this.value;showView('reports')">
+        <option value="All">All Departments</option>
+        ${departments.map(d => `<option value="${escapeQuote(d)}" ${f.department === d ? 'selected' : ''}>${d}</option>`).join("")}
+      </select>
+      <select onchange="reportFilters.consumption.store=this.value;showView('reports')">
+        <option value="All">All Warehouses</option>
+        ${state.stores.map(s => `<option value="${escapeQuote(s[0])}" ${f.store === s[0] ? 'selected' : ''}>${s[0]}</option>`).join("")}
+      </select>
+    </div>
+
+    <div class="panel" style="margin-bottom:24px;">
+      <div class="panel-head">
+        <span class="panel-title">Department Consumption Summary</span>
+        <span class="pill">${sortedDepts.length} departments</span>
+      </div>
+      <div class="view-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th>Requisitions</th>
+              <th style="text-align:right;">Physical Units</th>
+              <th style="text-align:right;">Total Cost</th>
+              <th style="min-width:180px;">Share of Kitchen Usage</th>
+              <th>Top Consumed Ingredient</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sortedDepts.map(d => {
+              const pct = overallConsumptionVal > 0 ? Math.round((d.cost / overallConsumptionVal) * 100) : 0;
+              let topItem = "—";
+              let topItemVal = 0;
+              Object.entries(d.items || {}).forEach(([pName, pVal]) => {
+                if (pVal > topItemVal) { topItemVal = pVal; topItem = pName; }
+              });
+              return `
+                <tr>
+                  <td><b>${d.name}</b></td>
+                  <td>${d.requisitions} vouchers</td>
+                  <td class="num-cell"><b>${numberValue(d.units)}</b></td>
+                  <td class="num-cell" style="font-weight:700;color:var(--amber);">${money(d.cost)}</td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <div class="consumption-bar-track" style="flex:1;">
+                        <div class="consumption-bar-fill" style="width:${pct}%;"></div>
+                      </div>
+                      <span style="font-size:11px;font-weight:700;min-width:32px;">${pct}%</span>
+                    </div>
+                  </td>
+                  <td><b>${topItem}</b> <span style="font-size:11px;color:#64748b;">(${money(topItemVal)})</span></td>
+                </tr>
+              `;
+            }).join("") || '<tr><td colspan="6" class="empty-state">No departmental consumption recorded in this period.</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">Itemized Ingredient Usage by Department</span>
+      </div>
+      <div class="view-table">
+        <table class="table" style="font-size:12px;">
+          <thead>
+            <tr>
+              <th>Department</th>
+              <th>Ingredient Item</th>
+              <th style="text-align:right;">Total Consumed</th>
+              <th style="text-align:right;">Avg Cost Rate</th>
+              <th style="text-align:right;">Subtotal Usage Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${Object.entries(itemizedByDept).flatMap(([deptName, items]) => 
+              items.map(it => `
+                <tr>
+                  <td><b>${deptName}</b></td>
+                  <td>${it.product}</td>
+                  <td class="num-cell"><b>${numberValue(it.qty)}</b> ${it.unit}</td>
+                  <td class="num-cell">${money(it.rate)}</td>
+                  <td class="num-cell" style="font-weight:700;">${money(it.cost)}</td>
+                </tr>
+              `)
+            ).join("") || '<tr><td colspan="5" class="empty-state">No itemized consumption details found.</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// 6. Dead Stock Report
+function renderDeadStockReport() {
+  const f = reportFilters.deadstock;
+  const categories = [...new Set(state.products.map(p => p.category || "General"))];
+  const q = f.search.toLowerCase().trim();
+  const thresholdDays = Number(f.days) || 30;
+
+  // Calculate inactivity for each product
+  const deadStockItems = [];
+  const now = Date.now();
+
+  state.products.forEach(p => {
+    if (p.stock <= 0) return; // only evaluate products with capital on hand
+
+    // find most recent outward or consumption movement
+    const recentTx = state.transactions
+      .filter(t => t.product === p.name && (t.type === "Stock Outward" || t.type === "Consumption" || t.qty < 0))
+      .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+
+    let daysInactive = 999;
+    let lastDateStr = "Never Issued";
+
+    if (recentTx && recentTx.date) {
+      const txTime = new Date(recentTx.date).getTime();
+      if (!isNaN(txTime)) {
+        daysInactive = Math.max(0, Math.floor((now - txTime) / 86400000));
+        lastDateStr = fmtDate(recentTx.date);
+      }
+    }
+
+    if (daysInactive >= thresholdDays) {
+      const frozenCapital = Number(p.stock || 0) * Number(p.cost || 0);
+
+      let rec = "Chef's Daily Special Feature";
+      if (daysInactive >= 90) rec = "Vendor Return or Stock Liquidation";
+      else if (daysInactive >= 60) rec = "Transfer to High-Volume Warehouse or Markdown";
+      else if (daysInactive >= 30) rec = "Kitchen Recipe Promotion / Menu Feature";
+
+      deadStockItems.push({
+        ...p,
+        daysInactive,
+        lastDateStr,
+        frozenCapital,
+        recommendation: rec
+      });
+    }
+  });
+
+  // Filter
+  const filtered = deadStockItems.filter(p => {
+    const matchCat = f.category === "All" || (p.category || "General") === f.category;
+    const matchStore = f.store === "All" || (p.store || state.currentStore) === f.store;
+    const matchSearch = !q || p.name.toLowerCase().includes(q) || (p.category || "").toLowerCase().includes(q);
+    return matchCat && matchStore && matchSearch;
+  }).sort((a, b) => b.frozenCapital - a.frozenCapital);
+
+  const totalFrozenVal = filtered.reduce((sum, p) => sum + p.frozenCapital, 0);
+  const totalFloorValuation = state.products.reduce((sum, p) => sum + (Number(p.stock || 0) * Number(p.cost || 0)), 0);
+  const tiedUpPct = totalFloorValuation > 0 ? Math.round((totalFrozenVal / totalFloorValuation) * 100) : 0;
+  const oldestItem = filtered.sort((a, b) => b.daysInactive - a.daysInactive)[0];
+
+  return `
+    <div class="metrics">
+      ${metric("Trapped Capital", money(totalFrozenVal), "⏳", totalFrozenVal > 0 ? "danger" : "green", "Frozen capital in dormant inventory")}
+      ${metric("Dead Stock Items", filtered.length, "📦", filtered.length > 0 ? "amber" : "green", `Zero outward movement for ≥ ${thresholdDays} days`)}
+      ${metric("Tied-Up %", `${tiedUpPct}%`, "📊", tiedUpPct > 15 ? "danger" : "neutral", "Percentage of total store valuation")}
+      ${metric("Oldest Dormant Item", oldestItem ? oldestItem.name : "None", "⚠", "neutral", oldestItem ? `${oldestItem.daysInactive} days inactive` : "All items moving")}
+    </div>
+
+    <div class="filterbar">
+      <select onchange="reportFilters.deadstock.days=Number(this.value);showView('reports')">
+        <option value="30" ${thresholdDays === 30 ? 'selected' : ''}>30+ Days Inactive</option>
+        <option value="60" ${thresholdDays === 60 ? 'selected' : ''}>60+ Days Inactive</option>
+        <option value="90" ${thresholdDays === 90 ? 'selected' : ''}>90+ Days Inactive (Critical Dead Stock)</option>
+        <option value="999" ${thresholdDays === 999 ? 'selected' : ''}>Never Issued / Zero Movement</option>
+      </select>
+      <select onchange="reportFilters.deadstock.category=this.value;showView('reports')">
+        <option value="All">All Categories</option>
+        ${categories.map(c => `<option value="${escapeQuote(c)}" ${f.category === c ? 'selected' : ''}>${c}</option>`).join("")}
+      </select>
+      <select onchange="reportFilters.deadstock.store=this.value;showView('reports')">
+        <option value="All">All Warehouses</option>
+        ${state.stores.map(s => `<option value="${escapeQuote(s[0])}" ${f.store === s[0] ? 'selected' : ''}>${s[0]}</option>`).join("")}
+      </select>
+      <input placeholder="Search dormant item or category..." value="${escapeHtml(f.search)}" oninput="reportFilters.deadstock.search=this.value;showView('reports')">
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <span class="panel-title">Dead Stock & Dormancy Audit</span>
+        <span class="pill">${filtered.length} stagnant items</span>
+      </div>
+      <div class="view-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Category</th>
+              <th>Warehouse</th>
+              <th style="text-align:right;">Stock On Hand</th>
+              <th style="text-align:right;">Cost Rate</th>
+              <th style="text-align:right;">Trapped Capital</th>
+              <th>Last Movement</th>
+              <th>Inactivity</th>
+              <th>Recommended Action</th>
+              <th style="text-align:right;">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filtered.map(p => {
+              const isDanger = p.daysInactive >= 90;
+              return `
+                <tr>
+                  <td>
+                    <span style="margin-right:6px;">${p.icon || '📦'}</span>
+                    <b>${p.name}</b>
+                  </td>
+                  <td>${p.category || 'General'}</td>
+                  <td>${p.store || state.currentStore}</td>
+                  <td class="num-cell"><b>${numberValue(p.stock)}</b> ${p.unit}</td>
+                  <td class="num-cell">${money(p.cost || 0)}</td>
+                  <td class="num-cell" style="font-weight:800;color:var(--red);">${money(p.frozenCapital)}</td>
+                  <td style="font-size:12px;color:#64748b;">${p.lastDateStr}</td>
+                  <td>
+                    <span class="dormancy-badge ${isDanger ? 'danger' : 'warning'}">
+                      ${p.daysInactive >= 999 ? 'Zero Movement' : `${p.daysInactive} days dormant`}
+                    </span>
+                  </td>
+                  <td><span class="tag" style="background:#f1f5f9;color:#334155;font-weight:600;">${p.recommendation}</span></td>
+                  <td style="text-align:right;">
+                    <button class="secondary" style="padding:4px 8px;font-size:11px;" onclick="newOutwardDraft([{product:p.name,qty:Math.min(p.stock, 5),rate:p.cost}])">Issue Out</button>
+                  </td>
+                </tr>
+              `;
+            }).join("") || '<tr><td colspan="10" class="empty-state">No dead stock identified! All inventory items have active movement within the selected period.</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// Universal Report CSV Exporters
+function exportCurrentReportCsv() {
+  if (currentReportType === "stock") exportStockReportCsv();
+  else if (currentReportType === "ledger") exportStockLedgerCsv();
+  else if (currentReportType === "purchase") exportPurchaseReportCsv();
+  else if (currentReportType === "outward") exportOutwardReportCsv();
+  else if (currentReportType === "consumption") exportDepartmentConsumptionCsv();
+  else if (currentReportType === "deadstock") exportDeadStockCsv();
+}
+
+function exportStockReportCsv() {
   const rows = [
-    ["Reference", "Date", "Transaction Type", "Item", "Warehouse", "Quantity", "Cost Rate", "Total Value", "User"],
-    ...getFilteredReportRows().map(t => [t.ref || "", t.date, t.type, t.product, t.store || "", t.qty, t.cost || 0, (Math.abs(t.qty) * (t.cost || 0)).toFixed(2), t.user || ""])
+    ["Item", "Category", "Warehouse", "Stock on Hand", "Unit", "Min Level", "Reorder Level", "Cost Rate", "Stock Valuation", "Status"],
+    ...state.products.map(p => [
+      p.name,
+      p.category || "General",
+      p.store || state.currentStore,
+      p.stock,
+      p.unit,
+      p.min || 0,
+      p.reorder || ((p.min || 0) + 5),
+      (p.cost || 0).toFixed(2),
+      ((p.stock || 0) * (p.cost || 0)).toFixed(2),
+      p.stock <= 0 ? "Out of Stock" : p.stock <= (p.min || 10) ? "Low Stock" : "Healthy"
+    ])
   ];
-  downloadCsv("stocksense-audit-report.csv", rows);
+  downloadCsv("stocksense-stock-report.csv", rows);
+}
+
+function exportStockLedgerCsv() {
+  const rows = [
+    ["Date", "Voucher Ref", "Type", "Product", "Warehouse", "Department", "Quantity", "Rate", "Total Value", "User"],
+    ...state.transactions.map(t => [
+      t.date,
+      t.ref || "",
+      t.type,
+      t.product,
+      t.store || state.currentStore,
+      t.department || "",
+      t.qty,
+      (t.cost || 0).toFixed(2),
+      (Math.abs(t.qty) * (t.cost || 0)).toFixed(2),
+      t.user || ""
+    ])
+  ];
+  downloadCsv("stocksense-stock-ledger.csv", rows);
+}
+
+function exportPurchaseReportCsv() {
+  const rows = [
+    ["GRN No", "Date", "Supplier", "Reference", "Warehouse", "Items Count", "Total Value", "User"],
+    ...state.purchases.map(p => [
+      p.no,
+      p.date,
+      p.supplier,
+      p.reference || "",
+      p.store || state.currentStore,
+      p.items?.length || 0,
+      (p.total || 0).toFixed(2),
+      p.user || ""
+    ])
+  ];
+  downloadCsv("stocksense-purchase-report.csv", rows);
+}
+
+function exportOutwardReportCsv() {
+  const rows = [
+    ["Voucher No", "Date", "Department", "Issued To", "Warehouse", "Items Count", "Total Value", "Remarks"],
+    ...state.outwards.map(o => [
+      o.no,
+      o.date,
+      o.department,
+      o.issuedTo || "",
+      o.store || state.currentStore,
+      o.items?.length || 0,
+      (o.total || 0).toFixed(2),
+      o.remarks || ""
+    ])
+  ];
+  downloadCsv("stocksense-outward-report.csv", rows);
+}
+
+function exportDepartmentConsumptionCsv() {
+  const deptStats = {};
+  state.outwards.forEach(o => {
+    const dept = o.department || "Kitchen";
+    deptStats[dept] = deptStats[dept] || { requisitions: 0, units: 0, cost: 0 };
+    deptStats[dept].requisitions += 1;
+    (o.items || []).forEach(it => {
+      deptStats[dept].units += Number(it.qty || 0);
+      deptStats[dept].cost += Number(it.amount || (it.qty * (it.rate || 0)));
+    });
+  });
+
+  const rows = [
+    ["Department", "Requisitions Count", "Total Units Consumed", "Total Valuation Spend"],
+    ...Object.entries(deptStats).map(([dept, data]) => [dept, data.requisitions, data.units.toFixed(2), data.cost.toFixed(2)])
+  ];
+  downloadCsv("stocksense-department-consumption.csv", rows);
+}
+
+function exportDeadStockCsv() {
+  const now = Date.now();
+  const rows = [
+    ["Item", "Category", "Warehouse", "Stock on Hand", "Unit", "Cost Rate", "Trapped Capital", "Days Inactive", "Recommendation"],
+    ...state.products.filter(p => p.stock > 0).map(p => {
+      const recentTx = state.transactions
+        .filter(t => t.product === p.name && (t.type === "Stock Outward" || t.type === "Consumption" || t.qty < 0))
+        .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+      const days = recentTx ? Math.max(0, Math.floor((now - new Date(recentTx.date).getTime()) / 86400000)) : 999;
+      return [
+        p.name,
+        p.category || "General",
+        p.store || state.currentStore,
+        p.stock,
+        p.unit,
+        (p.cost || 0).toFixed(2),
+        ((p.stock || 0) * (p.cost || 0)).toFixed(2),
+        days >= 999 ? "Never Issued" : days,
+        days >= 90 ? "Vendor Return or Stock Liquidation" : days >= 60 ? "Transfer or Markdown" : "Menu Feature"
+      ];
+    })
+  ];
+  downloadCsv("stocksense-dead-stock-report.csv", rows);
 }
 
 // STORES / WAREHOUSES
@@ -1854,8 +4311,11 @@ function usersScreen() {
                   <td>${u.location || "All locations"}</td>
                   <td><span class="status ok">${u.active ? "Active" : "Inactive"}</span></td>
                   <td style="text-align:right;">
-                    <button class="secondary" style="padding:4px 8px;font-size:11px;" onclick="openModal('user', ${idx})">Edit</button>
-                    ${u.name !== state.currentUser ? `<button class="secondary" style="padding:4px 8px;font-size:11px;" onclick="switchUser('${u.name}')">Switch to</button>` : ''}
+                    <div class="table-action-btns">
+                      <button type="button" class="secondary" onclick="openModal('user', ${idx})">Edit</button>
+                      ${u.name !== state.currentUser ? `<button type="button" class="secondary" onclick="switchUser('${u.name}')">Switch</button>` : ''}
+                      ${u.name !== state.currentUser ? `<button type="button" class="danger-btn" onclick="deleteUser(${idx})">Delete</button>` : ''}
+                    </div>
                   </td>
                 </tr>
               `).join("")}
@@ -1865,6 +4325,18 @@ function usersScreen() {
       </div>
     `
   );
+}
+
+function deleteUser(idx) {
+  const u = state.users[idx];
+  if (!u) return;
+  if (u.name === state.currentUser) { toast("Cannot delete current logged-in user"); return; }
+  confirmModal(`Permanently delete team member "${u.name}"?`, () => {
+    state.users.splice(idx, 1);
+    save();
+    toast(`User "${u.name}" deleted`);
+    showView("users");
+  });
 }
 
 // SETTINGS
@@ -1912,11 +4384,11 @@ function settingsScreen() {
 
           <div id="set-inventory" class="settings-section">
             <h2>Inventory & Calculations</h2>
-            <p>Numeric precision and stock threshold controls.</p>
+            <p>Numeric precision, rounding strategy, and stock threshold controls.</p>
             <div class="settings-grid">
               <label class="setting-field">
                 <span>Display Decimals</span>
-                <select onchange="state.settings.decimals=Number(this.value);save()">
+                <select onchange="state.settings.decimals=Number(this.value);save();showView('settings')">
                   <option value="0" ${state.settings.decimals === 0 ? 'selected' : ''}>0 decimals (Whole units)</option>
                   <option value="1" ${state.settings.decimals === 1 ? 'selected' : ''}>1 decimal (0.1)</option>
                   <option value="2" ${state.settings.decimals === 2 ? 'selected' : ''}>2 decimals (0.01)</option>
@@ -1924,8 +4396,28 @@ function settingsScreen() {
                 </select>
               </label>
               <label class="setting-field">
+                <span>Rounding Method</span>
+                <select onchange="state.settings.rounding=this.value;save();showView('settings');toast('Rounding method updated to ' + this.value)">
+                  <option value="normal" ${(state.settings.rounding || 'normal') === 'normal' ? 'selected' : ''}>Normal (Half-Up / Standard Math)</option>
+                  <option value="none" ${state.settings.rounding === 'none' ? 'selected' : ''}>None (Exact decimals)</option>
+                  <option value="up" ${state.settings.rounding === 'up' ? 'selected' : ''}>Round Up (Ceiling / Math.ceil)</option>
+                  <option value="down" ${state.settings.rounding === 'down' ? 'selected' : ''}>Round Down (Floor / Math.floor)</option>
+                  <option value="nearest-05" ${state.settings.rounding === 'nearest-05' ? 'selected' : ''}>Nearest 0.05 (Cash / Nickel Rounding)</option>
+                  <option value="nearest-50" ${state.settings.rounding === 'nearest-50' ? 'selected' : ''}>Nearest 0.50 (Half-Unit Rounding)</option>
+                  <option value="nearest-integer" ${state.settings.rounding === 'nearest-integer' ? 'selected' : ''}>Nearest Integer (Whole Currency Unit)</option>
+                  <option value="bankers" ${state.settings.rounding === 'bankers' ? 'selected' : ''}>Banker's Rounding (Round Half to Even)</option>
+                </select>
+              </label>
+              <label class="setting-field">
                 <span>Default Low-Stock Threshold</span>
                 <input type="number" value="${inv.lowThreshold || 10}" onchange="setField('inventory.lowThreshold', Number(this.value));save()">
+              </label>
+              <label class="setting-field">
+                <span>Live Rounding Preview</span>
+                <div class="rounding-preview-box">
+                  <div>Preview for 12.3456: <b style="color:var(--blue);">${money(12.3456)}</b></div>
+                  <div style="margin-top:2px;">Preview for 9.875: <b style="color:var(--green-text);">${money(9.875)}</b></div>
+                </div>
               </label>
             </div>
             <label class="setting-toggle">
@@ -2043,7 +4535,7 @@ function openModal(type, index) {
           </select>
         </div>
         <div class="form-field">
-          <label>Cost Rate ($)</label>
+          <label>Cost Rate</label>
           <input id="m-prod-cost" type="number" step="0.01" value="5">
         </div>
         <div class="form-field">
@@ -2060,28 +4552,34 @@ function openModal(type, index) {
       <button class="primary" onclick="submitNewProduct()">Save Product</button>
     `);
   } else if (type === "supplier") {
-    openInAppModal("Add New Supplier", `
+    const existing = (index !== undefined && index !== null && index !== "") ? state.suppliers[index] : null;
+    openInAppModal(existing ? "Edit Supplier — " + existing[0] : "Add New Supplier", `
       <div class="form-grid">
         <div class="form-field full">
           <label>Supplier Name *</label>
-          <input id="m-sup-name" placeholder="e.g. Supreme Seafood Inc.">
+          <input id="m-sup-name" value="${existing ? escapeHtml(existing[0]) : ''}" placeholder="e.g. Supreme Seafood Inc.">
         </div>
         <div class="form-field">
           <label>Category</label>
-          <input id="m-sup-cat" placeholder="e.g. Seafood & Meats">
+          <input id="m-sup-cat" value="${existing ? escapeHtml(existing[1] || '') : ''}" placeholder="e.g. Seafood & Meats">
         </div>
         <div class="form-field">
           <label>Contact Email / Phone</label>
-          <input id="m-sup-contact" placeholder="orders@supremeseafood.com">
+          <input id="m-sup-contact" value="${existing ? escapeHtml(existing[2] || '') : ''}" placeholder="orders@supremeseafood.com">
         </div>
         <div class="form-field">
           <label>Lead Time (Days)</label>
-          <input id="m-sup-lead" type="number" value="2">
+          <input id="m-sup-lead" type="number" value="${existing ? (existing[3] || 2) : 2}">
+        </div>
+        <div class="form-field">
+          <label>Outstanding / Opening Balance</label>
+          <input id="m-sup-due" type="number" step="0.01" value="${existing ? (existing[4] || 0) : 0}">
         </div>
       </div>
     `, `
+      ${existing ? `<button class="danger-btn" onclick="closeModal();deleteSupplier(${index})">Delete Supplier</button>` : ''}
       <button class="secondary" onclick="closeModal()">Cancel</button>
-      <button class="primary" onclick="submitNewSupplier()">Save Supplier</button>
+      <button class="primary" onclick="submitSupplier(${index !== undefined && index !== null ? index : "null"})">${existing ? "Update Supplier" : "Save Supplier"}</button>
     `);
   } else if (type === "store") {
     const existing = index !== undefined ? state.stores[index] : null;
@@ -2129,6 +4627,49 @@ function openModal(type, index) {
     `, `
       <button class="secondary" onclick="closeModal()">Cancel</button>
       <button class="primary" onclick="submitUser(${index})">Save Member</button>
+    `);
+  } else if (type === "payment") {
+    const defaultSup = (typeof index === "string" ? index : "") || (state.suppliers[0] ? state.suppliers[0][0] : "");
+    const stats = defaultSup ? getSupplierFinancials(defaultSup) : null;
+    const defaultAmt = stats && stats.netDue > 0 ? stats.netDue : "";
+    openInAppModal("Record Supplier Payment", `
+      <div class="form-grid">
+        <div class="form-field full">
+          <label>Supplier *</label>
+          <select id="m-pay-supplier" onchange="onPaymentSupplierChange(this.value)">
+            ${state.suppliers.map(s => `<option value="${escapeQuote(s[0])}" ${s[0] === defaultSup ? 'selected' : ''}>${s[0]} (Due: ${money(getSupplierFinancials(s[0]).netDue)})</option>`).join("")}
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Payment Date *</label>
+          <input id="m-pay-date" type="date" value="${today}">
+        </div>
+        <div class="form-field">
+          <label>Amount Paid *</label>
+          <input id="m-pay-amount" type="number" step="0.01" value="${defaultAmt}" placeholder="Enter amount to disburse">
+        </div>
+        <div class="form-field">
+          <label>Payment Mode</label>
+          <select id="m-pay-mode">
+            <option>Bank Transfer</option>
+            <option>Cheque</option>
+            <option>Cash</option>
+            <option>UPI / Card</option>
+            <option>NEFT / RTGS</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Reference / Cheque / UTR #</label>
+          <input id="m-pay-ref" placeholder="e.g. UTR-9182301">
+        </div>
+        <div class="form-field full">
+          <label>Remarks / Notes</label>
+          <input id="m-pay-notes" placeholder="e.g. Settlement for dairy supplies invoice...">
+        </div>
+      </div>
+    `, `
+      <button class="secondary" onclick="closeModal()">Cancel</button>
+      <button class="primary" onclick="submitPayment()">Save Payment</button>
     `);
   }
 }
@@ -2215,18 +4756,47 @@ function submitNewProduct() {
   toast("Product added to catalogue");
 }
 
-function submitNewSupplier() {
+function submitSupplier(index) {
   const name = document.getElementById("m-sup-name")?.value.trim();
   if (!name) { toast("Supplier name is required"); return; }
   const cat = document.getElementById("m-sup-cat")?.value.trim() || "General";
   const contact = document.getElementById("m-sup-contact")?.value.trim() || "";
   const lead = Number(document.getElementById("m-sup-lead")?.value) || 2;
+  const due = Number(document.getElementById("m-sup-due")?.value) || 0;
 
-  state.suppliers.push([name, cat, contact, lead, 0]);
+  if (index === undefined || index === null || index === "") {
+    state.suppliers.push([name, cat, contact, lead, due]);
+  } else {
+    const oldName = state.suppliers[index][0];
+    state.suppliers[index] = [name, cat, contact, lead, due];
+    if (oldName !== name) {
+      state.purchases.forEach(p => { if (p.supplier === oldName) p.supplier = name; });
+      (state.payments || []).forEach(p => { if (p.supplier === oldName) p.supplier = name; });
+      (state.purchaseOrders || []).forEach(p => { if (p.supplier === oldName) p.supplier = name; });
+    }
+  }
+
   save();
   closeModal();
-  showView("suppliers");
-  toast("Supplier saved");
+  if (document.querySelector('.nav-item.active')?.dataset?.view === 'accounts') showView("accounts");
+  else showView("suppliers");
+  toast(index === undefined || index === null || index === "" ? "Supplier saved" : "Supplier updated");
+}
+
+function submitNewSupplier() {
+  submitSupplier(null);
+}
+
+function deleteSupplier(idx) {
+  const s = state.suppliers[idx];
+  if (!s) return;
+  confirmModal(`Permanently delete supplier "${s[0]}"?`, () => {
+    state.suppliers.splice(idx, 1);
+    save();
+    toast(`Supplier "${s[0]}" deleted`);
+    if (document.querySelector('.nav-item.active')?.dataset?.view === 'accounts') showView("accounts");
+    else showView("suppliers");
+  });
 }
 
 function submitStore(index) {
@@ -2302,6 +4872,7 @@ function showView(view) {
   else if (view === "purchase-orders") html = purchaseOrdersScreen();
   else if (view === "outward") html = outwardDraft.isNew ? outwardScreen() : outwardHistory();
   else if (view === "suppliers") html = suppliersScreen();
+  else if (view === "accounts") html = accountsScreen();
   else if (view === "reports") html = universalReports();
   else if (view === "stores") html = storesScreen();
   else if (view === "users") html = usersScreen();
@@ -2341,8 +4912,17 @@ document.addEventListener("keydown", e => {
     document.getElementById("global-search")?.focus();
   }
   if (e.key === "Escape") {
-    if (document.getElementById("modal-root")?.children.length) closeModal();
-    else closeAllPopovers();
+    if (document.getElementById("modal-root")?.children.length) {
+      closeModal();
+    } else if (document.getElementById("product-search-popover")?.style.display === "block") {
+      closeProductSearchPopover();
+    } else if (purchaseDraft.isNew) {
+      exitPurchaseFullscreen();
+    } else if (outwardDraft.isNew) {
+      exitOutwardFullscreen();
+    } else {
+      closeAllPopovers();
+    }
   }
   if (e.key === "F8" || (e.ctrlKey && e.key.toLowerCase() === "s")) {
     if (document.getElementById("purchase-items-body")) { e.preventDefault(); savePurchase(); }
