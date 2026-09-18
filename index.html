@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockSense — Restaurant Inventory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">S</div><div><strong>StockSense</strong><span>Inventory OS</span></div></div>
+      <div class="workspace-switch"><div class="store-icon">⌂</div><div><b>Downtown Kitchen</b><span>Primary location</span></div><span class="chevron">⌄</span></div>
+      <nav>
+        <p class="nav-label">Core management</p>
+        <button class="nav-item active" data-view="dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-item" data-view="inventory"><span>▣</span> Stock <i class="nav-badge">4</i></button>
+        <button class="nav-item" data-view="purchasing"><span>♧</span> Purchases</button>
+        <button class="nav-item" data-view="outward"><span>⇲</span> Outward</button>
+        <p class="nav-label second">Reporting & admin</p>
+        <button class="nav-item" data-view="reports"><span>◒</span> Reports</button>
+        <button class="nav-item" data-view="users"><span>♙</span> Accounts</button>
+        <button class="nav-item" data-view="settings"><span>⚙</span> Settings</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="nav-item" data-view="audit"><span>⌁</span> Activity log</button>
+        <div class="user-profile"><div class="avatar">AK</div><div><b>Alex Kim</b><span>Owner</span></div><span class="more">•••</span></div>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>Workspace</span><b>/</b><strong id="page-title">Dashboard</strong></div>
+        <div class="top-actions"><button class="top-action purchase-action" onclick="newPurchase()">⊕ Purchase</button><button class="top-action outward-action" onclick="newOutward()">⊕ Outward</button><div class="global-search">⌕ <input id="global-search" placeholder="Search anything..." /><kbd>⌘ K</kbd></div><button class="icon-btn" title="Notifications">♢<i></i></button><button class="help-btn">?</button></div>
+      </header>
+      <div id="app-content"></div>
+    </main>
+  </div>
+  <div id="toast" class="toast"></div>
+  <div id="modal-root"></div>
+  <script src="closing-stock-import.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
