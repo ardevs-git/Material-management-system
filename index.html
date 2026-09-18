@@ -3,43 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StockSense — Restaurant Inventory</title>
+  <title>StockSense — Restaurant Inventory OS</title>
+  <meta name="description" content="StockSense — Restaurant Inventory OS and Material Management System" />
+  <meta property="og:title" content="StockSense — Restaurant Inventory OS" />
+  <meta property="og:description" content="StockSense — Restaurant Inventory OS and Material Management System" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="app-shell">
-    <aside class="sidebar">
-      <div class="brand"><div class="brand-mark">S</div><div><strong>StockSense</strong><span>Inventory OS</span></div></div>
-      <div class="workspace-switch"><div class="store-icon">⌂</div><div><b>Downtown Kitchen</b><span>Primary location</span></div><span class="chevron">⌄</span></div>
-      <nav>
-        <p class="nav-label">Core management</p>
-        <button class="nav-item active" data-view="dashboard"><span>⌂</span> Dashboard</button>
-        <button class="nav-item" data-view="inventory"><span>▣</span> Stock <i class="nav-badge">4</i></button>
-        <button class="nav-item" data-view="purchasing"><span>♧</span> Purchases</button>
-        <button class="nav-item" data-view="outward"><span>⇲</span> Outward</button>
-        <p class="nav-label second">Reporting & admin</p>
-        <button class="nav-item" data-view="reports"><span>◒</span> Reports</button>
-        <button class="nav-item" data-view="users"><span>♙</span> Accounts</button>
-        <button class="nav-item" data-view="settings"><span>⚙</span> Settings</button>
+    <aside class="sidebar" id="sidebar">
+      <div class="brand" id="brand-header">
+        <div class="brand-mark">S</div>
+        <div>
+          <strong>StockSense</strong>
+          <span>Inventory OS</span>
+        </div>
+      </div>
+
+      <div class="workspace-switch" id="workspace-switcher" onclick="toggleStoreDropdown(event)" title="Click to switch location">
+        <div class="store-icon">⌂</div>
+        <div class="workspace-info">
+          <b id="sidebar-current-store">Downtown Kitchen</b>
+          <span>Active warehouse</span>
+        </div>
+        <span class="chevron">⌄</span>
+        <div id="store-dropdown" class="header-popover store-popover"></div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <p class="nav-label">Core Operations</p>
+        <button class="nav-item active" data-view="dashboard" id="nav-dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-item" data-view="inventory" id="nav-inventory"><span>▣</span> Stock <i class="nav-badge" id="stock-badge">0</i></button>
+        <button class="nav-item" data-view="purchasing" id="nav-purchasing"><span>♧</span> Purchases</button>
+        <button class="nav-item" data-view="purchase-orders" id="nav-po"><span>📋</span> Purchase Orders</button>
+        <button class="nav-item" data-view="outward" id="nav-outward"><span>⇲</span> Stock Outward</button>
+        
+        <p class="nav-label second">Management & Admin</p>
+        <button class="nav-item" data-view="suppliers" id="nav-suppliers"><span>🚚</span> Suppliers</button>
+        <button class="nav-item" data-view="reports" id="nav-reports"><span>◒</span> Analytics & Reports</button>
+        <button class="nav-item" data-view="users" id="nav-users"><span>♙</span> Team & Security</button>
+        <button class="nav-item" data-view="settings" id="nav-settings"><span>⚙</span> Settings</button>
       </nav>
+
       <div class="sidebar-bottom">
-        <button class="nav-item" data-view="audit"><span>⌁</span> Activity log</button>
-        <div class="user-profile"><div class="avatar">AK</div><div><b>Alex Kim</b><span>Owner</span></div><span class="more">•••</span></div>
+        <button class="nav-item" data-view="audit" id="nav-audit"><span>⌁</span> Activity Log</button>
+        <div class="user-profile" id="user-profile-trigger" onclick="toggleUserDropdown(event)" title="Switch active user">
+          <div class="avatar" id="sidebar-avatar">AK</div>
+          <div class="user-meta">
+            <b id="sidebar-user-name">Alex Kim</b>
+            <span id="sidebar-user-role">Owner</span>
+          </div>
+          <span class="more">•••</span>
+          <div id="user-dropdown" class="header-popover user-popover"></div>
+        </div>
       </div>
     </aside>
-    <main class="main">
+
+    <main class="main" id="main-content">
       <header class="topbar">
-        <div class="breadcrumbs"><span>Workspace</span><b>/</b><strong id="page-title">Dashboard</strong></div>
-        <div class="top-actions"><button class="top-action purchase-action" onclick="newPurchase()">⊕ Purchase</button><button class="top-action outward-action" onclick="newOutward()">⊕ Outward</button><div class="global-search">⌕ <input id="global-search" placeholder="Search anything..." /><kbd>⌘ K</kbd></div><button class="icon-btn" title="Notifications">♢<i></i></button><button class="help-btn">?</button></div>
+        <div class="breadcrumbs">
+          <span>Workspace</span><b>/</b>
+          <strong id="page-title">Dashboard</strong>
+        </div>
+
+        <div class="top-actions">
+          <button class="top-action purchase-action" id="btn-top-purchase" onclick="newPurchase()">⊕ Purchase</button>
+          <button class="top-action outward-action" id="btn-top-outward" onclick="newOutward()">⊕ Outward</button>
+          
+          <div class="global-search">
+            <span>⌕</span>
+            <input id="global-search" placeholder="Search item, SKU, voucher... (⌘K)" />
+            <kbd>⌘ K</kbd>
+          </div>
+
+          <div class="popover-wrapper">
+            <button class="icon-btn" id="notif-btn" onclick="toggleNotifDropdown(event)" title="Alerts & Low Stock">
+              <span>🔔</span><i id="notif-badge" class="badge-dot"></i>
+            </button>
+            <div id="notif-dropdown" class="header-popover notif-popover"></div>
+          </div>
+
+          <button class="help-btn" id="help-btn" onclick="openHelpModal()" title="Keyboard Shortcuts & Help">?</button>
+        </div>
       </header>
+
       <div id="app-content"></div>
     </main>
   </div>
+
   <div id="toast" class="toast"></div>
   <div id="modal-root"></div>
+
   <script src="closing-stock-import.js"></script>
   <script src="app.js"></script>
 </body>

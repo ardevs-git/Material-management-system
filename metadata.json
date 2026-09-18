@@ -1,0 +1,6 @@
+{
+  "name": "StockSense",
+  "description": "StockSense — Restaurant Inventory OS and Material Management System",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
