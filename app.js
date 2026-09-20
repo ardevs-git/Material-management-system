@@ -5,11 +5,15 @@ const seed = {
     {id:1,name:"Paneer",sku:"DAI-001",barcode:"8901001001",category:"Dairy",unit:"kg",stock:7.2,min:10,reorder:14,max:24,cost:11.8,purchaseCost:11.8,store:"Main Store",expiry:"2026-09-22",icon:"🧀"},
     {id:2,name:"Tomato",sku:"VEG-001",barcode:"8901001002",category:"Vegetables",unit:"kg",stock:14,min:8,reorder:12,max:25,cost:3.4,purchaseCost:3.4,store:"Main Store",expiry:"2026-09-28",icon:"🍅"},
     {id:3,name:"Butter",sku:"DAI-002",barcode:"8901001003",category:"Dairy",unit:"kg",stock:8.4,min:6,reorder:9,max:16,cost:8.5,purchaseCost:8.5,store:"Main Store",expiry:"2026-10-04",icon:"🧈"},
-    {id:4,name:"Cooking Cream",sku:"DAI-003",barcode:"8901001004",category:"Dairy",unit:"L",stock:4.8,min:5,reorder:8,max:14,cost:6.4,purchaseCost:6.4,store:"Main Store",expiry:"2026-09-20",icon:"🥛"},
+    {id:4,name:"Cooking Cream",sku:"DAI-003",barcode:"8901001004",category:"Dairy",unit:"Ltr",stock:4.8,min:5,reorder:8,max:14,cost:6.4,purchaseCost:6.4,store:"Main Store",expiry:"2026-09-20",icon:"🥛"},
     {id:5,name:"Arabica Coffee Beans",sku:"BEV-001",barcode:"8901001005",category:"Beverages",unit:"kg",stock:18.5,min:12,reorder:16,max:30,cost:18.5,purchaseCost:18.5,store:"Main Store",expiry:"2026-10-06",icon:"☕"},
-    {id:6,name:"Basmati Rice",sku:"PAN-013",barcode:"8901001006",category:"Pantry",unit:"kg",stock:42,min:20,reorder:28,max:60,cost:3.4,purchaseCost:3.4,store:"Cold Store",expiry:"2027-08-10",icon:"🍚"}
+    {id:6,name:"Basmati Rice",sku:"PAN-013",barcode:"8901001006",category:"Pantry",unit:"kg",stock:42,min:20,reorder:28,max:60,cost:3.4,purchaseCost:3.4,store:"Cold Store",expiry:"2027-08-10",icon:"🍚"},
+    {id:7,name:"Atta",sku:"PAN-014",barcode:"8901001007",category:"Flour & Grains",unit:"kg",stock:35,min:15,reorder:25,max:80,cost:38.0,purchaseCost:38.0,store:"Main Store",expiry:"2026-12-15",icon:"🌾"},
+    {id:8,name:"Milk",sku:"DAI-004",barcode:"8901001008",category:"Dairy",unit:"Ltr",stock:24,min:10,reorder:20,max:50,cost:56.0,purchaseCost:56.0,store:"Cold Store",expiry:"2026-09-23",icon:"🥛"}
   ],
   transactions: [
+    {id:"TX-1050",date:"2026-09-14T12:00:00",type:"Purchase",product:"Milk",store:"Cold Store",qty:24,cost:56.0,user:"Deepu Kumar",ref:"GRN-00219"},
+    {id:"TX-1049",date:"2026-09-14T11:45:00",type:"Purchase",product:"Atta",store:"Main Store",qty:35,cost:38.0,user:"Akash Kumar",ref:"GRN-00219"},
     {id:"TX-1048",date:"2026-09-14T10:30:00",type:"Purchase",product:"Paneer",store:"Main Store",qty:12,cost:11.8,user:"Akash Kumar",ref:"GRN-00218"},
     {id:"TX-1047",date:"2026-09-14T09:15:00",type:"Consumption",product:"Tomato",store:"Main Store",qty:-4.5,cost:3.4,user:"Deepu Kumar",ref:"CON-00821"},
     {id:"TX-1046",date:"2026-09-14T08:40:00",type:"Wastage",product:"Cooking Cream",store:"Main Store",qty:-1.2,cost:6.4,user:"Deepu Kumar",ref:"WST-00092"},
@@ -59,6 +63,22 @@ const state = stored && typeof stored === "object" ? stored : {
 };
 
 const defaultPurchases = [
+  {
+    no: "GRN-00219",
+    date: "2026-09-14",
+    supplier: "Metro Provisions",
+    store: "Main Store",
+    reference: "INV-91040",
+    remarks: "Atta flour bulk & fresh dairy milk delivery",
+    items: [
+      { product: "Atta", qty: 35, rate: 38.0, unit: "kg", amount: 1330.0 },
+      { product: "Milk", qty: 24, rate: 56.0, unit: "Ltr", amount: 1344.0 }
+    ],
+    total: 2674.0,
+    user: "Akash Kumar",
+    status: "Posted",
+    createdAt: "2026-09-14T11:45:00.000Z"
+  },
   {
     no: "GRN-00218",
     date: "2026-09-14",
@@ -279,6 +299,301 @@ if (state.settings.decimals === undefined || state.settings.decimals === 2) {
 if (!state.settings.rounding || state.settings.rounding === "normal") {
   state.settings.rounding = "nearest-integer";
 }
+
+// Universal Item Name & Actual Unit Standardization Engine
+function formatItemName(raw) {
+  if (!raw || typeof raw !== "string") return "";
+  const str = raw.trim();
+  if (!str) return "";
+
+  // Split on word boundaries while preserving special characters like / and -
+  return str.replace(/\b([a-zA-Z0-9]+)\b/g, (match) => {
+    const lower = match.toLowerCase();
+    // Common measurement units that should remain lowercase or standard casing
+    if (["kg", "ltr", "gm", "g", "ml", "pcs", "pkt", "box", "can", "tin", "doz"].includes(lower)) {
+      return lower === "ltr" ? "Ltr" : lower;
+    }
+    // Roman numerals (II, III, IV, etc.)
+    if (/^(ii|iii|iv|v|vi|vii|viii|ix|x)$/i.test(match)) {
+      return match.toUpperCase();
+    }
+    // Handle composite token like 5kg or 500ml or 1Ltr
+    const numUnitMatch = match.match(/^(\d+)([a-zA-Z]+)$/);
+    if (numUnitMatch) {
+      const u = numUnitMatch[2].toLowerCase();
+      const mappedUnit = u === "ltr" ? "Ltr" : u;
+      return numUnitMatch[1] + mappedUnit;
+    }
+    // Standard Title Case conversion: First letter uppercase, rest lowercase
+    return match.charAt(0).toUpperCase() + match.slice(1).toLowerCase();
+  });
+}
+
+function identifyItemUnit(name, existingUnit, category) {
+  // If a specific, meaningful unit is already assigned (other than generic 'unit' or 'L' legacy), normalize and keep it
+  if (existingUnit && existingUnit !== "unit" && existingUnit !== "undefined" && existingUnit !== "") {
+    const uLow = existingUnit.toLowerCase().trim();
+    if (uLow === "l" || uLow === "ltr" || uLow === "liter" || uLow === "litre") return "Ltr";
+    if (uLow === "kg" || uLow === "kilogram" || uLow === "kgs") return "kg";
+    if (uLow === "piece" || uLow === "pieces" || uLow === "pc" || uLow === "pcs") return "pcs";
+    if (uLow === "gram" || uLow === "grams" || uLow === "gm" || uLow === "g") return "g";
+    if (uLow === "milliliter" || uLow === "ml") return "ml";
+    if (uLow === "packet" || uLow === "pkt" || uLow === "pack") return "pkt";
+    if (uLow === "box" || uLow === "case") return "box";
+    if (uLow === "bottle") return "bottle";
+    if (uLow === "can" || uLow === "tin") return "can";
+    if (uLow === "dozen" || uLow === "doz") return "doz";
+    if (uLow === "tray") return "tray";
+    return existingUnit;
+  }
+
+  const text = ((name || "") + " " + (category || "")).toLowerCase();
+
+  // 1. Liquids & Beverages -> Ltr
+  const liquidRegex = /\b(milk|dudh|cream|malai|oil|tel|ghee|vinegar|sauce|ketchup|syrup|crush|juice|water|soda|wine|beer|whisky|rum|spirit|beverage|drink|pepsi|coke|sprite|fanta|buttermilk|chhas|lassi|dishwash|phenyl|sanitizer|liquid|squash|cordial|soya sauce|chili sauce|tomato ketchup)\b/i;
+  if (liquidRegex.test(text)) return "Ltr";
+
+  // 2. Explicit grams/milliliters indicators in name
+  if (/\b(\d+\s*g|\d+\s*gm|\d+\s*gram)\b/i.test(text)) return "g";
+  if (/\b(\d+\s*ml)\b/i.test(text)) return "ml";
+
+  // 3. Countable units (Eggs, Buns, Bakery, Cans, Bottles, Cylinders, Disposables) -> pcs / units
+  const pcsRegex = /\b(egg|eggs|anda|bread|pav|bun|buns|base|cylinder|lpg|gas|napkin|napkins|tissue|tissues|foil|wrap|bag|bags|box|boxes|can|cans|tin|tins|bottle|bottles|piece|pieces|pcs|tray|trays|doz|dozen|container|containers|straw|straws|sponge|scrubber|pouch)\b/i;
+  if (pcsRegex.test(text)) return "pcs";
+
+  // 4. Default for solids, flours, grains, produce, vegetables, grocery, meats -> kg
+  return "kg";
+}
+
+function identifyItemCategory(name) {
+  const text = (name || "").toLowerCase();
+  if (/\b(milk|paneer|butter|cream|cheese|dahi|curd|khoya|mawa|malai|ghee)\b/i.test(text)) return "Dairy";
+  if (/\b(atta|maida|sooji|rava|besan|flour|wheat|grain|starch|corn flour)\b/i.test(text)) return "Flour & Grains";
+  if (/\b(rice|chawal|basmati|dal|toor|moong|urad|chana|rajma|pulse|pulses|biryani rice)\b/i.test(text)) return "Pantry";
+  if (/\b(tomato|potato|onion|ginger|garlic|chili|capsicum|veg|vegetable|coriander|mint|spinach|palak|mushroom|cabbage|cauliflower|carrot|beans|peas|lemon)\b/i.test(text)) return "Vegetables";
+  if (/\b(chicken|mutton|fish|prawn|prawns|meat|lamb|pork|seafood|egg|eggs|anda)\b/i.test(text)) return "Non Veg & Poultry";
+  if (/\b(oil|tel|mustard oil|sunflower oil|refined oil|vanaspati)\b/i.test(text)) return "Oils & Fats";
+  if (/\b(masala|spice|spices|haldi|turmeric|jeera|cumin|salt|sugar|namak|cardamom|clove|cinnamon|pepper|chili powder)\b/i.test(text)) return "Spices & Seasoning";
+  if (/\b(sauce|ketchup|vinegar|syrup|crush|mayo|mayonnaise)\b/i.test(text)) return "Sauces & Condiments";
+  if (/\b(coffee|tea|chai|water|soda|juice|beverage|drink|cold drink|cola)\b/i.test(text)) return "Beverages";
+  if (/\b(bread|bun|pav|pizza base|cake|croissant|pastry)\b/i.test(text)) return "Bakery";
+  if (/\b(gas|cylinder|lpg|foil|napkin|tissue|bag|container|dishwash|phenyl|sanitizer)\b/i.test(text)) return "Housekeeping & Packaging";
+  return "General";
+}
+
+function getItemIcon(name, category) {
+  const text = ((name || "") + " " + (category || "")).toLowerCase();
+  if (/\b(milk)\b/i.test(text)) return "🥛";
+  if (/\b(atta|flour|wheat|grain)\b/i.test(text)) return "🌾";
+  if (/\b(paneer|cheese)\b/i.test(text)) return "🧀";
+  if (/\b(butter)\b/i.test(text)) return "🧈";
+  if (/\b(cream)\b/i.test(text)) return "🥛";
+  if (/\b(rice|chawal|basmati)\b/i.test(text)) return "🍚";
+  if (/\b(coffee)\b/i.test(text)) return "☕";
+  if (/\b(tea|chai)\b/i.test(text)) return "🍵";
+  if (/\b(tomato)\b/i.test(text)) return "🍅";
+  if (/\b(potato|aloo)\b/i.test(text)) return "🥔";
+  if (/\b(onion|pyaz)\b/i.test(text)) return "🧅";
+  if (/\b(chicken)\b/i.test(text)) return "🍗";
+  if (/\b(meat|mutton|lamb)\b/i.test(text)) return "🥩";
+  if (/\b(fish|prawn|seafood)\b/i.test(text)) return "🐟";
+  if (/\b(egg|eggs)\b/i.test(text)) return "🥚";
+  if (/\b(oil)\b/i.test(text)) return "🫒";
+  if (/\b(chili|mirch|spice|masala)\b/i.test(text)) return "🌶️";
+  if (/\b(bread|bun|pav)\b/i.test(text)) return "🍞";
+  if (/\b(water|soda|drink|beverage)\b/i.test(text)) return "🥤";
+  if (category === "Dairy") return "🧀";
+  if (category === "Vegetables" || category === "Veg") return "🥦";
+  if (category === "Non Veg" || category === "Non Veg & Poultry") return "🥩";
+  if (category === "Beverages") return "☕";
+  if (category === "Bakery") return "🥐";
+  return "📦";
+}
+
+function renderUnitOptions(selectedUnit) {
+  const normSelected = (selectedUnit === "L" || selectedUnit === "l") ? "Ltr" : (selectedUnit || "kg");
+  const options = [
+    { value: "kg", label: "kg (Kilogram)" },
+    { value: "Ltr", label: "Ltr (Liter)" },
+    { value: "g", label: "g (Gram)" },
+    { value: "ml", label: "ml (Milliliter)" },
+    { value: "pcs", label: "pcs (Pieces / Units)" },
+    { value: "pkt", label: "pkt (Packet)" },
+    { value: "box", label: "box (Box)" },
+    { value: "can", label: "can (Can / Tin)" },
+    { value: "bottle", label: "bottle (Bottle)" },
+    { value: "doz", label: "doz (Dozen)" },
+    { value: "tray", label: "tray (Tray)" },
+    { value: "bundle", label: "bundle (Bundle)" }
+  ];
+  if (normSelected && !options.some(o => o.value === normSelected)) {
+    options.push({ value: normSelected, label: normSelected });
+  }
+  return options.map(o => `<option value="${o.value}" ${o.value === normSelected ? 'selected' : ''}>${o.label}</option>`).join("");
+}
+
+function handleProdNameAutoDetect(val) {
+  if (!val) return;
+  const properName = formatItemName(val);
+  const detectedUnit = identifyItemUnit(properName);
+  const detectedCat = identifyItemCategory(properName);
+  const unitSelect = document.getElementById("m-prod-unit");
+  if (unitSelect && detectedUnit) {
+    unitSelect.value = detectedUnit;
+  }
+  const catInput = document.getElementById("m-prod-cat");
+  if (catInput && (!catInput.value || catInput.dataset.manual !== "true")) {
+    catInput.value = detectedCat;
+  }
+}
+
+function normalizeCatalogUnitsAndNames() {
+  if (!Array.isArray(state.products)) return { updated: 0 };
+  const nameMapping = {};
+  let updatedCount = 0;
+
+  state.products.forEach(p => {
+    const oldName = p.name;
+    const properName = formatItemName(p.name);
+    const properUnit = identifyItemUnit(properName, p.unit, p.category);
+
+    if (p.name !== properName || p.unit !== properUnit) {
+      updatedCount++;
+    }
+
+    p.name = properName;
+    p.unit = properUnit;
+    if (p.category) p.category = formatItemName(p.category);
+    if (!p.icon || p.icon === "📦" || p.icon === "?") {
+      p.icon = getItemIcon(p.name, p.category);
+    }
+
+    if (oldName && oldName !== properName) {
+      nameMapping[oldName] = properName;
+    }
+  });
+
+  // Ensure Atta and Milk exist in catalog
+  const hasAtta = state.products.some(p => p.name.toLowerCase() === "atta");
+  if (!hasAtta) {
+    const attaId = Math.max(0, ...state.products.map(p => Number(p.id) || 0)) + 1;
+    state.products.push({
+      id: attaId,
+      name: "Atta",
+      sku: "PAN-014",
+      barcode: "8901001007",
+      category: "Flour & Grains",
+      department: "Kitchen",
+      unit: "kg",
+      stock: 35,
+      min: 15,
+      reorder: 25,
+      max: 80,
+      cost: 38.0,
+      purchaseCost: 38.0,
+      store: "Main Store",
+      expiry: "2026-12-15",
+      icon: "🌾"
+    });
+    if (!state.openingStock) state.openingStock = {};
+    if (state.openingStock["Atta"] === undefined) state.openingStock["Atta"] = 35;
+  }
+
+  const hasMilk = state.products.some(p => p.name.toLowerCase() === "milk");
+  if (!hasMilk) {
+    const milkId = Math.max(0, ...state.products.map(p => Number(p.id) || 0)) + 1;
+    state.products.push({
+      id: milkId,
+      name: "Milk",
+      sku: "DAI-004",
+      barcode: "8901001008",
+      category: "Dairy",
+      department: "Kitchen",
+      unit: "Ltr",
+      stock: 24,
+      min: 10,
+      reorder: 20,
+      max: 50,
+      cost: 56.0,
+      purchaseCost: 56.0,
+      store: "Cold Store",
+      expiry: "2026-09-23",
+      icon: "🥛"
+    });
+    if (!state.openingStock) state.openingStock = {};
+    if (state.openingStock["Milk"] === undefined) state.openingStock["Milk"] = 24;
+  }
+
+  // Update transactions
+  if (Array.isArray(state.transactions)) {
+    state.transactions.forEach(t => {
+      if (nameMapping[t.product]) t.product = nameMapping[t.product];
+      else t.product = formatItemName(t.product);
+    });
+  }
+
+  // Update purchases
+  if (Array.isArray(state.purchases)) {
+    state.purchases.forEach(pr => {
+      (pr.items || []).forEach(it => {
+        if (nameMapping[it.product]) it.product = nameMapping[it.product];
+        else it.product = formatItemName(it.product);
+        const prod = state.products.find(p => p.name === it.product);
+        it.unit = prod?.unit || identifyItemUnit(it.product, it.unit);
+      });
+    });
+  }
+
+  // Update outwards
+  if (Array.isArray(state.outwards)) {
+    state.outwards.forEach(o => {
+      (o.items || []).forEach(it => {
+        if (nameMapping[it.product]) it.product = nameMapping[it.product];
+        else it.product = formatItemName(it.product);
+        const prod = state.products.find(p => p.name === it.product);
+        it.unit = prod?.unit || identifyItemUnit(it.product, it.unit);
+      });
+    });
+  }
+
+  // Update purchase orders
+  if (Array.isArray(state.purchaseOrders)) {
+    state.purchaseOrders.forEach(po => {
+      (po.items || []).forEach(it => {
+        if (nameMapping[it.product]) it.product = nameMapping[it.product];
+        else it.product = formatItemName(it.product);
+      });
+    });
+  }
+
+  // Update openingStock map
+  if (state.openingStock) {
+    Object.keys(nameMapping).forEach(oldKey => {
+      const newKey = nameMapping[oldKey];
+      if (state.openingStock[oldKey] !== undefined) {
+        state.openingStock[newKey] = state.openingStock[oldKey];
+        delete state.openingStock[oldKey];
+      }
+    });
+  }
+
+  // Update stock audits if any
+  if (Array.isArray(state.stockAudits)) {
+    state.stockAudits.forEach(audit => {
+      (audit.adjustments || []).forEach(adj => {
+        if (nameMapping[adj.product]) adj.product = nameMapping[adj.product];
+        else adj.product = formatItemName(adj.product);
+        const prod = state.products.find(p => p.name === adj.product);
+        if (prod) adj.unit = prod.unit;
+      });
+    });
+  }
+
+  return { updated: updatedCount };
+}
+
+// Automatically normalize all item names and units on startup
+normalizeCatalogUnitsAndNames();
 
 // Bootstrap closing stock import on initial first run only
 if (isFirstRun && typeof closingStockImport !== "undefined" && !state.imports?.closingAugust2026V2) {
@@ -530,26 +845,35 @@ function selectSearchPopoverItem(idx) {
 function quickAddProductFromSearch(name) {
   const trimmed = (name || "").trim();
   if (!trimmed) return;
+  const formatted = formatItemName(trimmed);
+  const identifiedUnit = identifyItemUnit(formatted);
+  const identifiedCat = identifyItemCategory(formatted);
   const newProd = {
     id: Date.now(),
-    name: trimmed,
+    name: formatted,
     sku: "ITEM-" + String(state.products.length + 1).padStart(3, "0"),
-    category: "General",
-    unit: "unit",
+    category: identifiedCat,
+    department: "Kitchen",
+    unit: identifiedUnit,
     stock: 0,
     min: 5,
+    reorder: 10,
+    max: 50,
     cost: 10,
     purchaseCost: 10,
     store: state.currentStore,
-    icon: "📦"
+    icon: getItemIcon(formatted, identifiedCat),
+    active: true
   };
   state.products.push(newProd);
+  if (!state.openingStock) state.openingStock = {};
+  if (state.openingStock[formatted] === undefined) state.openingStock[formatted] = 0;
   save();
   if (currentSearchPopover.onSelect) {
     currentSearchPopover.onSelect(newProd);
   }
   closeProductSearchPopover();
-  toast(`Created and selected "${trimmed}"`);
+  toast(`Created and selected "${formatted}" (${identifiedUnit})`);
 }
 const dateKey = d => String(d).slice(0, 10);
 const fmtDate = d => {
@@ -1278,15 +1602,15 @@ function modifyItem(id) {
     <div class="form-grid">
       <div class="form-field full">
         <label>Item Name</label>
-        <input id="edit-name" value="${p.name}">
+        <input id="edit-name" value="${escapeHtml(p.name)}" onblur="this.value=formatItemName(this.value)">
       </div>
       <div class="form-field">
         <label>Brand</label>
-        <input id="edit-brand" value="${p.brand || ''}">
+        <input id="edit-brand" value="${escapeHtml(p.brand || '')}">
       </div>
       <div class="form-field">
         <label>Category</label>
-        <input id="edit-category" value="${p.category || ''}">
+        <input id="edit-category" value="${escapeHtml(p.category || '')}">
       </div>
       <div class="form-field">
         <label>Department</label>
@@ -1295,9 +1619,9 @@ function modifyItem(id) {
         </select>
       </div>
       <div class="form-field">
-        <label>Unit</label>
+        <label>Unit (e.g. kg, Ltr, pcs)</label>
         <select id="edit-unit">
-          ${["kg","L","piece","gram","ml","case","unit"].map(u => `<option ${u === p.unit ? 'selected' : ''}>${u}</option>`).join("")}
+          ${renderUnitOptions(p.unit)}
         </select>
       </div>
       <div class="form-field">
@@ -1337,21 +1661,32 @@ function deleteItem(id) {
 function saveItemChanges(id) {
   const p = state.products.find(x => x.id === id);
   if (!p) return;
-  const newName = document.getElementById("edit-name")?.value.trim();
-  if (!newName) { toast("Item name is required"); return; }
+  const rawName = document.getElementById("edit-name")?.value.trim();
+  if (!rawName) { toast("Item name is required"); return; }
+  const newName = formatItemName(rawName);
   const oldName = p.name;
   p.name = newName;
   p.brand = document.getElementById("edit-brand")?.value.trim() || "";
-  p.category = document.getElementById("edit-category")?.value.trim() || "";
+  p.category = formatItemName(document.getElementById("edit-category")?.value.trim() || "General");
   p.department = document.getElementById("edit-department")?.value || "Kitchen";
-  p.unit = document.getElementById("edit-unit")?.value || "unit";
+  p.unit = document.getElementById("edit-unit")?.value || identifyItemUnit(newName, p.unit, p.category);
   p.cost = Number(document.getElementById("edit-cost")?.value) || 0;
   p.purchaseCost = p.cost;
   p.min = Number(document.getElementById("edit-min")?.value) || 0;
   p.reorder = Number(document.getElementById("edit-reorder")?.value) || 0;
+  p.icon = getItemIcon(newName, p.category);
 
   if (oldName !== newName) {
     state.transactions.forEach(t => { if (t.product === oldName) t.product = newName; });
+    if (Array.isArray(state.purchases)) {
+      state.purchases.forEach(pr => (pr.items || []).forEach(it => { if (it.product === oldName) it.product = newName; }));
+    }
+    if (Array.isArray(state.outwards)) {
+      state.outwards.forEach(o => (o.items || []).forEach(it => { if (it.product === oldName) it.product = newName; }));
+    }
+    if (Array.isArray(state.purchaseOrders)) {
+      state.purchaseOrders.forEach(po => (po.items || []).forEach(it => { if (it.product === oldName) it.product = newName; }));
+    }
     if (state.openingStock[oldName] !== undefined) {
       state.openingStock[newName] = state.openingStock[oldName];
       delete state.openingStock[oldName];
@@ -1360,7 +1695,7 @@ function saveItemChanges(id) {
   save();
   closeModal();
   showView("inventory");
-  toast("Item saved successfully");
+  toast(`Item "${newName}" (${p.unit}) saved successfully`);
 }
 
 // PURCHASING & GOODS RECEIPT
@@ -1739,8 +2074,11 @@ function onSelectPurchaseItem(idx, product) {
 
 function updatePurchaseItemName(idx, name) {
   if (!purchaseDraft.items[idx]) return;
-  purchaseDraft.items[idx].product = name;
   const p = productByName(name);
+  const formattedName = p ? p.name : formatItemName(name);
+  purchaseDraft.items[idx].product = formattedName;
+  const unit = p ? p.unit : identifyItemUnit(formattedName);
+  purchaseDraft.items[idx].unit = unit;
   if (p && !purchaseDraft.items[idx].rate) {
     purchaseDraft.items[idx].rate = p.purchaseCost || p.cost || 0;
   }
@@ -1749,10 +2087,10 @@ function updatePurchaseItemName(idx, name) {
     const s = Number(p.stock) || 0;
     const sCls = s <= 0 ? 'out-stock' : s <= (p.min || 5) ? 'low-stock' : 'in-stock';
     stockPill.className = `vfs-stock-pill ${sCls}`;
-    stockPill.textContent = `${numberValue(s)} ${p.unit || 'unit'}`;
+    stockPill.textContent = `${numberValue(s)} ${p.unit}`;
   }
   const unitCell = document.getElementById(`p-unit-${idx}`);
-  if (unitCell) unitCell.textContent = p?.unit || 'unit';
+  if (unitCell) unitCell.textContent = unit;
   const rateInput = document.getElementById(`p-rate-${idx}`);
   if (rateInput && p && !Number(rateInput.value)) rateInput.value = purchaseDraft.items[idx].rate;
   recalcPurchaseItemRow(idx);
@@ -1917,17 +2255,20 @@ function savePurchase() {
   const no = purchaseDraft.no || nextPurchaseNo();
 
   const processedItems = validItems.map(i => {
-    let p = productByName(i.product);
+    const formattedName = formatItemName(i.product);
+    let p = productByName(formattedName);
     if (!p) {
-      // Auto-create newly purchased product in catalog
+      // Auto-create newly purchased product in catalog with proper name and intelligent unit
+      const identifiedUnit = identifyItemUnit(formattedName, i.unit);
+      const identifiedCat = identifyItemCategory(formattedName);
       p = {
         id: Date.now() + Math.floor(Math.random() * 1000),
-        name: i.product,
+        name: formattedName,
         sku: "ITEM-" + String(state.products.length + 1).padStart(3, "0"),
         barcode: "",
-        category: "General",
+        category: identifiedCat,
         department: "Kitchen",
-        unit: i.unit || "unit",
+        unit: identifiedUnit,
         stock: 0,
         min: 5,
         reorder: 10,
@@ -1935,7 +2276,7 @@ function savePurchase() {
         cost: Number(i.rate) || 0,
         purchaseCost: Number(i.rate) || 0,
         store: purchaseDraft.store || state.currentStore,
-        icon: "📦",
+        icon: getItemIcon(formattedName, identifiedCat),
         active: true
       };
       state.products.push(p);
@@ -1959,8 +2300,8 @@ function savePurchase() {
     const gstAmount = roundNumber(taxableAmount * (gstRate / 100));
 
     return {
-      product: i.product,
-      unit: p?.unit || i.unit || "unit",
+      product: p.name,
+      unit: p?.unit || identifyItemUnit(p.name, i.unit),
       qty,
       rate,
       gstRate,
@@ -2311,10 +2652,23 @@ function refreshPOTotals() {
 function savePurchaseOrder() {
   if (!poDraft.items.length) { toast("Add at least one item"); return; }
   const no = poDraft.no || nextPONo();
-  const total = poDraft.items.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.rate) || 0), 0);
+  const formattedItems = poDraft.items.map(i => {
+    const p = productByName(i.product);
+    const prodName = p ? p.name : formatItemName(i.product);
+    const unit = p ? p.unit : identifyItemUnit(prodName);
+    return {
+      ...i,
+      product: prodName,
+      unit,
+      qty: Number(i.qty) || 1,
+      rate: Number(i.rate) || 0
+    };
+  });
+  const total = formattedItems.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.rate) || 0), 0);
   state.purchaseOrders = state.purchaseOrders.filter(x => x.no !== no);
   state.purchaseOrders.unshift({
     ...poDraft,
+    items: formattedItems,
     no,
     total,
     status: "Ordered",
@@ -2668,18 +3022,21 @@ function onSelectOutwardItem(idx, product) {
 
 function updateOutwardItemName(idx, name) {
   if (!outwardDraft.items[idx]) return;
-  outwardDraft.items[idx].product = name;
   const p = productByName(name);
+  const formattedName = p ? p.name : formatItemName(name);
+  outwardDraft.items[idx].product = formattedName;
+  const unit = p ? p.unit : identifyItemUnit(formattedName);
+  outwardDraft.items[idx].unit = unit;
   if (p) {
     const availPill = document.getElementById(`out-avail-${idx}`);
     if (availPill) {
       const s = Number(p.stock) || 0;
       const sCls = s <= 0 ? 'out-stock' : s <= (p.min || 5) ? 'low-stock' : 'in-stock';
       availPill.className = `vfs-stock-pill ${sCls}`;
-      availPill.textContent = `${numberValue(s)} ${p.unit || 'unit'}`;
+      availPill.textContent = `${numberValue(s)} ${p.unit}`;
     }
     const unitCell = document.getElementById(`out-unit-${idx}`);
-    if (unitCell) unitCell.textContent = p.unit || 'unit';
+    if (unitCell) unitCell.textContent = p.unit;
     const rateCell = document.getElementById(`out-rate-${idx}`);
     if (rateCell) rateCell.textContent = money(p.cost || 0);
   }
@@ -2822,12 +3179,13 @@ function saveOutward() {
   const exceededStockItems = [];
 
   const processedItems = validItems.map(i => {
-    const p = productByName(i.product);
+    const formattedName = formatItemName(i.product);
+    const p = productByName(formattedName);
     if (!p) {
-      unknownProducts.push(i.product);
+      unknownProducts.push(formattedName);
       return {
-        product: i.product,
-        unit: "unit",
+        product: formattedName,
+        unit: identifyItemUnit(formattedName),
         qty: Number(i.qty) || 1,
         rate: 0,
         amount: 0
@@ -2837,12 +3195,12 @@ function saveOutward() {
     const qty = Number(i.qty) || 1;
     const available = Number(p.stock) || 0;
     if (qty > available && !state.settings.inventory?.negative) {
-      exceededStockItems.push({ name: p.name, qty, available, unit: p.unit || "unit" });
+      exceededStockItems.push({ name: p.name, qty, available, unit: p.unit || "kg" });
     }
 
     return {
       product: p.name,
-      unit: p.unit || "unit",
+      unit: p.unit || identifyItemUnit(p.name),
       qty,
       rate: Number(p.cost) || 0,
       amount: qty * (Number(p.cost) || 0)
@@ -5667,6 +6025,21 @@ function settingsScreen() {
           <input type="checkbox" ${inv.negative ? 'checked' : ''} onchange="setField('inventory.negative', this.checked);save()">
           <i></i>
         </label>
+
+        <div style="margin-top:24px;padding:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div>
+              <b style="font-size:14px;color:#0f172a;display:block;margin-bottom:4px;">Item Name &amp; Unit Auto-Standardization</b>
+              <p style="margin:0;font-size:13px;color:#64748b;line-height:1.5;">
+                Converts all item names to Title Case (e.g. <code>ATTA</code> &rarr; <code>Atta</code>) and intelligently resolves default <code>unit</code> to actual physical units (e.g. Atta in <code>kg</code>, Milk in <code>Ltr</code>, Eggs in <code>pcs</code>).
+              </p>
+            </div>
+            <button class="primary" style="white-space:nowrap;display:inline-flex;align-items:center;gap:6px;" onclick="const res = normalizeCatalogUnitsAndNames(); rebuildStock(); save(); showView('settings'); toast('Standardized ' + res.updated + ' catalog items with proper names &amp; actual units');">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              Standardize All Items Now
+            </button>
+          </div>
+        </div>
       </div>
     `;
   } else if (currentSettingsTab === "vouchers") {
@@ -6600,15 +6973,16 @@ function openModal(type, index) {
       <div class="form-grid">
         <div class="form-field full">
           <label>Item Name *</label>
-          <input id="m-prod-name" placeholder="e.g. Saffron Strands">
+          <input id="m-prod-name" placeholder="e.g. Atta, Milk, Basmati Rice" oninput="handleProdNameAutoDetect(this.value)" onblur="this.value=formatItemName(this.value);handleProdNameAutoDetect(this.value)">
+          <span style="font-size:11px;color:#64748b;margin-top:2px;">Name is automatically formatted (e.g. ATTA &rarr; Atta) and actual unit identified</span>
         </div>
         <div class="form-field">
           <label>Brand</label>
-          <input id="m-prod-brand" placeholder="e.g. Premium">
+          <input id="m-prod-brand" placeholder="e.g. Aashirvaad, Amul, Metro">
         </div>
         <div class="form-field">
           <label>Category</label>
-          <input id="m-prod-cat" placeholder="e.g. Spices">
+          <input id="m-prod-cat" placeholder="e.g. Flour & Grains, Dairy, Pantry" onchange="this.dataset.manual='true'">
         </div>
         <div class="form-field">
           <label>Department</label>
@@ -6617,9 +6991,9 @@ function openModal(type, index) {
           </select>
         </div>
         <div class="form-field">
-          <label>Unit</label>
+          <label>Unit (e.g. kg, Ltr, pcs)</label>
           <select id="m-prod-unit">
-            <option>kg</option><option>L</option><option>piece</option><option>gram</option><option>ml</option><option>case</option><option>unit</option>
+            ${renderUnitOptions("kg")}
           </select>
         </div>
         <div class="form-field">
@@ -6795,12 +7169,13 @@ function submitStockAdjustment() {
 }
 
 function submitNewProduct() {
-  const name = document.getElementById("m-prod-name")?.value.trim();
-  if (!name) { toast("Item name is required"); return; }
+  const rawName = document.getElementById("m-prod-name")?.value.trim();
+  if (!rawName) { toast("Item name is required"); return; }
+  const name = formatItemName(rawName);
   const brand = document.getElementById("m-prod-brand")?.value.trim() || "";
-  const category = document.getElementById("m-prod-cat")?.value.trim() || "General";
+  const category = formatItemName(document.getElementById("m-prod-cat")?.value.trim() || identifyItemCategory(name));
   const department = document.getElementById("m-prod-dept")?.value || "Kitchen";
-  const unit = document.getElementById("m-prod-unit")?.value || "unit";
+  const unit = document.getElementById("m-prod-unit")?.value || identifyItemUnit(name, "unit", category);
   const cost = Number(document.getElementById("m-prod-cost")?.value) || 0;
   const min = Number(document.getElementById("m-prod-min")?.value) || 0;
   const stock = Number(document.getElementById("m-prod-stock")?.value) || 0;
@@ -6820,10 +7195,12 @@ function submitNewProduct() {
     reorder: min + 5,
     max: min * 3,
     store: state.currentStore,
-    icon: category === "Dairy" ? "🧀" : category === "Veg" ? "🥦" : "📦"
+    icon: getItemIcon(name, category),
+    active: true
   };
 
   state.products.push(newProd);
+  if (!state.openingStock) state.openingStock = {};
   state.openingStock[name] = stock;
   if (stock > 0) {
     state.transactions.unshift({
@@ -6842,7 +7219,7 @@ function submitNewProduct() {
   save();
   closeModal();
   showView("inventory");
-  toast("Product added to catalogue");
+  toast(`Product "${name}" (${unit}) added to catalog`);
 }
 
 function submitSupplier(index) {
