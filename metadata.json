@@ -1,6 +1,6 @@
 {
   "name": "StockSense",
-  "description": "StockSense — Restaurant Inventory OS and Material Management System",
+  "description": "Hotel Rajmudra — Restaurant Inventory OS and Material Management System (Hinjawadi, Pune)",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

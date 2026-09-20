@@ -2,20 +2,20 @@
 // StockSense - High Performance Restaurant Inventory OS
 const seed = {
   products: [
-    {id:1,name:"Paneer",sku:"DAI-001",barcode:"8901001001",category:"Dairy",unit:"kg",stock:7.2,min:10,reorder:14,max:24,cost:11.8,purchaseCost:11.8,store:"Downtown Kitchen",expiry:"2026-09-22",icon:"🧀"},
-    {id:2,name:"Tomato",sku:"VEG-001",barcode:"8901001002",category:"Vegetables",unit:"kg",stock:14,min:8,reorder:12,max:25,cost:3.4,purchaseCost:3.4,store:"Downtown Kitchen",expiry:"2026-09-28",icon:"🍅"},
-    {id:3,name:"Butter",sku:"DAI-002",barcode:"8901001003",category:"Dairy",unit:"kg",stock:8.4,min:6,reorder:9,max:16,cost:8.5,purchaseCost:8.5,store:"Downtown Kitchen",expiry:"2026-10-04",icon:"🧈"},
-    {id:4,name:"Cooking Cream",sku:"DAI-003",barcode:"8901001004",category:"Dairy",unit:"L",stock:4.8,min:5,reorder:8,max:14,cost:6.4,purchaseCost:6.4,store:"Downtown Kitchen",expiry:"2026-09-20",icon:"🥛"},
-    {id:5,name:"Arabica Coffee Beans",sku:"BEV-001",barcode:"8901001005",category:"Beverages",unit:"kg",stock:18.5,min:12,reorder:16,max:30,cost:18.5,purchaseCost:18.5,store:"Downtown Kitchen",expiry:"2026-10-06",icon:"☕"},
-    {id:6,name:"Basmati Rice",sku:"PAN-013",barcode:"8901001006",category:"Pantry",unit:"kg",stock:42,min:20,reorder:28,max:60,cost:3.4,purchaseCost:3.4,store:"Riverside Store",expiry:"2027-08-10",icon:"🍚"}
+    {id:1,name:"Paneer",sku:"DAI-001",barcode:"8901001001",category:"Dairy",unit:"kg",stock:7.2,min:10,reorder:14,max:24,cost:11.8,purchaseCost:11.8,store:"Hotel Rajmudra - Main Store",expiry:"2026-09-22",icon:"🧀"},
+    {id:2,name:"Tomato",sku:"VEG-001",barcode:"8901001002",category:"Vegetables",unit:"kg",stock:14,min:8,reorder:12,max:25,cost:3.4,purchaseCost:3.4,store:"Hotel Rajmudra - Main Store",expiry:"2026-09-28",icon:"🍅"},
+    {id:3,name:"Butter",sku:"DAI-002",barcode:"8901001003",category:"Dairy",unit:"kg",stock:8.4,min:6,reorder:9,max:16,cost:8.5,purchaseCost:8.5,store:"Hotel Rajmudra - Main Store",expiry:"2026-10-04",icon:"🧈"},
+    {id:4,name:"Cooking Cream",sku:"DAI-003",barcode:"8901001004",category:"Dairy",unit:"L",stock:4.8,min:5,reorder:8,max:14,cost:6.4,purchaseCost:6.4,store:"Hotel Rajmudra - Main Store",expiry:"2026-09-20",icon:"🥛"},
+    {id:5,name:"Arabica Coffee Beans",sku:"BEV-001",barcode:"8901001005",category:"Beverages",unit:"kg",stock:18.5,min:12,reorder:16,max:30,cost:18.5,purchaseCost:18.5,store:"Hotel Rajmudra - Main Store",expiry:"2026-10-06",icon:"☕"},
+    {id:6,name:"Basmati Rice",sku:"PAN-013",barcode:"8901001006",category:"Pantry",unit:"kg",stock:42,min:20,reorder:28,max:60,cost:3.4,purchaseCost:3.4,store:"Kitchen Store",expiry:"2027-08-10",icon:"🍚"}
   ],
   transactions: [
-    {id:"TX-1048",date:"2026-09-14T10:30:00",type:"Purchase",product:"Paneer",store:"Downtown Kitchen",qty:12,cost:11.8,user:"Alex Kim",ref:"GRN-00218"},
-    {id:"TX-1047",date:"2026-09-14T09:15:00",type:"Consumption",product:"Tomato",store:"Downtown Kitchen",qty:-4.5,cost:3.4,user:"Maya Chen",ref:"CON-00821"},
-    {id:"TX-1046",date:"2026-09-14T08:40:00",type:"Wastage",product:"Cooking Cream",store:"Downtown Kitchen",qty:-1.2,cost:6.4,user:"Maya Chen",ref:"WST-00092"},
-    {id:"TX-1045",date:"2026-09-13T16:10:00",type:"Consumption",product:"Butter",store:"Downtown Kitchen",qty:-1.6,cost:8.5,user:"Maya Chen",ref:"CON-00820"},
-    {id:"TX-1044",date:"2026-09-12T11:20:00",type:"Transfer out",product:"Basmati Rice",store:"Riverside Store",qty:-10,cost:3.4,user:"Alex Kim",ref:"TRF-00028"},
-    {id:"TX-1043",date:"2026-09-12T12:05:00",type:"Transfer in",product:"Basmati Rice",store:"Downtown Kitchen",qty:10,cost:3.4,user:"Alex Kim",ref:"TRF-00028"}
+    {id:"TX-1048",date:"2026-09-14T10:30:00",type:"Purchase",product:"Paneer",store:"Hotel Rajmudra - Main Store",qty:12,cost:11.8,user:"Akash Kumar",ref:"GRN-00218"},
+    {id:"TX-1047",date:"2026-09-14T09:15:00",type:"Consumption",product:"Tomato",store:"Hotel Rajmudra - Main Store",qty:-4.5,cost:3.4,user:"Deepu Kumar",ref:"CON-00821"},
+    {id:"TX-1046",date:"2026-09-14T08:40:00",type:"Wastage",product:"Cooking Cream",store:"Hotel Rajmudra - Main Store",qty:-1.2,cost:6.4,user:"Deepu Kumar",ref:"WST-00092"},
+    {id:"TX-1045",date:"2026-09-13T16:10:00",type:"Consumption",product:"Butter",store:"Hotel Rajmudra - Main Store",qty:-1.6,cost:8.5,user:"Deepu Kumar",ref:"CON-00820"},
+    {id:"TX-1044",date:"2026-09-12T11:20:00",type:"Transfer out",product:"Basmati Rice",store:"Kitchen Store",qty:-10,cost:3.4,user:"Akash Kumar",ref:"TRF-00028"},
+    {id:"TX-1043",date:"2026-09-12T12:05:00",type:"Transfer in",product:"Basmati Rice",store:"Hotel Rajmudra - Main Store",qty:10,cost:3.4,user:"Akash Kumar",ref:"TRF-00028"}
   ],
   suppliers:[
     ["Fresh Foods Co.","Produce & dairy","orders@freshfoods.co",3,2180],
@@ -23,8 +23,9 @@ const seed = {
     ["Green Valley Farms","Fresh produce","hello@greenvalley.co",2,890]
   ],
   stores:[
-    ["Downtown Kitchen","Primary production store","Alex Kim",6],
-    ["Riverside Store","Secondary storage","Maya Chen",1]
+    ["Hotel Rajmudra - Main Store","Primary material & inventory warehouse","Akash Kumar",6],
+    ["Kitchen Store","Daily kitchen production & perishables","Deepu Kumar",2],
+    ["Bar & Beverage Cellar","Beverage & syrup storage","Akash Kumar",1]
   ]
 };
 
@@ -38,9 +39,20 @@ const state = stored && typeof stored === "object" ? stored : {
   purchases: [],
   purchaseOrders: [],
   settings: {
-    decimals: 2,
-    rounding: "normal",
-    general: { company: "StockSense Kitchen", address: "124 Culinary Way", phone: "+1 (555) 234-8900", email: "inventory@stocksense.io", financialYear: "April", department: "Kitchen", location: "Downtown Kitchen", dateFormat: "DD-MM-YYYY", confirmDelete: true },
+    decimals: 0,
+    rounding: "nearest-integer",
+    general: {
+      company: "Hotel Rajmudra",
+      address: "Marunji Gaon Marunji, Road, near Rajmudra Petrol Pump, Hinjawadi, Pune, Maharashtra 411057",
+      phone: "9507543741",
+      email: "RajmudraStores@gmail.com",
+      website: "http://www.hotelrajmudra.com/",
+      financialYear: "April",
+      department: "Kitchen",
+      location: "Hotel Rajmudra - Main Store",
+      dateFormat: "DD-MM-YYYY",
+      confirmDelete: true
+    },
     inventory: { negative: false, adjustment: true, backdated: true, valuation: "Weighted average", unit: "kg", lowThreshold: 10, outWarning: true, recalculate: true, departmentTracking: true, multiLocation: true },
     transactions: { purchasePrefix: "GRN-", outwardPrefix: "OUT-", adjustmentPrefix: "ADJ-", autoNumber: true, manualNumber: false, edit: true, delete: true, backdatedPurchase: true, backdatedOutward: true, mode: "Keyboard first" },
     savedReports: []
@@ -52,7 +64,7 @@ const defaultPurchases = [
     no: "GRN-00218",
     date: "2026-09-14",
     supplier: "Fresh Foods Co.",
-    store: "Downtown Kitchen",
+    store: "Hotel Rajmudra - Main Store",
     reference: "INV-90214",
     remarks: "Weekly dairy delivery",
     items: [
@@ -60,7 +72,7 @@ const defaultPurchases = [
       { product: "Butter", qty: 10, rate: 8.5, unit: "kg", amount: 85.0 }
     ],
     total: 226.6,
-    user: "Alex Kim",
+    user: "Akash Kumar",
     status: "Posted",
     createdAt: "2026-09-14T10:30:00.000Z"
   },
@@ -68,7 +80,7 @@ const defaultPurchases = [
     no: "GRN-00217",
     date: "2026-09-06",
     supplier: "Metro Provisions",
-    store: "Downtown Kitchen",
+    store: "Hotel Rajmudra - Main Store",
     reference: "INV-84190",
     remarks: "Dry goods & beans restock",
     items: [
@@ -76,7 +88,7 @@ const defaultPurchases = [
       { product: "Basmati Rice", qty: 25, rate: 3.4, unit: "kg", amount: 85.0 }
     ],
     total: 362.5,
-    user: "Alex Kim",
+    user: "Akash Kumar",
     status: "Posted",
     createdAt: "2026-09-06T11:15:00.000Z"
   },
@@ -84,14 +96,14 @@ const defaultPurchases = [
     no: "GRN-00216",
     date: "2026-08-24",
     supplier: "Green Valley Farms",
-    store: "Downtown Kitchen",
+    store: "Hotel Rajmudra - Main Store",
     reference: "INV-77120",
     remarks: "End of month produce delivery",
     items: [
       { product: "Tomato", qty: 40, rate: 3.4, unit: "kg", amount: 136.0 }
     ],
     total: 136.0,
-    user: "Maya Chen",
+    user: "Deepu Kumar",
     status: "Posted",
     createdAt: "2026-08-24T09:40:00.000Z"
   }
@@ -102,14 +114,14 @@ const defaultOutwards = [
     no: "OUT-00084",
     date: "2026-09-14",
     department: "Kitchen",
-    store: "Downtown Kitchen",
-    issuedTo: "Chef Marco",
+    store: "Hotel Rajmudra - Main Store",
+    issuedTo: "Executive Chef",
     remarks: "Lunch prep & curry service",
     items: [
       { product: "Tomato", qty: 4.5, rate: 3.4, unit: "kg", amount: 15.3 }
     ],
     total: 15.3,
-    user: "Maya Chen",
+    user: "Deepu Kumar",
     status: "Issued",
     createdAt: "2026-09-14T09:15:00.000Z"
   },
@@ -117,14 +129,14 @@ const defaultOutwards = [
     no: "OUT-00083",
     date: "2026-09-13",
     department: "Bakery",
-    store: "Downtown Kitchen",
-    issuedTo: "Pastry Chef Sarah",
-    remarks: "Morning croissant production",
+    store: "Hotel Rajmudra - Main Store",
+    issuedTo: "Pastry Chef",
+    remarks: "Morning croissant & bakery production",
     items: [
       { product: "Butter", qty: 1.6, rate: 8.5, unit: "kg", amount: 13.6 }
     ],
     total: 13.6,
-    user: "Maya Chen",
+    user: "Deepu Kumar",
     status: "Issued",
     createdAt: "2026-09-13T16:10:00.000Z"
   },
@@ -132,50 +144,116 @@ const defaultOutwards = [
     no: "OUT-00082",
     date: "2026-09-10",
     department: "Bar",
-    store: "Downtown Kitchen",
-    issuedTo: "Bar Manager Sam",
+    store: "Hotel Rajmudra - Main Store",
+    issuedTo: "Bar Manager",
     remarks: "Espresso & cold brew bar prep",
     items: [
       { product: "Arabica Coffee Beans", qty: 3.5, rate: 18.5, unit: "kg", amount: 64.75 }
     ],
     total: 64.75,
-    user: "Sam Rivera",
+    user: "Akash Kumar",
     status: "Issued",
     createdAt: "2026-09-10T14:20:00.000Z"
   }
 ];
 
 const defaultPayments = [
-  { id: "PAY-00101", date: "2026-09-08", supplier: "Fresh Foods Co.", amount: 1500, mode: "Bank Transfer", ref: "NEFT-7829104", notes: "Settlement for weekly dairy supplies", recordedBy: "Alex Kim" },
-  { id: "PAY-00102", date: "2026-09-05", supplier: "Metro Provisions", amount: 1000, mode: "Cheque", ref: "CHQ-004812", notes: "Monthly grocery clearance", recordedBy: "Alex Kim" },
-  { id: "PAY-00103", date: "2026-08-28", supplier: "Green Valley Farms", amount: 650, mode: "UPI / Card", ref: "UPI-9182310", notes: "Produce batch settlement", recordedBy: "Maya Chen" }
+  { id: "PAY-00101", date: "2026-09-08", supplier: "Fresh Foods Co.", amount: 1500, mode: "Bank Transfer", ref: "NEFT-7829104", notes: "Settlement for weekly dairy supplies", recordedBy: "Akash Kumar" },
+  { id: "PAY-00102", date: "2026-09-05", supplier: "Metro Provisions", amount: 1000, mode: "Cheque", ref: "CHQ-004812", notes: "Monthly grocery clearance", recordedBy: "Akash Kumar" },
+  { id: "PAY-00103", date: "2026-08-28", supplier: "Green Valley Farms", amount: 650, mode: "UPI / Card", ref: "UPI-9182310", notes: "Produce batch settlement", recordedBy: "Deepu Kumar" }
 ];
 
-state.outwards = Array.isArray(state.outwards) && state.outwards.length ? state.outwards : defaultOutwards;
-state.purchases = Array.isArray(state.purchases) && state.purchases.length ? state.purchases : defaultPurchases;
-state.payments = Array.isArray(state.payments) && state.payments.length ? state.payments : defaultPayments;
+const isFirstRun = !stored;
+
+if (isFirstRun) {
+  state.outwards = defaultOutwards;
+  state.purchases = defaultPurchases;
+  state.payments = defaultPayments;
+  state.transactions = Array.isArray(seed.transactions) ? seed.transactions : [];
+  state.isInitialized = true;
+} else {
+  state.outwards = Array.isArray(state.outwards) ? state.outwards : [];
+  state.purchases = Array.isArray(state.purchases) ? state.purchases : [];
+  state.payments = Array.isArray(state.payments) ? state.payments : [];
+  state.transactions = Array.isArray(state.transactions) ? state.transactions : [];
+  state.products = Array.isArray(state.products) ? state.products : [];
+}
 state.purchaseOrders = Array.isArray(state.purchaseOrders) ? state.purchaseOrders : [];
 state.suppliers = Array.isArray(state.suppliers) && state.suppliers.length ? state.suppliers : seed.suppliers;
-state.stores = Array.isArray(state.stores) && state.stores.length ? state.stores : seed.stores;
-state.users = Array.isArray(state.users) && state.users.length ? state.users : [
-  {name:"Alex Kim",role:"Owner",location:"All locations",active:true},
-  {name:"Maya Chen",role:"Store manager",location:"Downtown Kitchen",active:true},
-  {name:"Sam Rivera",role:"Inventory clerk",location:"Riverside Store",active:true}
+state.stores = (Array.isArray(state.stores) && state.stores.length && !state.stores.some(s => s[0] === "Downtown Kitchen")) ? state.stores : seed.stores;
+
+state.users = [
+  { name: "Akash Kumar", role: "Owner", location: "All locations", active: true, email: "RajmudraStores@gmail.com", phone: "9507543741" },
+  { name: "Akash Kumar", role: "Store Manager", location: "All locations", active: true, email: "RajmudraStores@gmail.com", phone: "9507543741" },
+  { name: "Deepu Kumar", role: "Store Keeper", location: "Hotel Rajmudra - Main Store", active: true, email: "RajmudraStores@gmail.com", phone: "9507543741" }
 ];
-state.currentUser = state.currentUser || "Alex Kim";
-state.currentStore = state.currentStore || (state.stores[0] ? state.stores[0][0] : "Downtown Kitchen");
+
+state.currentUser = (state.currentUser && state.currentUser !== "Alex Kim" && state.users.some(u => u.name === state.currentUser)) ? state.currentUser : "Akash Kumar";
+state.currentUserRole = state.currentUserRole || (state.users.find(u => u.name === state.currentUser)?.role || "Owner");
+state.currentStore = (state.currentStore && state.currentStore !== "Downtown Kitchen") ? state.currentStore : "Hotel Rajmudra - Main Store";
 
 state.settings = state.settings || {};
-state.settings.general = state.settings.general || { company: "StockSense Kitchen", location: "Downtown Kitchen", financialYear: "April" };
+state.settings.general = {
+  financialYear: "April",
+  department: "Kitchen",
+  dateFormat: "DD-MM-YYYY",
+  confirmDelete: true,
+  ...(state.settings.general || {}),
+  company: "Hotel Rajmudra",
+  address: "Marunji Gaon Marunji, Road, near Rajmudra Petrol Pump, Hinjawadi, Pune, Maharashtra 411057",
+  phone: "9507543741",
+  email: "RajmudraStores@gmail.com",
+  website: "http://www.hotelrajmudra.com/",
+  location: (!state.settings.general?.location || state.settings.general.location === "Downtown Kitchen") ? "Hotel Rajmudra - Main Store" : state.settings.general.location
+};
+
+// Migrate historical records referencing Downtown Kitchen or Alex Kim/Maya Chen
+if (Array.isArray(state.products)) {
+  state.products.forEach(p => {
+    if (p.store === "Downtown Kitchen") p.store = "Hotel Rajmudra - Main Store";
+  });
+}
+if (Array.isArray(state.purchases)) {
+  state.purchases.forEach(p => {
+    if (p.store === "Downtown Kitchen") p.store = "Hotel Rajmudra - Main Store";
+    if (p.user === "Alex Kim") p.user = "Akash Kumar";
+    if (p.user === "Maya Chen") p.user = "Deepu Kumar";
+  });
+}
+if (Array.isArray(state.outwards)) {
+  state.outwards.forEach(o => {
+    if (o.store === "Downtown Kitchen") o.store = "Hotel Rajmudra - Main Store";
+    if (o.user === "Alex Kim") o.user = "Akash Kumar";
+    if (o.user === "Maya Chen") o.user = "Deepu Kumar";
+  });
+}
+if (Array.isArray(state.transactions)) {
+  state.transactions.forEach(t => {
+    if (t.store === "Downtown Kitchen") t.store = "Hotel Rajmudra - Main Store";
+    if (t.user === "Alex Kim") t.user = "Akash Kumar";
+    if (t.user === "Maya Chen") t.user = "Deepu Kumar";
+  });
+}
 state.settings.inventory = state.settings.inventory || { negative: false, lowThreshold: 10, recalculate: true };
 state.settings.transactions = state.settings.transactions || { purchasePrefix: "GRN-", outwardPrefix: "OUT-" };
 state.settings.savedReports = Array.isArray(state.settings.savedReports) ? state.settings.savedReports : [];
 
-const departments = ["Kitchen","Bar","Bakery","Housekeeping","Maintenance","Production","Office","Other"];
+// Initialize departments in state so they can be added, modified or deleted
+state.departments = Array.isArray(state.departments) && state.departments.length
+  ? state.departments
+  : ["Kitchen", "Bar", "Bakery", "Housekeeping", "Maintenance", "Production", "Office", "Other"];
+let departments = state.departments;
 
-// Bootstrap closing stock import if available and fresh
-const canBootstrap = !stored || (!state.transactions.length && !state.purchases.length && !state.outwards.length && state.products.length <= 6);
-if (typeof closingStockImport !== "undefined" && canBootstrap && !state.imports?.closingAugust2026V2) {
+// Default to 0 decimals for clean rounded figures (e.g. 2 instead of 2.00)
+if (state.settings.decimals === undefined || state.settings.decimals === 2) {
+  state.settings.decimals = 0;
+}
+if (!state.settings.rounding || state.settings.rounding === "normal") {
+  state.settings.rounding = "nearest-integer";
+}
+
+// Bootstrap closing stock import on initial first run only
+if (isFirstRun && typeof closingStockImport !== "undefined" && !state.imports?.closingAugust2026V2) {
   state.products = closingStockImport.map(p => ({
     ...p,
     icon: p.icon === "?" ? (p.category === "Dairy" ? "🧀" : p.category === "Veg" ? "🥦" : p.category === "Non Veg" ? "🥩" : p.category === "Fuel" ? "🔥" : "📦") : (p.icon || "📦")
@@ -204,6 +282,10 @@ const save = () => {
   updateSidebarMeta();
 };
 
+if (isFirstRun) {
+  save();
+}
+
 const canManage = () => ["Owner","Admin"].includes(state.users.find(u => u.name === state.currentUser)?.role);
 
 const today = new Date().toISOString().slice(0, 10);
@@ -217,8 +299,8 @@ const monthName = m => {
 };
 
 const roundNumber = (n, methodOverride, decimalsOverride) => {
-  const method = methodOverride || state.settings?.rounding || "normal";
-  const d = decimalsOverride !== undefined ? decimalsOverride : (state.settings?.decimals !== undefined ? Math.max(0, Number(state.settings.decimals)) : 2);
+  const method = methodOverride || state.settings?.rounding || "nearest-integer";
+  const d = decimalsOverride !== undefined ? decimalsOverride : (state.settings?.decimals !== undefined ? Math.max(0, Number(state.settings.decimals)) : 0);
   const m = 10 ** d;
   const v = Number(n) || 0;
 
@@ -243,15 +325,16 @@ const roundNumber = (n, methodOverride, decimalsOverride) => {
 };
 
 const numberValue = (n, forcedDecimals) => {
-  const d = forcedDecimals !== undefined ? forcedDecimals : (state.settings?.decimals !== undefined ? Math.max(0, Number(state.settings.decimals)) : 2);
+  const d = forcedDecimals !== undefined ? forcedDecimals : (state.settings?.decimals !== undefined ? Math.max(0, Number(state.settings.decimals)) : 0);
   const val = roundNumber(n, undefined, d);
   const isNone = state.settings?.rounding === "none";
+  // Clean numbers without forced .00 decimals (e.g. 2 instead of 2.00)
   return val.toLocaleString("en-US", {
-    minimumFractionDigits: isNone ? 0 : d,
+    minimumFractionDigits: 0,
     maximumFractionDigits: isNone ? 20 : d
   });
 };
-const money = n => numberValue(n, 2);
+const money = n => numberValue(n);
 
 const escapeHtml = s => String(s ?? "")
   .replace(/&/g, "&amp;")
@@ -475,7 +558,7 @@ function updateSidebarMeta() {
   const userEl = document.getElementById("sidebar-user-name");
   if (userEl) userEl.textContent = state.currentUser;
   const userRoleEl = document.getElementById("sidebar-user-role");
-  const role = state.users.find(u => u.name === state.currentUser)?.role || "User";
+  const role = state.currentUserRole || state.users.find(u => u.name === state.currentUser)?.role || "Owner";
   if (userRoleEl) userRoleEl.textContent = role;
   const avatarEl = document.getElementById("sidebar-avatar");
   if (avatarEl) avatarEl.textContent = state.currentUser.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
@@ -566,22 +649,40 @@ function toggleUserDropdown(e) {
   closeAllPopovers("user-dropdown");
   const p = document.getElementById("user-dropdown");
   if (!p) return;
+  const currentRole = state.currentUserRole || state.users.find(u => u.name === state.currentUser)?.role;
   p.innerHTML = `
     <div class="popover-header"><span>Switch Active Profile</span></div>
-    ${state.users.map(u => `
-      <button class="popover-item ${u.name === state.currentUser ? 'active' : ''}" onclick="switchUser('${u.name}')">
-        <b>${u.name}</b> <small style="margin-left:auto;color:#64748b;">${u.role}</small>
-      </button>
-    `).join("")}
+    ${state.users.map(u => {
+      const isActive = u.name === state.currentUser && (!currentRole || u.role === currentRole);
+      return `
+        <button class="popover-item ${isActive ? 'active' : ''}" onclick="switchUser('${escapeQuote(u.name)}', '${escapeQuote(u.role)}')">
+          <div style="text-align:left;">
+            <b>${escapeHtml(u.name)}</b>
+            <div style="font-size:11px;color:#64748b;">${escapeHtml(u.role)}</div>
+          </div>
+          ${isActive ? '<span class="status ok" style="margin-left:auto;font-size:10px;padding:1px 6px;">Active</span>' : ''}
+        </button>
+      `;
+    }).join("")}
   `;
   p.classList.toggle("open");
 }
 
-function switchUser(name) {
+function switchUser(name, role) {
   state.currentUser = name;
+  if (role) {
+    state.currentUserRole = role;
+  } else {
+    const found = state.users.find(u => u.name === name);
+    state.currentUserRole = found ? found.role : "Owner";
+  }
   save();
+  updateSidebarMeta();
   closeAllPopovers();
-  toast("Signed in as " + name);
+  toast(`Signed in as ${name} (${state.currentUserRole})`);
+  if (document.querySelector(".nav-item.active")?.dataset.view === "users") {
+    showView("users");
+  }
 }
 
 function toggleNotifDropdown(e) {
@@ -666,11 +767,11 @@ function ledgerRows(rows) {
             <td><b>${t.ref || '—'}</b></td>
             <td><div class="product-cell"><span class="product-dot">${productByName(t.product)?.icon || "📦"}</span>${t.product}</div></td>
             <td><span class="tag">${t.type}</span></td>
-            <td>${t.store || "Downtown Kitchen"}</td>
+            <td>${t.store || "Hotel Rajmudra - Main Store"}</td>
             <td class="num-cell" style="color:${t.qty < 0 ? "var(--red)" : "var(--green-text)"};font-weight:700">${t.qty > 0 ? "+" : ""}${numberValue(t.qty)}</td>
             <td class="num-cell">${money(t.cost)}</td>
             <td class="num-cell"><b>${money(Math.abs(t.qty) * (t.cost || 0))}</b></td>
-            <td>${t.user || "Alex Kim"}</td>
+            <td>${t.user || "Akash Kumar"}</td>
             <td>${fmtDate(t.date)}</td>
             <td style="text-align:right;">
               <div class="table-action-btns">
@@ -768,6 +869,7 @@ function saveTransactionEdit(idOrRef) {
   t.ref = ref;
   t.remarks = remarks;
 
+  save();
   rebuildStock();
   closeModal();
   toast("Transaction updated");
@@ -780,6 +882,7 @@ function deleteTransaction(idOrRef) {
   if (!t) return;
   confirmModal(`Permanently delete transaction "${t.ref || t.id} — ${t.product}"? Stock will be recalculated automatically.`, () => {
     state.transactions = state.transactions.filter(x => x !== t);
+    save();
     rebuildStock();
     toast("Transaction deleted");
     if (currentReportType === "ledger") showView("reports");
@@ -1010,7 +1113,7 @@ function renderInventoryTable() {
                 </div>
               </td>
               <td>${p.category || "—"}</td>
-              <td>${p.store || "Downtown Kitchen"}</td>
+              <td>${p.store || "Hotel Rajmudra - Main Store"}</td>
               <td>${p.min || 0} / ${p.reorder || 0}</td>
               <td class="num-cell" style="font-weight:700;${p.stock < (p.min||10) ? 'color:var(--red);' : ''}">${numberValue(p.stock)} ${p.unit}</td>
               <td class="num-cell">${money(p.purchaseCost || p.cost || 0)}</td>
@@ -1114,7 +1217,7 @@ function viewItem(id) {
       <div><span style="color:#64748b;">Category:</span> <b>${p.category || '—'}</b></div>
       <div><span style="color:#64748b;">Department:</span> <b>${p.department || '—'}</b></div>
       <div><span style="color:#64748b;">Unit:</span> <b>${p.unit}</b></div>
-      <div><span style="color:#64748b;">Warehouse:</span> <b>${p.store || 'Downtown Kitchen'}</b></div>
+      <div><span style="color:#64748b;">Warehouse:</span> <b>${p.store || 'Hotel Rajmudra - Main Store'}</b></div>
       <div><span style="color:#64748b;">Current Stock:</span> <b style="font-size:15px;color:var(--blue);">${numberValue(p.stock)} ${p.unit}</b></div>
       <div><span style="color:#64748b;">Cost Rate:</span> <b>${money(p.cost || 0)}</b></div>
       <div><span style="color:#64748b;">Min Level:</span> <b>${p.min || 0}</b></div>
@@ -1223,7 +1326,7 @@ function saveItemChanges(id) {
 }
 
 // PURCHASING & GOODS RECEIPT
-let purchaseDraft = { date: today, supplier: "Fresh Foods Co.", store: "Downtown Kitchen", reference: "", remarks: "", items: [], isNew: true };
+let purchaseDraft = { date: today, supplier: "Fresh Foods Co.", store: "Hotel Rajmudra - Main Store", reference: "", remarks: "", items: [], isNew: false };
 const nextPurchaseNo = () => `GRN-${String((state.purchases || []).length + 219).padStart(5, "0")}`;
 
 function newPurchase() {
@@ -1234,7 +1337,7 @@ function newPurchase() {
     store: state.currentStore,
     reference: "",
     remarks: "",
-    items: [{ product: "", qty: 1, rate: 0 }],
+    items: [{ product: "", qty: 1, rate: 0, gstRate: 0, gstAmount: 0, amount: 0 }],
     isNew: true
   };
   showView("purchasing");
@@ -1254,7 +1357,13 @@ function exitPurchaseFullscreen() {
 }
 
 function purchaseScreen() {
-  const total = purchaseDraft.items.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.rate) || 0), 0);
+  const totalTaxable = purchaseDraft.items.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.rate) || 0), 0);
+  const totalGst = purchaseDraft.items.reduce((a, i) => {
+    const taxable = (Number(i.qty) || 0) * (Number(i.rate) || 0);
+    const gRate = Number(i.gstRate) || 0;
+    return a + roundNumber(taxable * (gRate / 100));
+  }, 0);
+  const grandTotal = totalTaxable + totalGst;
   const totalQty = purchaseDraft.items.reduce((a, i) => a + (Number(i.qty) || 0), 0);
   const vNo = purchaseDraft.no || nextPurchaseNo();
 
@@ -1275,7 +1384,7 @@ function purchaseScreen() {
         </div>
 
         <div class="vfs-shortcuts-bar">
-          <span class="vfs-shortcut-chip"><kbd>↵ Enter</kbd> Next / Auto-Row</span>
+          <span class="vfs-shortcut-chip"><kbd>↵ Enter</kbd> Next Field</span>
           <span class="vfs-shortcut-chip"><kbd>F5</kbd> Add Line</span>
           <span class="vfs-shortcut-chip"><kbd>F8</kbd> Save Voucher</span>
           <span class="vfs-shortcut-chip"><kbd>Esc</kbd> Exit</span>
@@ -1284,7 +1393,7 @@ function purchaseScreen() {
         <div class="vfs-topbar-actions">
           <button type="button" class="vfs-btn-secondary" onclick="exitPurchaseFullscreen()">Cancel</button>
           <button type="button" class="vfs-btn-secondary" onclick="addPurchaseRow()">＋ Add Item (F5)</button>
-          <button type="button" class="vfs-btn-primary" onclick="savePurchase()">✓ Post & Save (F8)</button>
+          <button type="button" class="vfs-btn-primary" id="btn-save-purchase" onclick="savePurchase()">✓ Post & Save (F8)</button>
         </div>
       </div>
 
@@ -1324,14 +1433,16 @@ function purchaseScreen() {
           <table class="vfs-table">
             <thead>
               <tr>
-                <th style="width:40px;text-align:center;">#</th>
-                <th style="min-width:320px;">Item Name (Type 1-2 letters to search)</th>
-                <th style="width:160px;">On Hand Stock</th>
-                <th style="width:130px;" class="th-num">Qty</th>
-                <th style="width:80px;">Unit</th>
-                <th style="width:140px;" class="th-num">Rate</th>
-                <th style="width:150px;" class="th-num">Amount</th>
-                <th style="width:44px;text-align:center;"></th>
+                <th style="width:36px;text-align:center;">#</th>
+                <th style="min-width:280px;">Item Name (Type to search)</th>
+                <th style="width:130px;">On Hand Stock</th>
+                <th style="width:105px;" class="th-num">Qty</th>
+                <th style="width:70px;">Unit</th>
+                <th style="width:115px;" class="th-num">Rate</th>
+                <th style="width:90px;" class="th-num">GST %</th>
+                <th style="width:110px;" class="th-num">GST Amt</th>
+                <th style="width:125px;" class="th-num">Total Amount</th>
+                <th style="width:40px;text-align:center;"></th>
               </tr>
             </thead>
             <tbody id="purchase-items-body">
@@ -1352,19 +1463,27 @@ function purchaseScreen() {
             <span>Total Units:</span>
             <b id="purchase-total-qty">${numberValue(totalQty)}</b>
           </div>
+          <div class="vfs-stat-item">
+            <span>Taxable Subtotal:</span>
+            <b id="purchase-total-taxable">${money(totalTaxable)}</b>
+          </div>
+          <div class="vfs-stat-item">
+            <span>Total GST:</span>
+            <b id="purchase-total-gst">${money(totalGst)}</b>
+          </div>
           <span class="vfs-footer-validation valid">
-            ✓ Values recalculated live · Press [Enter] on Rate to auto-insert next row
+            ✓ Recalculated live with GST · Press [F5] to add line items
           </span>
         </div>
 
         <div class="vfs-footer-right">
           <div class="vfs-grand-total">
             <span>Grand Total:</span>
-            <strong id="purchase-total-val">${money(total)}</strong>
+            <strong id="purchase-total-val">${money(grandTotal)}</strong>
           </div>
           <div class="vfs-footer-actions">
             <button type="button" class="vfs-btn-secondary" onclick="addPurchaseRow()">＋ Add Row (F5)</button>
-            <button type="button" class="vfs-btn-primary" onclick="savePurchase()">✓ Post & Save (F8)</button>
+            <button type="button" class="vfs-btn-primary" id="btn-save-purchase-docked" onclick="savePurchase()">✓ Post & Save (F8)</button>
           </div>
         </div>
       </div>
@@ -1378,7 +1497,12 @@ function renderPurchaseTableRows() {
     const available = p?.stock || 0;
     const min = p?.min || 5;
     const sCls = !p ? '' : available <= 0 ? 'out-stock' : available <= min ? 'low-stock' : 'in-stock';
-    const amount = (Number(item.qty) || 0) * (Number(item.rate) || 0);
+    const qty = Number(item.qty) || 0;
+    const rate = Number(item.rate) || 0;
+    const gstRate = Number(item.gstRate) || 0;
+    const taxable = qty * rate;
+    const gstAmt = roundNumber(taxable * (gstRate / 100));
+    const totalAmount = taxable + gstAmt;
 
     return `
       <tr data-row="${idx}">
@@ -1397,26 +1521,32 @@ function renderPurchaseTableRows() {
             ${p ? `${numberValue(available)} ${p.unit || 'unit'}` : '—'}
           </span>
         </td>
-        <td style="width:130px;">
-          <input type="number" id="p-qty-${idx}" class="vfs-num-input" step="0.01" min="0" value="${item.qty ?? 1}"
+        <td style="width:105px;">
+          <input type="number" id="p-qty-${idx}" class="vfs-num-input" step="1" min="0" value="${item.qty ?? 1}"
             oninput="updatePurchaseItemQty(${idx}, this.value)"
             onkeydown="handlePurchaseQtyKeydown(event, ${idx})">
         </td>
         <td class="vfs-unit-tag" id="p-unit-${idx}">${p?.unit || 'unit'}</td>
-        <td style="width:140px;">
-          <input type="number" id="p-rate-${idx}" class="vfs-num-input" step="0.01" min="0" value="${item.rate ?? 0}"
+        <td style="width:115px;">
+          <input type="number" id="p-rate-${idx}" class="vfs-num-input" step="1" min="0" value="${item.rate ?? 0}"
             oninput="updatePurchaseItemRate(${idx}, this.value)"
             onkeydown="handlePurchaseRateKeydown(event, ${idx})">
         </td>
-        <td class="vfs-amount-cell" id="p-amount-${idx}">${money(amount)}</td>
-        <td style="width:44px;text-align:center;">
+        <td style="width:90px;">
+          <input type="number" id="p-gst-${idx}" class="vfs-num-input vfs-gst-input" step="1" min="0" max="100" placeholder="0" value="${item.gstRate ?? 0}"
+            oninput="updatePurchaseItemGst(${idx}, this.value)"
+            onkeydown="handlePurchaseGstKeydown(event, ${idx})">
+        </td>
+        <td class="vfs-amount-cell" id="p-gstamt-${idx}">${money(gstAmt)}</td>
+        <td class="vfs-amount-cell" id="p-amount-${idx}">${money(totalAmount)}</td>
+        <td style="width:40px;text-align:center;">
           <button type="button" class="vfs-del-btn" onclick="removePurchaseRow(${idx})" title="Delete row">×</button>
         </td>
       </tr>
     `;
   }).join("") || `
     <tr>
-      <td colspan="8" class="empty-state" style="padding:24px;text-align:center;color:var(--muted);">
+      <td colspan="10" class="empty-state" style="padding:24px;text-align:center;color:var(--muted);">
         No items added. Press <kbd style="background:#e2e8f0;padding:2px 6px;border-radius:3px;">F5</kbd> or click "+ Add Item" to begin.
       </td>
     </tr>
@@ -1500,18 +1630,19 @@ function handlePurchaseRateKeydown(e, idx) {
   if (e.key === "Enter") {
     e.preventDefault();
     updatePurchaseItemRate(idx, e.target.value);
+    const gstEl = document.getElementById(`p-gst-${idx}`);
+    if (gstEl) {
+      gstEl.focus();
+      gstEl.select();
+    }
+  }
+}
 
-    // If last row, automatically insert new row!
-    if (idx === purchaseDraft.items.length - 1) {
-      addPurchaseRow();
-      setTimeout(() => {
-        const nextSearch = document.getElementById(`p-search-${idx + 1}`);
-        if (nextSearch) {
-          nextSearch.focus();
-          nextSearch.select();
-        }
-      }, 40);
-    } else {
+function handlePurchaseGstKeydown(e, idx) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    updatePurchaseItemGst(idx, e.target.value);
+    if (idx < purchaseDraft.items.length - 1) {
       const nextSearch = document.getElementById(`p-search-${idx + 1}`);
       if (nextSearch) {
         nextSearch.focus();
@@ -1526,6 +1657,9 @@ function onSelectPurchaseItem(idx, product) {
   purchaseDraft.items[idx].product = product.name;
   if (!purchaseDraft.items[idx].rate) {
     purchaseDraft.items[idx].rate = product.purchaseCost || product.cost || 0;
+  }
+  if (product.gstRate !== undefined && purchaseDraft.items[idx].gstRate === 0) {
+    purchaseDraft.items[idx].gstRate = Number(product.gstRate) || 0;
   }
 
   const searchInput = document.getElementById(`p-search-${idx}`);
@@ -1547,9 +1681,12 @@ function onSelectPurchaseItem(idx, product) {
     rateInput.value = purchaseDraft.items[idx].rate;
   }
 
-  const amtCell = document.getElementById(`p-amount-${idx}`);
-  if (amtCell) amtCell.textContent = money((purchaseDraft.items[idx].qty || 0) * (purchaseDraft.items[idx].rate || 0));
+  const gstInput = document.getElementById(`p-gst-${idx}`);
+  if (gstInput && purchaseDraft.items[idx].gstRate) {
+    gstInput.value = purchaseDraft.items[idx].gstRate;
+  }
 
+  recalcPurchaseItemRow(idx);
   refreshPurchaseTotals();
 
   // Advance focus to Qty field
@@ -1580,30 +1717,65 @@ function updatePurchaseItemName(idx, name) {
   if (unitCell) unitCell.textContent = p?.unit || 'unit';
   const rateInput = document.getElementById(`p-rate-${idx}`);
   if (rateInput && p && !Number(rateInput.value)) rateInput.value = purchaseDraft.items[idx].rate;
+  recalcPurchaseItemRow(idx);
   refreshPurchaseTotals();
+}
+
+function recalcPurchaseItemRow(idx) {
+  const item = purchaseDraft.items[idx];
+  if (!item) return;
+  const qty = Number(item.qty) || 0;
+  const rate = Number(item.rate) || 0;
+  const gstRate = Number(item.gstRate) || 0;
+  const taxable = qty * rate;
+  const gstAmt = roundNumber(taxable * (gstRate / 100));
+  item.taxableAmount = taxable;
+  item.gstAmount = gstAmt;
+  item.amount = taxable + gstAmt;
+
+  const gstAmtCell = document.getElementById(`p-gstamt-${idx}`);
+  if (gstAmtCell) gstAmtCell.textContent = money(gstAmt);
+  const amtCell = document.getElementById(`p-amount-${idx}`);
+  if (amtCell) amtCell.textContent = money(item.amount);
 }
 
 function updatePurchaseItemQty(idx, val) {
   if (!purchaseDraft.items[idx]) return;
   purchaseDraft.items[idx].qty = Number(val) || 0;
-  const amtCell = document.getElementById(`p-amount-${idx}`);
-  if (amtCell) amtCell.textContent = money(purchaseDraft.items[idx].qty * (purchaseDraft.items[idx].rate || 0));
+  recalcPurchaseItemRow(idx);
   refreshPurchaseTotals();
 }
 
 function updatePurchaseItemRate(idx, val) {
   if (!purchaseDraft.items[idx]) return;
   purchaseDraft.items[idx].rate = Number(val) || 0;
-  const amtCell = document.getElementById(`p-amount-${idx}`);
-  if (amtCell) amtCell.textContent = money((purchaseDraft.items[idx].qty || 0) * purchaseDraft.items[idx].rate);
+  recalcPurchaseItemRow(idx);
+  refreshPurchaseTotals();
+}
+
+function updatePurchaseItemGst(idx, val) {
+  if (!purchaseDraft.items[idx]) return;
+  purchaseDraft.items[idx].gstRate = Math.max(0, Number(val) || 0);
+  recalcPurchaseItemRow(idx);
   refreshPurchaseTotals();
 }
 
 function refreshPurchaseTotals() {
-  const total = purchaseDraft.items.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.rate) || 0), 0);
+  const totalTaxable = purchaseDraft.items.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.rate) || 0), 0);
+  const totalGst = purchaseDraft.items.reduce((a, i) => {
+    const taxable = (Number(i.qty) || 0) * (Number(i.rate) || 0);
+    const gRate = Number(i.gstRate) || 0;
+    return a + roundNumber(taxable * (gRate / 100));
+  }, 0);
+  const grandTotal = totalTaxable + totalGst;
   const totalQty = purchaseDraft.items.reduce((a, i) => a + (Number(i.qty) || 0), 0);
+
   const totalEl = document.getElementById("purchase-total-val");
-  if (totalEl) totalEl.textContent = money(total);
+  if (totalEl) totalEl.textContent = money(grandTotal);
+  const taxableEl = document.getElementById("purchase-total-taxable");
+  if (taxableEl) taxableEl.textContent = money(totalTaxable);
+  const gstEl = document.getElementById("purchase-total-gst");
+  if (gstEl) gstEl.textContent = money(totalGst);
   const countEl = document.getElementById("purchase-total-items");
   if (countEl) countEl.textContent = purchaseDraft.items.length;
   const qtyEl = document.getElementById("purchase-total-qty");
@@ -1624,7 +1796,7 @@ function refreshPurchaseTableStock() {
 }
 
 function addPurchaseRow() {
-  purchaseDraft.items.push({ product: "", qty: 1, rate: 0 });
+  purchaseDraft.items.push({ product: "", qty: 1, rate: 0, gstRate: 0, gstAmount: 0, amount: 0 });
   const tbody = document.getElementById("purchase-items-body");
   if (tbody) tbody.innerHTML = renderPurchaseTableRows();
   refreshPurchaseTotals();
@@ -1640,37 +1812,51 @@ function addPurchaseRow() {
 
 function removePurchaseRow(idx) {
   purchaseDraft.items.splice(idx, 1);
-  if (purchaseDraft.items.length === 0) {
-    purchaseDraft.items.push({ product: "", qty: 1, rate: 0 });
-  }
   const tbody = document.getElementById("purchase-items-body");
   if (tbody) tbody.innerHTML = renderPurchaseTableRows();
   refreshPurchaseTotals();
 }
 
 function savePurchase() {
+  // Prune any completely empty rows first so trailing or accidental rows don't block save
+  purchaseDraft.items = purchaseDraft.items.filter(i => (i.product && i.product.trim()) || Number(i.qty) > 0);
   if (!purchaseDraft.items.length) {
     toast("Please add at least one item");
     return;
   }
   const invalid = purchaseDraft.items.some(i => !i.product || !i.qty);
   if (invalid) {
-    toast("Ensure all items have a name and quantity");
+    toast("Ensure all items have an item name and quantity");
     return;
   }
   const isEditing = Boolean(purchaseDraft.isEditing);
   const no = purchaseDraft.no || nextPurchaseNo();
   const confirmMsg = isEditing
     ? `Update and save changes to Goods Receipt ${no}?`
-    : "Post this Goods Receipt and update stock balances?";
+    : `Post Goods Receipt ${no} and update stock balances?`;
 
   confirmModal(confirmMsg, () => {
-    const items = purchaseDraft.items.map(i => ({
-      ...i,
-      unit: productByName(i.product)?.unit || "unit",
-      amount: Number(i.qty) * Number(i.rate)
-    }));
-    const total = items.reduce((a, i) => a + i.amount, 0);
+    const items = purchaseDraft.items.map(i => {
+      const p = productByName(i.product);
+      const qty = Number(i.qty) || 0;
+      const rate = Number(i.rate) || 0;
+      const gstRate = Number(i.gstRate) || 0;
+      const taxableAmount = qty * rate;
+      const gstAmount = roundNumber(taxableAmount * (gstRate / 100));
+      return {
+        ...i,
+        unit: p?.unit || "unit",
+        qty,
+        rate,
+        gstRate,
+        gstAmount,
+        taxableAmount,
+        amount: taxableAmount + gstAmount
+      };
+    });
+    const subtotal = items.reduce((a, i) => a + i.taxableAmount, 0);
+    const gstTotal = items.reduce((a, i) => a + i.gstAmount, 0);
+    const total = subtotal + gstTotal;
 
     // If editing, clear existing transactions and previous purchase record
     if (isEditing) {
@@ -1701,12 +1887,15 @@ function savePurchase() {
       ...purchaseDraft,
       no,
       items,
+      subtotal,
+      gstTotal,
       total,
       user: state.currentUser,
       status: "Posted",
       createdAt: purchaseDraft.createdAt || new Date().toISOString()
     });
 
+    save(); // Persist to localStorage
     rebuildStock();
     toast(no + (isEditing ? " updated successfully!" : " posted successfully!"));
     purchaseDraft.isNew = false;
@@ -1788,7 +1977,7 @@ function purchaseHistory() {
                   <td><b>${v.no}</b></td>
                   <td>${fmtDate(v.date)}</td>
                   <td>${v.supplier}</td>
-                  <td>${v.store || "Downtown Kitchen"}</td>
+                  <td>${v.store || "Hotel Rajmudra - Main Store"}</td>
                   <td>${v.items?.length || 0} items</td>
                   <td class="num-cell" style="font-weight:700;">${money(v.total)}</td>
                   <td>${v.user}</td>
@@ -2030,7 +2219,7 @@ function convertPOToPurchase(poNo) {
 }
 
 // STOCK OUTWARD (ISSUES)
-let outwardDraft = { department: "Kitchen", store: "Downtown Kitchen", date: today, issuedTo: "", reference: "", remarks: "", items: [], isNew: true };
+let outwardDraft = { department: "Kitchen", store: "Hotel Rajmudra - Main Store", date: today, issuedTo: "", reference: "", remarks: "", items: [], isNew: false };
 const nextOutwardNo = () => `OUT-${String(state.outwards.length + 1).padStart(5, "0")}`;
 
 function newOutward() {
@@ -2302,19 +2491,7 @@ function handleOutwardQtyKeydown(e, idx) {
   if (e.key === "Enter") {
     e.preventDefault();
     updateOutwardItemQty(idx, e.target.value);
-
-    // In Outward, Issue Qty is the last input in the row!
-    // If last row (including row 0), automatically insert a new row!
-    if (idx === outwardDraft.items.length - 1) {
-      addOutwardRow();
-      setTimeout(() => {
-        const nextSearch = document.getElementById(`out-search-${idx + 1}`);
-        if (nextSearch) {
-          nextSearch.focus();
-          nextSearch.select();
-        }
-      }, 40);
-    } else {
+    if (idx < outwardDraft.items.length - 1) {
       const nextSearch = document.getElementById(`out-search-${idx + 1}`);
       if (nextSearch) {
         nextSearch.focus();
@@ -2407,8 +2584,9 @@ function refreshOutwardTotals() {
   if (linesEl) linesEl.textContent = outwardDraft.items.length;
 
   const hasExceeded = outwardDraft.items.some(i => {
+    if (!i.product || !i.product.trim()) return false;
     const p = productByName(i.product);
-    return !p || (i.qty > p.stock && !state.settings.inventory?.negative);
+    return p && (Number(i.qty) > Number(p.stock) && !state.settings.inventory?.negative);
   });
   const vBox = document.getElementById("outward-validation-box");
   const saveBtn = document.getElementById("btn-save-outward");
@@ -2418,7 +2596,7 @@ function refreshOutwardTotals() {
     vBox.className = "vfs-footer-validation " + (hasExceeded ? "has-error" : "valid");
     vBox.textContent = hasExceeded
       ? "⚠ Some items exceed warehouse on-hand stock"
-      : "✓ Quantities verified against warehouse stock · Press [Enter] on Issue Qty to auto-insert row";
+      : "✓ Quantities verified against warehouse stock · Press [F5] to add line items";
   }
   if (saveBtn) saveBtn.disabled = hasExceeded;
   if (saveBtnDocked) saveBtnDocked.disabled = hasExceeded;
@@ -2454,21 +2632,20 @@ function addOutwardRow() {
 
 function removeOutwardRow(idx) {
   outwardDraft.items.splice(idx, 1);
-  if (outwardDraft.items.length === 0) {
-    outwardDraft.items.push({ product: "", qty: 1 });
-  }
   const tbody = document.getElementById("outward-items-body");
   if (tbody) tbody.innerHTML = renderOutwardTableRows();
   refreshOutwardTotals();
 }
 
 function saveOutward() {
+  // Prune any completely empty rows first
+  outwardDraft.items = outwardDraft.items.filter(i => (i.product && i.product.trim()) || Number(i.qty) > 0);
   if (!outwardDraft.items.length) { toast("Add at least one item to issue"); return; }
   const isEditing = Boolean(outwardDraft.isEditing);
   const no = outwardDraft.no || nextOutwardNo();
   const invalid = outwardDraft.items.some(i => {
     const p = productByName(i.product);
-    return !p || !i.qty || (i.qty > p.stock && !state.settings.inventory?.negative);
+    return !p || !i.qty || (Number(i.qty) > Number(p.stock) && !state.settings.inventory?.negative);
   });
   if (invalid) {
     toast("Please resolve stock errors before saving");
@@ -2476,7 +2653,7 @@ function saveOutward() {
   }
   const confirmMsg = isEditing
     ? `Update and save changes to Stock Outward voucher ${no}?`
-    : "Post Stock Outward voucher and deduct from inventory?";
+    : `Post Stock Outward voucher ${no} and deduct from inventory?`;
 
   confirmModal(confirmMsg, () => {
     const now = new Date().toISOString();
@@ -2522,6 +2699,7 @@ function saveOutward() {
       createdAt: outwardDraft.createdAt || now
     });
 
+    save(); // Persist to localStorage!
     rebuildStock();
     toast(no + (isEditing ? " updated successfully!" : " posted successfully!"));
     outwardDraft.isNew = false;
@@ -2602,7 +2780,7 @@ function outwardHistory() {
                   <td><b>${v.no}</b></td>
                   <td>${fmtDate(v.date)}</td>
                   <td>${v.department}</td>
-                  <td>${v.store || "Downtown Kitchen"}</td>
+                  <td>${v.store || "Hotel Rajmudra - Main Store"}</td>
                   <td>${v.issuedTo || "—"}</td>
                   <td>${v.items?.length || 0}</td>
                   <td class="num-cell" style="font-weight:700;">${money(v.total)}</td>
@@ -2639,71 +2817,567 @@ function viewVoucher(no, isPurchase) {
   printVoucherPreview(isPurchase ? "Purchase" : "Outward", no);
 }
 
+function generateVoucherPrintDocument(voucher, isPurchase, autoPrint = false) {
+  const items = voucher.items || [];
+  const hasGst = isPurchase && items.some(i => Number(i.gstRate) > 0 || Number(i.gstAmount) > 0);
+  const totalQty = items.reduce((a, i) => a + (Number(i.qty) || 0), 0);
+  const taxableSubtotal = items.reduce((a, i) => a + (Number(i.taxableAmount) || ((Number(i.qty) || 0) * (Number(i.rate) || 0))), 0);
+  const totalGst = items.reduce((a, i) => a + (Number(i.gstAmount) || 0), 0);
+  const docTitle = isPurchase ? `GRN_${voucher.no}` : `OUTWARD_${voucher.no}`;
+  const nowStr = new Date().toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" });
+  const isPosted = !voucher.status || voucher.status.toLowerCase() === "posted" || voucher.status.toLowerCase() === "received";
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>${docTitle}</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 12.5px;
+      line-height: 1.4;
+      color: #0f172a;
+      background: #ffffff;
+    }
+    .print-sheet {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2.5px solid #0284c7;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+    .company-name {
+      font-size: 21px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 3px 0;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+    .company-sub {
+      font-size: 11.5px;
+      color: #475569;
+      margin: 1px 0;
+    }
+    .doc-type-block {
+      text-align: right;
+    }
+    .doc-type-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 9px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+      ${isPurchase ? 'background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;' : 'background: #f5f3ff; color: #6d28d9; border: 1px solid #ddd6fe;'}
+    }
+    .doc-no {
+      font-family: "JetBrains Mono", "Courier New", Courier, monospace;
+      font-size: 18px;
+      font-weight: 800;
+      color: #0284c7;
+      margin: 1px 0;
+    }
+    .doc-date {
+      font-size: 11.5px;
+      color: #475569;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px 14px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 9px 12px;
+      margin-bottom: 12px;
+      font-size: 11.5px;
+    }
+    .meta-field span {
+      color: #64748b;
+      margin-right: 6px;
+    }
+    .meta-field b {
+      color: #0f172a;
+      font-weight: 600;
+    }
+    .status-pill {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      ${isPosted ? 'background: #dcfce7; color: #15803d; border: 1px solid #86efac;' : 'background: #fef3c7; color: #b45309; border: 1px solid #fcd34d;'}
+    }
+    table.v-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 12px;
+      font-size: 11.5px;
+    }
+    table.v-table th {
+      background: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+      text-align: left;
+      padding: 7px 9px;
+      border-bottom: 2px solid #cbd5e1;
+      border-top: 2px solid #0284c7;
+      text-transform: uppercase;
+      font-size: 10.5px;
+      letter-spacing: 0.03em;
+    }
+    table.v-table td {
+      padding: 6px 9px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #1e293b;
+      vertical-align: middle;
+    }
+    table.v-table tr:nth-child(even) td {
+      background: #fbfcfd;
+    }
+    .num {
+      text-align: right;
+      font-family: "JetBrains Mono", "Courier New", Courier, monospace;
+    }
+    .gst-text {
+      color: #0284c7;
+      font-family: "JetBrains Mono", "Courier New", Courier, monospace;
+    }
+    .bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-top: 12px;
+      gap: 16px;
+      page-break-inside: avoid;
+    }
+    .notes-side {
+      flex: 1;
+      font-size: 11.5px;
+      color: #475569;
+    }
+    .notes-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-left: 3.5px solid #0284c7;
+      border-radius: 6px;
+      padding: 7px 10px;
+      margin-top: 5px;
+    }
+    .totals-side {
+      width: 250px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      background: #f8fafc;
+      padding: 9px 12px;
+      font-size: 11.5px;
+    }
+    .t-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 2.5px 0;
+      color: #475569;
+    }
+    .t-row b {
+      font-family: "JetBrains Mono", "Courier New", Courier, monospace;
+    }
+    .t-row.grand {
+      border-top: 2px solid #0f172a;
+      margin-top: 5px;
+      padding-top: 5px;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .t-row.grand .grand-val {
+      color: #1d4ed8;
+      font-size: 16px;
+      font-family: "JetBrains Mono", "Courier New", Courier, monospace;
+    }
+    .signatures-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 36px;
+      padding-top: 6px;
+      page-break-inside: avoid;
+    }
+    .sig-box {
+      border-top: 1.5px dashed #94a3b8;
+      padding-top: 5px;
+      text-align: center;
+      font-size: 10.5px;
+      color: #475569;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .footer-note {
+      margin-top: 20px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 9.5px;
+      color: #94a3b8;
+    }
+    @media print {
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="print-sheet">
+    <div class="header-row">
+      <div>
+        <h1 class="company-name">${escapeHtml(state.settings.general?.company || "Hotel Rajmudra")}</h1>
+        <div class="company-sub">${escapeHtml(state.settings.general?.address || "Marunji Gaon Marunji, Road, near Rajmudra Petrol Pump, Hinjawadi, Pune, Maharashtra 411057")}</div>
+        <div class="company-sub">
+          ${state.settings.general?.phone ? `<span>Tel: <b>${escapeHtml(state.settings.general.phone)}</b></span>` : ''}
+          ${state.settings.general?.email ? ` · <span>Email: <b>${escapeHtml(state.settings.general.email)}</b></span>` : ''}
+          ${state.settings.general?.website ? ` · <span>Web: <b>${escapeHtml(state.settings.general.website)}</b></span>` : ''}
+        </div>
+      </div>
+      <div class="doc-type-block">
+        <div class="doc-type-badge">${isPurchase ? "Goods Receipt Note (GRN)" : "Stock Outward Note"}</div>
+        <div class="doc-no">${escapeHtml(voucher.no)}</div>
+        <div class="doc-date">Date: <b>${fmtDate(voucher.date)}</b></div>
+      </div>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-field"><span>Warehouse:</span> <b>${escapeHtml(voucher.store || state.currentStore || "Main Warehouse")}</b></div>
+      <div class="meta-field"><span>${isPurchase ? "Supplier:" : "Department:"}</span> <b style="color:${isPurchase ? '#1d4ed8' : '#6d28d9'};">${escapeHtml(isPurchase ? voucher.supplier : voucher.department)}</b></div>
+      <div class="meta-field"><span>Recorded By:</span> <b>${escapeHtml(voucher.user || state.currentUser)}</b></div>
+      ${voucher.reference ? `<div class="meta-field"><span>Ref / Inv #:</span> <b>${escapeHtml(voucher.reference)}</b></div>` : ''}
+      ${voucher.issuedTo ? `<div class="meta-field"><span>Issued To:</span> <b>${escapeHtml(voucher.issuedTo)}</b></div>` : ''}
+      <div class="meta-field"><span>Status:</span> <span class="status-pill">${escapeHtml(voucher.status || (isPurchase ? "Posted" : "Issued"))}</span></div>
+    </div>
+
+    <table class="v-table">
+      <thead>
+        <tr>
+          <th style="width:34px;text-align:center;">#</th>
+          <th>Item Description</th>
+          <th class="num" style="width:85px;">Quantity</th>
+          <th style="width:60px;">Unit</th>
+          <th class="num" style="width:90px;">Rate</th>
+          ${hasGst ? `
+            <th class="num" style="width:70px;">GST %</th>
+            <th class="num" style="width:85px;">GST Amt</th>
+          ` : ''}
+          <th class="num" style="width:105px;">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${items.map((i, idx) => {
+          const qty = Number(i.qty) || 0;
+          const rate = Number(i.rate) || 0;
+          const gRate = Number(i.gstRate) || 0;
+          const gAmt = Number(i.gstAmount) || roundNumber((qty * rate) * (gRate / 100));
+          const lineTotal = Number(i.amount) || ((qty * rate) + (hasGst ? gAmt : 0));
+          return `
+            <tr>
+              <td style="text-align:center;color:#64748b;">${idx + 1}</td>
+              <td><b>${escapeHtml(i.product)}</b></td>
+              <td class="num"><b>${numberValue(qty)}</b></td>
+              <td>${escapeHtml(i.unit || 'unit')}</td>
+              <td class="num">${money(rate)}</td>
+              ${hasGst ? `
+                <td class="num gst-text">${gRate}%</td>
+                <td class="num gst-text">${money(gAmt)}</td>
+              ` : ''}
+              <td class="num" style="font-weight:700;color:#0f172a;">${money(lineTotal)}</td>
+            </tr>
+          `;
+        }).join("")}
+      </tbody>
+    </table>
+
+    <div class="bottom-row">
+      <div class="notes-side">
+        <div>Total Line Items: <b>${items.length}</b> &nbsp;·&nbsp; Total Units: <b>${numberValue(totalQty)}</b></div>
+        ${voucher.remarks ? `
+          <div class="notes-box">
+            <b style="color:#0f172a;">Notes / Remarks:</b><br>${escapeHtml(voucher.remarks)}
+          </div>
+        ` : ''}
+      </div>
+
+      <div class="totals-side">
+        ${hasGst ? `
+          <div class="t-row">
+            <span>Taxable Subtotal:</span>
+            <b>${money(taxableSubtotal)}</b>
+          </div>
+          <div class="t-row" style="color:#0284c7;">
+            <span>Total GST:</span>
+            <b>${money(totalGst)}</b>
+          </div>
+        ` : ''}
+        <div class="t-row grand">
+          <span>Grand Total:</span>
+          <span class="grand-val">${money(voucher.total)}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="signatures-row">
+      <div class="sig-box">Prepared By (Clerk)</div>
+      <div class="sig-box">Storekeeper / Verified By</div>
+      <div class="sig-box">Authorized / Receiver</div>
+    </div>
+
+    <div class="footer-note">
+      <span>StockSense Material Management OS · Audit Verified</span>
+      <span>Voucher: <b>${escapeHtml(voucher.no)}</b> · Printed: ${nowStr}</span>
+    </div>
+  </div>
+  ${autoPrint ? `<script>window.onload = function() { setTimeout(function() { window.print(); }, 200); };</script>` : ''}
+</body>
+</html>`;
+}
+
+function triggerCleanPrint(kind, no) {
+  const isPurchase = kind === "Purchase";
+  const voucher = isPurchase ? state.purchases.find(x => x.no === no) : state.outwards.find(x => x.no === no);
+  if (!voucher) {
+    toast("Voucher not found");
+    return;
+  }
+
+  // Synchronous, direct print invocation
+  try {
+    window.print();
+  } catch (err) {
+    console.warn("Direct window.print() failed, opening document view:", err);
+    openVoucherPrintTab(kind, no);
+  }
+}
+
+function openVoucherPrintTab(kind, no) {
+  const isPurchase = kind === "Purchase";
+  const voucher = isPurchase ? state.purchases.find(x => x.no === no) : state.outwards.find(x => x.no === no);
+  if (!voucher) {
+    toast("Voucher not found");
+    return;
+  }
+
+  const printHtml = generateVoucherPrintDocument(voucher, isPurchase, true);
+  const blob = new Blob([printHtml], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+
+  let newWin = null;
+  try {
+    newWin = window.open(url, "_blank");
+  } catch (e) {
+    newWin = null;
+  }
+
+  if (!newWin || newWin.closed || typeof newWin.closed === "undefined") {
+    // If popup blocked in sandboxed iframe, fallback to downloading file so user can view/print
+    downloadVoucherDocument(kind, no);
+  }
+}
+
+function downloadVoucherDocument(kind, no) {
+  const isPurchase = kind === "Purchase";
+  const voucher = isPurchase ? state.purchases.find(x => x.no === no) : state.outwards.find(x => x.no === no);
+  if (!voucher) {
+    toast("Voucher not found");
+    return;
+  }
+
+  const printHtml = generateVoucherPrintDocument(voucher, isPurchase, false);
+  const blob = new Blob([printHtml], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${isPurchase ? "GRN" : "OUTWARD"}_${voucher.no}.html`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    a.remove();
+    URL.revokeObjectURL(url);
+  }, 2000);
+  toast("Document saved. Open in browser to print / save as PDF.");
+}
+
 function printVoucherPreview(kind, no) {
   const isPurchase = kind === "Purchase";
   const voucher = isPurchase ? state.purchases.find(x => x.no === no) : state.outwards.find(x => x.no === no);
   if (!voucher) { toast("Voucher not found"); return; }
 
   const items = voucher.items || [];
+  const hasGst = isPurchase && items.some(i => Number(i.gstRate) > 0 || Number(i.gstAmount) > 0);
+  const totalQty = items.reduce((a, i) => a + (Number(i.qty) || 0), 0);
+  const taxableSubtotal = items.reduce((a, i) => a + (Number(i.taxableAmount) || ((Number(i.qty) || 0) * (Number(i.rate) || 0))), 0);
+  const totalGst = items.reduce((a, i) => a + (Number(i.gstAmount) || 0), 0);
+  const isPosted = !voucher.status || voucher.status.toLowerCase() === "posted" || voucher.status.toLowerCase() === "received";
+
   openInAppModal(`${isPurchase ? 'PURCHASE INVOICE' : 'STOCK ISSUE VOUCHER'} — ${voucher.no}`, `
+    <!-- Dedicated Print Trigger Banner -->
+    <div class="pv-top-bar no-print" style="display:flex;align-items:center;justify-content:space-between;background:#f8fafc;padding:10px 14px;border-radius:8px;border:1px solid #cbd5e1;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:20px;">🖨️</span>
+        <div>
+          <div style="font-weight:700;font-size:13px;color:#0f172a;">Print & PDF Export</div>
+          <div style="font-size:12px;color:#64748b;">Formatted for clean A4 printing with colored font styling and no UI chrome.</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button type="button" class="secondary" id="btn-open-pdf-window" onclick="openVoucherPrintTab('${isPurchase ? 'Purchase' : 'Outward'}', '${voucher.no}')" title="Open formatted document in a standalone page" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:6px 10px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          Open A4 Tab
+        </button>
+        <button type="button" class="secondary" id="btn-download-voucher-pdf" onclick="downloadVoucherDocument('${isPurchase ? 'Purchase' : 'Outward'}', '${voucher.no}')" title="Download formatted HTML/PDF file" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:6px 10px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download
+        </button>
+        <button type="button" class="primary" id="btn-print-voucher-top" onclick="triggerCleanPrint('${isPurchase ? 'Purchase' : 'Outward'}', '${voucher.no}')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;font-size:13px;font-weight:700;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Print / PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- Printable Voucher Sheet -->
     <div class="printable-voucher" id="print-area">
       <div class="pv-header">
         <div>
-          <h1>${state.settings.general?.company || "StockSense Kitchen"}</h1>
-          <p style="margin:2px 0;color:#64748b;">${state.settings.general?.address || "124 Culinary Way"} · ${state.settings.general?.phone || ""}</p>
+          <h1 class="pv-company-name">${escapeHtml(state.settings.general?.company || "Hotel Rajmudra")}</h1>
+          <p class="pv-company-sub">${escapeHtml(state.settings.general?.address || "Marunji Gaon Marunji, Road, near Rajmudra Petrol Pump, Hinjawadi, Pune, Maharashtra 411057")}${state.settings.general?.phone ? ` · Tel: <b>${escapeHtml(state.settings.general.phone)}</b>` : ''}</p>
+          ${(state.settings.general?.email || state.settings.general?.website) ? `<p class="pv-company-sub">${state.settings.general?.email ? `Email: <b>${escapeHtml(state.settings.general.email)}</b>` : ''}${state.settings.general?.website ? ` · Web: <a href="${escapeHtml(state.settings.general.website)}" target="_blank" style="color:#0284c7;text-decoration:none;font-weight:600;">${escapeHtml(state.settings.general.website)}</a>` : ''}</p>` : ''}
         </div>
         <div style="text-align:right;">
-          <h2>${isPurchase ? "GOODS RECEIPT NOTE" : "STOCK OUTWARD NOTE"}</h2>
-          <div style="font-family:'Plus Jakarta Sans';font-weight:800;color:var(--blue);font-size:16px;">${voucher.no}</div>
-          <span style="color:#64748b;font-size:12px;">${fmtDate(voucher.date)}</span>
+          <div class="pv-doc-type-badge ${isPurchase ? 'purchase' : 'outward'}">${isPurchase ? "GOODS RECEIPT NOTE (GRN)" : "STOCK OUTWARD NOTE"}</div>
+          <div class="pv-voucher-no">${escapeHtml(voucher.no)}</div>
+          <div class="pv-voucher-date">Date: <b style="color:#0f172a;">${fmtDate(voucher.date)}</b></div>
         </div>
       </div>
 
-      <div class="pv-meta">
-        <div><b>Warehouse:</b> ${voucher.store || "Downtown Kitchen"}</div>
-        <div><b>${isPurchase ? "Supplier:" : "Department:"}</b> ${isPurchase ? voucher.supplier : voucher.department}</div>
-        <div><b>Recorded By:</b> ${voucher.user || state.currentUser}</div>
-        ${voucher.reference ? `<div><b>Reference:</b> ${voucher.reference}</div>` : ''}
-        ${voucher.issuedTo ? `<div><b>Issued To:</b> ${voucher.issuedTo}</div>` : ''}
-        <div><b>Status:</b> ${voucher.status || "Posted"}</div>
+      <div class="pv-meta-card">
+        <div class="pv-meta-item"><span>Warehouse:</span> <b>${escapeHtml(voucher.store || state.currentStore || "Main Warehouse")}</b></div>
+        <div class="pv-meta-item"><span>${isPurchase ? "Supplier:" : "Department:"}</span> <b class="${isPurchase ? 'supplier-val' : 'dept-val'}">${escapeHtml(isPurchase ? voucher.supplier : voucher.department)}</b></div>
+        <div class="pv-meta-item"><span>Recorded By:</span> <b>${escapeHtml(voucher.user || state.currentUser)}</b></div>
+        ${voucher.reference ? `<div class="pv-meta-item"><span>Ref / Inv #:</span> <b>${escapeHtml(voucher.reference)}</b></div>` : ''}
+        ${voucher.issuedTo ? `<div class="pv-meta-item"><span>Issued To:</span> <b>${escapeHtml(voucher.issuedTo)}</b></div>` : ''}
+        <div class="pv-meta-item"><span>Status:</span> <span class="pv-status-badge ${isPosted ? 'posted' : 'issued'}">${escapeHtml(voucher.status || (isPurchase ? "Posted" : "Issued"))}</span></div>
       </div>
 
-      <table class="table" style="margin-top:12px;">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Item Description</th>
-            <th style="text-align:right;">Quantity</th>
-            <th>Unit</th>
-            <th style="text-align:right;">Rate</th>
-            <th style="text-align:right;">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${items.map((i, idx) => `
+      <div class="pv-table-wrap">
+        <table class="pv-table">
+          <thead>
             <tr>
-              <td>${idx + 1}</td>
-              <td><b>${i.product}</b></td>
-              <td class="num-cell" style="text-align:right;">${numberValue(i.qty)}</td>
-              <td>${i.unit}</td>
-              <td class="num-cell" style="text-align:right;">${money(i.rate)}</td>
-              <td class="num-cell" style="text-align:right;"><b>${money(i.amount)}</b></td>
+              <th style="width:36px;text-align:center;">#</th>
+              <th>Item Description</th>
+              <th class="num-col" style="width:90px;">Quantity</th>
+              <th style="width:70px;">Unit</th>
+              <th class="num-col" style="width:100px;">Rate</th>
+              ${hasGst ? `
+                <th class="num-col gst-col" style="width:75px;">GST %</th>
+                <th class="num-col gst-col" style="width:95px;">GST Amt</th>
+              ` : ''}
+              <th class="num-col" style="width:115px;">Amount</th>
             </tr>
-          `).join("")}
-        </tbody>
-      </table>
-
-      <div style="display:flex;justify-content:flex-end;margin-top:20px;padding-top:12px;border-top:2px solid #e2e8f0;font-size:16px;">
-        <div><b>Total: </b><span style="font-family:'JetBrains Mono';font-weight:800;color:var(--blue);margin-left:8px;">${money(voucher.total)}</span></div>
+          </thead>
+          <tbody>
+            ${items.map((i, idx) => {
+              const qty = Number(i.qty) || 0;
+              const rate = Number(i.rate) || 0;
+              const gRate = Number(i.gstRate) || 0;
+              const gAmt = Number(i.gstAmount) || roundNumber((qty * rate) * (gRate / 100));
+              const lineTotal = Number(i.amount) || ((qty * rate) + (hasGst ? gAmt : 0));
+              return `
+                <tr>
+                  <td style="text-align:center;color:#64748b;">${idx + 1}</td>
+                  <td><b>${escapeHtml(i.product)}</b></td>
+                  <td class="num-col"><b>${numberValue(qty)}</b></td>
+                  <td>${escapeHtml(i.unit || 'unit')}</td>
+                  <td class="num-col">${money(rate)}</td>
+                  ${hasGst ? `
+                    <td class="num-col gst-col">${gRate}%</td>
+                    <td class="num-col gst-col">${money(gAmt)}</td>
+                  ` : ''}
+                  <td class="num-col total">${money(lineTotal)}</td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
       </div>
 
-      ${voucher.remarks ? `<div style="margin-top:16px;font-size:12px;color:#64748b;"><b>Remarks:</b> ${voucher.remarks}</div>` : ''}
+      <div class="pv-bottom-row">
+        <div class="pv-notes-box">
+          <div style="font-size:12.5px;color:#475569;">Total Line Items: <b style="color:#0f172a;">${items.length}</b> &nbsp;·&nbsp; Total Units: <b style="color:#0f172a;">${numberValue(totalQty)}</b></div>
+          ${voucher.remarks ? `
+            <div class="pv-notes-inner">
+              <b style="color:#0f172a;">Notes / Remarks:</b><br>${escapeHtml(voucher.remarks)}
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="pv-summary-card">
+          ${hasGst ? `
+            <div class="pv-summary-row">
+              <span>Taxable Subtotal:</span>
+              <b>${money(taxableSubtotal)}</b>
+            </div>
+            <div class="pv-summary-row gst">
+              <span>Total GST:</span>
+              <b>${money(totalGst)}</b>
+            </div>
+          ` : ''}
+          <div class="pv-summary-row grand-total">
+            <span>Grand Total:</span>
+            <span class="amt">${money(voucher.total)}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formal Authorization Signatures Block -->
+      <div class="pv-signatures">
+        <div class="pv-sig-box">Prepared By (Clerk)</div>
+        <div class="pv-sig-box">Storekeeper / Verified By</div>
+        <div class="pv-sig-box">Authorized / Receiver</div>
+      </div>
+
+      <div class="pv-footer-info">
+        <span>StockSense Material Management OS · Audit Verified</span>
+        <span>Voucher: <b>${escapeHtml(voucher.no)}</b></span>
+      </div>
     </div>
   `, `
     <button class="secondary" onclick="closeModal()">Close</button>
     <button class="secondary" onclick="closeModal();${isPurchase ? `editPurchaseVoucher('${voucher.no}')` : `editOutwardVoucher('${voucher.no}')`}">Edit / Modify</button>
     <button class="danger-btn" onclick="closeModal();${isPurchase ? `deletePurchaseVoucher('${voucher.no}')` : `deleteOutwardVoucher('${voucher.no}')`}">Delete</button>
-    <button class="primary" onclick="window.print()">Print Document</button>
+    <button class="primary" id="btn-print-voucher-bottom" onclick="triggerCleanPrint('${isPurchase ? 'Purchase' : 'Outward'}', '${voucher.no}')" style="display:inline-flex;align-items:center;gap:6px;">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      Print / PDF
+    </button>
   `);
 }
 
@@ -3654,7 +4328,7 @@ function renderPurchaseReport() {
                   <td><span style="font-size:12px;color:#334155;">${escapeHtml(summaryText)}</span></td>
                   <td class="num-cell"><b>${numberValue(unitsCount)}</b></td>
                   <td class="num-cell" style="font-weight:700;color:var(--navy);">${money(p.total)}</td>
-                  <td>${p.user || 'Alex Kim'}</td>
+                  <td>${p.user || 'Akash Kumar'}</td>
                   <td style="text-align:right;">
                     <div class="table-action-btns">
                       <button type="button" class="secondary" onclick="viewVoucher('${p.no}', true)">View</button>
@@ -4243,7 +4917,7 @@ function storesScreen() {
                   <tr>
                     <td><b>${s[0]}</b></td>
                     <td>${s[1] || "—"}</td>
-                    <td>${s[2] || "Alex Kim"}</td>
+                    <td>${s[2] || "Akash Kumar"}</td>
                     <td>${count} items</td>
                     <td style="text-align:right;">
                       <button class="secondary" style="padding:4px 8px;font-size:11px;" onclick="openModal('store', ${idx})">Edit</button>
@@ -4273,6 +4947,208 @@ function deleteStore(idx) {
   });
 }
 
+// DEPARTMENTS
+function departmentsScreen() {
+  const totalItems = state.products.length;
+  const totalOutwardVal = state.outwards.reduce((a, o) => a + (Number(o.total) || 0), 0);
+
+  return layout(
+    "Departments",
+    "Add, modify or organize cost centers, production units and stock issue destinations.",
+    `<button class="primary" onclick="openDepartmentModal()">＋ Add Department</button>`,
+    `
+      <div class="metrics-grid" style="margin-bottom:20px;">
+        <div class="card metric-card">
+          <div class="metric-top">
+            <span class="metric-title">Configured Units</span>
+            <span class="metric-badge green">Active</span>
+          </div>
+          <div class="metric-value">${state.departments.length}</div>
+          <div class="metric-sub">Operational cost centers</div>
+        </div>
+        <div class="card metric-card">
+          <div class="metric-top">
+            <span class="metric-title">Catalog Assignment</span>
+            <span class="metric-badge blue">Products</span>
+          </div>
+          <div class="metric-value">${totalItems}</div>
+          <div class="metric-sub">Items mapped to departments</div>
+        </div>
+        <div class="card metric-card">
+          <div class="metric-top">
+            <span class="metric-title">Total Consumption</span>
+            <span class="metric-badge purple">Outward Value</span>
+          </div>
+          <div class="metric-value">${money(totalOutwardVal)}</div>
+          <div class="metric-sub">Issued across all departments</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">Department Directory (${state.departments.length})</span>
+          <span class="pill">${state.departments.length} units</span>
+        </div>
+        <div class="view-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:40px;text-align:center;">#</th>
+                <th>Department Name</th>
+                <th>Assigned Items</th>
+                <th>Outward Vouchers</th>
+                <th>Consumption Value</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${state.departments.map((dept, idx) => {
+                const prodCount = state.products.filter(p => p.department === dept).length;
+                const deptOutwards = state.outwards.filter(o => o.department === dept);
+                const outCount = deptOutwards.length;
+                const outVal = deptOutwards.reduce((a, o) => a + (Number(o.total) || 0), 0);
+
+                return `
+                  <tr>
+                    <td style="text-align:center;color:#64748b;">${idx + 1}</td>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:8px;">
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:#f1f5f9;color:#334155;font-weight:700;font-size:12px;">🏢</span>
+                        <b style="font-size:14px;color:var(--text);">${escapeHtml(dept)}</b>
+                      </div>
+                    </td>
+                    <td><span class="pill" style="font-weight:600;">${prodCount} items</span></td>
+                    <td>${outCount} vouchers</td>
+                    <td><b style="color:var(--blue);font-family:'JetBrains Mono';">${money(outVal)}</b></td>
+                    <td style="text-align:right;">
+                      <button class="secondary" style="padding:4px 10px;font-size:12px;" onclick="openDepartmentModal('${escapeQuote(dept)}')">Modify / Rename</button>
+                      <button class="danger-btn" style="padding:4px 10px;font-size:12px;margin-left:4px;" onclick="deleteDepartment('${escapeQuote(dept)}')">Remove</button>
+                    </td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `
+  );
+}
+
+function openDepartmentModal(deptName) {
+  const isEdit = Boolean(deptName);
+  openInAppModal(isEdit ? "Modify Department" : "Add New Department", `
+    <div class="form-grid">
+      <div class="form-field full">
+        <label>Department / Unit Name *</label>
+        <input id="m-dept-name" value="${isEdit ? escapeHtml(deptName) : ''}" placeholder="e.g. Kitchen, Bakery, Banquets, Service Bar" autocomplete="off">
+      </div>
+      ${isEdit ? `
+        <div class="form-field full" style="font-size:12px;color:#64748b;background:#f8fafc;padding:10px 12px;border-radius:6px;border:1px solid #e2e8f0;">
+          ℹ Modifying this department will automatically update linked inventory items, stock outward notes, and ledger transactions.
+        </div>
+      ` : ''}
+    </div>
+  `, `
+    <button class="secondary" onclick="closeModal()">Cancel</button>
+    <button class="primary" onclick="submitDepartment(${isEdit ? `'${escapeQuote(deptName)}'` : 'null'})">${isEdit ? "Save Changes" : "Create Department"}</button>
+  `);
+
+  setTimeout(() => {
+    const input = document.getElementById("m-dept-name");
+    if (input) {
+      input.focus();
+      input.select();
+    }
+  }, 40);
+}
+
+function submitDepartment(oldName) {
+  const input = document.getElementById("m-dept-name");
+  const newName = (input?.value || "").trim();
+
+  if (!newName) {
+    toast("Department name cannot be empty");
+    return;
+  }
+
+  if (!Array.isArray(state.departments)) state.departments = [];
+
+  const exists = state.departments.some(d => d.toLowerCase() === newName.toLowerCase() && d.toLowerCase() !== (oldName || "").toLowerCase());
+  if (exists) {
+    toast("A department with this name already exists");
+    return;
+  }
+
+  if (oldName) {
+    const idx = state.departments.indexOf(oldName);
+    if (idx !== -1) {
+      state.departments[idx] = newName;
+    } else {
+      state.departments.push(newName);
+    }
+
+    state.products.forEach(p => {
+      if (p.department === oldName) p.department = newName;
+    });
+    state.outwards.forEach(o => {
+      if (o.department === oldName) o.department = newName;
+    });
+    state.transactions.forEach(t => {
+      if (t.department === oldName) t.department = newName;
+    });
+    if (outwardDraft.department === oldName) outwardDraft.department = newName;
+
+    departments = state.departments;
+    save();
+    closeModal();
+    toast(`Department renamed to "${newName}"`);
+    showView("departments");
+  } else {
+    state.departments.push(newName);
+    departments = state.departments;
+    save();
+    closeModal();
+    toast(`Department "${newName}" added successfully`);
+    showView("departments");
+  }
+}
+
+function deleteDepartment(deptName) {
+  if (!state.departments || state.departments.length <= 1) {
+    toast("At least one department must remain active");
+    return;
+  }
+
+  const prodCount = state.products.filter(p => p.department === deptName).length;
+  const outCount = state.outwards.filter(o => o.department === deptName).length;
+
+  const fallback = state.departments.find(d => d !== deptName) || "Other";
+  const extraWarning = (prodCount > 0 || outCount > 0)
+    ? ` (${prodCount} items and ${outCount} vouchers will be reassigned to "${fallback}")`
+    : "";
+
+  confirmModal(`Remove department "${deptName}"?${extraWarning}`, () => {
+    state.departments = state.departments.filter(d => d !== deptName);
+    departments = state.departments;
+
+    state.products.forEach(p => {
+      if (p.department === deptName) p.department = fallback;
+    });
+    state.outwards.forEach(o => {
+      if (o.department === deptName) o.department = fallback;
+    });
+    state.transactions.forEach(t => {
+      if (t.department === deptName) t.department = fallback;
+    });
+    if (outwardDraft.department === deptName) outwardDraft.department = fallback;
+
+    save();
+    toast(`Department "${deptName}" removed`);
+    showView("departments");
+  });
+}
+
 // USERS
 function usersScreen() {
   return layout(
@@ -4296,29 +5172,32 @@ function usersScreen() {
               </tr>
             </thead>
             <tbody>
-              ${state.users.map((u, idx) => `
+              ${state.users.map((u, idx) => {
+                const currentRole = state.currentUserRole || state.users.find(x => x.name === state.currentUser)?.role;
+                const isCurrent = u.name === state.currentUser && (!currentRole || u.role === currentRole);
+                return `
                 <tr>
                   <td>
                     <div class="product-cell">
-                      <div class="avatar">${u.name.split(" ").map(w=>w[0]).join("").slice(0,2)}</div>
+                      <div class="avatar">${escapeHtml(u.name.split(" ").map(w=>w[0]).join("").slice(0,2))}</div>
                       <div>
-                        <b>${u.name}</b>
-                        ${u.name === state.currentUser ? '<span class="tag" style="margin-left:6px;">Current User</span>' : ''}
+                        <b>${escapeHtml(u.name)}</b>
+                        ${isCurrent ? '<span class="tag" style="margin-left:6px;background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe;">Active Profile</span>' : ''}
                       </div>
                     </div>
                   </td>
-                  <td>${u.role}</td>
-                  <td>${u.location || "All locations"}</td>
+                  <td><span class="status ok" style="font-weight:600;">${escapeHtml(u.role)}</span></td>
+                  <td>${escapeHtml(u.location || "All locations")}</td>
                   <td><span class="status ok">${u.active ? "Active" : "Inactive"}</span></td>
                   <td style="text-align:right;">
                     <div class="table-action-btns">
                       <button type="button" class="secondary" onclick="openModal('user', ${idx})">Edit</button>
-                      ${u.name !== state.currentUser ? `<button type="button" class="secondary" onclick="switchUser('${u.name}')">Switch</button>` : ''}
-                      ${u.name !== state.currentUser ? `<button type="button" class="danger-btn" onclick="deleteUser(${idx})">Delete</button>` : ''}
+                      ${!isCurrent ? `<button type="button" class="secondary" onclick="switchUser('${escapeQuote(u.name)}', '${escapeQuote(u.role)}')">Switch</button>` : ''}
+                      ${!isCurrent ? `<button type="button" class="danger-btn" onclick="deleteUser(${idx})">Delete</button>` : ''}
                     </div>
                   </td>
                 </tr>
-              `).join("")}
+              `;}).join("")}
             </tbody>
           </table>
         </div>
@@ -4330,8 +5209,10 @@ function usersScreen() {
 function deleteUser(idx) {
   const u = state.users[idx];
   if (!u) return;
-  if (u.name === state.currentUser) { toast("Cannot delete current logged-in user"); return; }
-  confirmModal(`Permanently delete team member "${u.name}"?`, () => {
+  const currentRole = state.currentUserRole || state.users.find(x => x.name === state.currentUser)?.role;
+  const isCurrent = u.name === state.currentUser && (!currentRole || u.role === currentRole);
+  if (isCurrent) { toast("Cannot delete current logged-in user profile"); return; }
+  confirmModal(`Permanently delete team member "${u.name}" (${u.role})?`, () => {
     state.users.splice(idx, 1);
     save();
     toast(`User "${u.name}" deleted`);
@@ -4368,6 +5249,10 @@ function settingsScreen() {
                 <input value="${g.company || ''}" onchange="setField('general.company', this.value);save()">
               </label>
               <label class="setting-field">
+                <span>Website</span>
+                <input value="${g.website || ''}" placeholder="http://www.hotelrajmudra.com/" onchange="setField('general.website', this.value);save()">
+              </label>
+              <label class="setting-field">
                 <span>Phone</span>
                 <input value="${g.phone || ''}" onchange="setField('general.phone', this.value);save()">
               </label>
@@ -4375,7 +5260,7 @@ function settingsScreen() {
                 <span>Email Address</span>
                 <input value="${g.email || ''}" onchange="setField('general.email', this.value);save()">
               </label>
-              <label class="setting-field">
+              <label class="setting-field" style="grid-column: 1 / -1;">
                 <span>Address</span>
                 <input value="${g.address || ''}" onchange="setField('general.address', this.value);save()">
               </label>
@@ -4613,10 +5498,11 @@ function openModal(type, index) {
         <div class="form-field">
           <label>Role</label>
           <select id="m-user-role">
-            <option ${existing?.role === 'Owner' ? 'selected' : ''}>Owner</option>
-            <option ${existing?.role === 'Store manager' ? 'selected' : ''}>Store manager</option>
-            <option ${existing?.role === 'Inventory clerk' ? 'selected' : ''}>Inventory clerk</option>
-            <option ${existing?.role === 'Chef' ? 'selected' : ''}>Chef</option>
+            <option ${(existing?.role || '').toLowerCase() === 'owner' ? 'selected' : ''}>Owner</option>
+            <option ${(existing?.role || '').toLowerCase() === 'store manager' ? 'selected' : ''}>Store Manager</option>
+            <option ${(existing?.role || '').toLowerCase() === 'store keeper' ? 'selected' : ''}>Store Keeper</option>
+            <option ${(existing?.role || '').toLowerCase() === 'inventory clerk' ? 'selected' : ''}>Inventory Clerk</option>
+            <option ${(existing?.role || '').toLowerCase() === 'chef' ? 'selected' : ''}>Chef</option>
           </select>
         </div>
         <div class="form-field">
@@ -4871,6 +5757,7 @@ function showView(view) {
   else if (view === "purchasing") html = purchaseDraft.isNew ? purchaseScreen() : purchaseHistory();
   else if (view === "purchase-orders") html = purchaseOrdersScreen();
   else if (view === "outward") html = outwardDraft.isNew ? outwardScreen() : outwardHistory();
+  else if (view === "departments") html = departmentsScreen();
   else if (view === "suppliers") html = suppliersScreen();
   else if (view === "accounts") html = accountsScreen();
   else if (view === "reports") html = universalReports();

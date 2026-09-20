@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StockSense — Restaurant Inventory OS</title>
-  <meta name="description" content="StockSense — Restaurant Inventory OS and Material Management System" />
-  <meta property="og:title" content="StockSense — Restaurant Inventory OS" />
-  <meta property="og:description" content="StockSense — Restaurant Inventory OS and Material Management System" />
+  <title>Hotel Rajmudra — Restaurant Inventory OS</title>
+  <meta name="description" content="Hotel Rajmudra — Restaurant Inventory OS and Material Management System (Hinjawadi, Pune)" />
+  <meta property="og:title" content="Hotel Rajmudra — Restaurant Inventory OS" />
+  <meta property="og:description" content="Hotel Rajmudra — Restaurant Inventory OS and Material Management System (Hinjawadi, Pune)" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -16,9 +16,9 @@
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
       <div class="brand" id="brand-header">
-        <div class="brand-mark">S</div>
+        <div class="brand-mark">HR</div>
         <div>
-          <strong>StockSense</strong>
+          <strong>Hotel Rajmudra</strong>
           <span>Inventory OS</span>
         </div>
       </div>
@@ -26,7 +26,7 @@
       <div class="workspace-switch" id="workspace-switcher" onclick="toggleStoreDropdown(event)" title="Click to switch location">
         <div class="store-icon">⌂</div>
         <div class="workspace-info">
-          <b id="sidebar-current-store">Downtown Kitchen</b>
+          <b id="sidebar-current-store">Hotel Rajmudra - Main Store</b>
           <span>Active warehouse</span>
         </div>
         <span class="chevron">⌄</span>
@@ -42,6 +42,7 @@
         <button class="nav-item" data-view="outward" id="nav-outward"><span>⇲</span> Stock Outward</button>
         
         <p class="nav-label second">Management & Admin</p>
+        <button class="nav-item" data-view="departments" id="nav-departments"><span>🏢</span> Departments</button>
         <button class="nav-item" data-view="accounts" id="nav-accounts"><span>💳</span> Accounts</button>
         <button class="nav-item" data-view="suppliers" id="nav-suppliers"><span>🚚</span> Suppliers</button>
         <button class="nav-item" data-view="reports" id="nav-reports"><span>◒</span> Analytics & Reports</button>
@@ -54,7 +55,7 @@
         <div class="user-profile" id="user-profile-trigger" onclick="toggleUserDropdown(event)" title="Switch active user">
           <div class="avatar" id="sidebar-avatar">AK</div>
           <div class="user-meta">
-            <b id="sidebar-user-name">Alex Kim</b>
+            <b id="sidebar-user-name">Akash Kumar</b>
             <span id="sidebar-user-role">Owner</span>
           </div>
           <span class="more">•••</span>
