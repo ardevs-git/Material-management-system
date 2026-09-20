@@ -15,7 +15,7 @@
 <body>
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
-      <div class="brand" id="brand-header">
+      <div class="brand" id="brand-header" onclick="showView('dashboard')" style="cursor:pointer;" title="Go to Dashboard">
         <div class="brand-mark">HR</div>
         <div>
           <strong>Hotel Rajmudra</strong>
@@ -26,7 +26,7 @@
       <div class="workspace-switch" id="workspace-switcher" onclick="toggleStoreDropdown(event)" title="Click to switch location">
         <div class="store-icon">⌂</div>
         <div class="workspace-info">
-          <b id="sidebar-current-store">Hotel Rajmudra - Main Store</b>
+          <b id="sidebar-current-store">Main Store</b>
           <span>Active warehouse</span>
         </div>
         <span class="chevron">⌄</span>
@@ -37,14 +37,13 @@
         <p class="nav-label">Core Operations</p>
         <button class="nav-item active" data-view="dashboard" id="nav-dashboard"><span>⌂</span> Dashboard</button>
         <button class="nav-item" data-view="inventory" id="nav-inventory"><span>▣</span> Stock <i class="nav-badge" id="stock-badge">0</i></button>
+        <button class="nav-item" data-view="physical-stock" id="nav-physical-stock"><span>⚖</span> Physical Stock</button>
         <button class="nav-item" data-view="purchasing" id="nav-purchasing"><span>♧</span> Purchases</button>
         <button class="nav-item" data-view="purchase-orders" id="nav-po"><span>📋</span> Purchase Orders</button>
         <button class="nav-item" data-view="outward" id="nav-outward"><span>⇲</span> Stock Outward</button>
         
         <p class="nav-label second">Management & Admin</p>
-        <button class="nav-item" data-view="departments" id="nav-departments"><span>🏢</span> Departments</button>
         <button class="nav-item" data-view="accounts" id="nav-accounts"><span>💳</span> Accounts</button>
-        <button class="nav-item" data-view="suppliers" id="nav-suppliers"><span>🚚</span> Suppliers</button>
         <button class="nav-item" data-view="reports" id="nav-reports"><span>◒</span> Analytics & Reports</button>
         <button class="nav-item" data-view="users" id="nav-users"><span>♙</span> Team & Security</button>
         <button class="nav-item" data-view="settings" id="nav-settings"><span>⚙</span> Settings</button>

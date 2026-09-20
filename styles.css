@@ -2449,4 +2449,77 @@ mark.search-match,
   }
 }
 
+/* Physical Stock Taking Styles */
+.phys-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.phys-input-wrap input {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 13px;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  padding: 6px 10px;
+  border-radius: 6px;
+  width: 120px;
+  text-align: right;
+  transition: all 0.15s;
+}
+.phys-input-wrap input:focus {
+  background: #ffffff;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+.phys-input-wrap input.has-variance-surplus {
+  border-color: #86efac;
+  background: #f0fdf4;
+  color: #15803d;
+}
+.phys-input-wrap input.has-variance-deficit {
+  border-color: #fca5a5;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+.phys-input-wrap input.has-match {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+}
+.variance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.variance-badge.surplus {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+.variance-badge.deficit {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+.variance-badge.match {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+.variance-badge.uncounted {
+  background: #f8fafc;
+  color: #94a3b8;
+  border: 1px dashed #cbd5e1;
+}
+
+
 

@@ -2,20 +2,20 @@
 // StockSense - High Performance Restaurant Inventory OS
 const seed = {
   products: [
-    {id:1,name:"Paneer",sku:"DAI-001",barcode:"8901001001",category:"Dairy",unit:"kg",stock:7.2,min:10,reorder:14,max:24,cost:11.8,purchaseCost:11.8,store:"Hotel Rajmudra - Main Store",expiry:"2026-09-22",icon:"🧀"},
-    {id:2,name:"Tomato",sku:"VEG-001",barcode:"8901001002",category:"Vegetables",unit:"kg",stock:14,min:8,reorder:12,max:25,cost:3.4,purchaseCost:3.4,store:"Hotel Rajmudra - Main Store",expiry:"2026-09-28",icon:"🍅"},
-    {id:3,name:"Butter",sku:"DAI-002",barcode:"8901001003",category:"Dairy",unit:"kg",stock:8.4,min:6,reorder:9,max:16,cost:8.5,purchaseCost:8.5,store:"Hotel Rajmudra - Main Store",expiry:"2026-10-04",icon:"🧈"},
-    {id:4,name:"Cooking Cream",sku:"DAI-003",barcode:"8901001004",category:"Dairy",unit:"L",stock:4.8,min:5,reorder:8,max:14,cost:6.4,purchaseCost:6.4,store:"Hotel Rajmudra - Main Store",expiry:"2026-09-20",icon:"🥛"},
-    {id:5,name:"Arabica Coffee Beans",sku:"BEV-001",barcode:"8901001005",category:"Beverages",unit:"kg",stock:18.5,min:12,reorder:16,max:30,cost:18.5,purchaseCost:18.5,store:"Hotel Rajmudra - Main Store",expiry:"2026-10-06",icon:"☕"},
-    {id:6,name:"Basmati Rice",sku:"PAN-013",barcode:"8901001006",category:"Pantry",unit:"kg",stock:42,min:20,reorder:28,max:60,cost:3.4,purchaseCost:3.4,store:"Kitchen Store",expiry:"2027-08-10",icon:"🍚"}
+    {id:1,name:"Paneer",sku:"DAI-001",barcode:"8901001001",category:"Dairy",unit:"kg",stock:7.2,min:10,reorder:14,max:24,cost:11.8,purchaseCost:11.8,store:"Main Store",expiry:"2026-09-22",icon:"🧀"},
+    {id:2,name:"Tomato",sku:"VEG-001",barcode:"8901001002",category:"Vegetables",unit:"kg",stock:14,min:8,reorder:12,max:25,cost:3.4,purchaseCost:3.4,store:"Main Store",expiry:"2026-09-28",icon:"🍅"},
+    {id:3,name:"Butter",sku:"DAI-002",barcode:"8901001003",category:"Dairy",unit:"kg",stock:8.4,min:6,reorder:9,max:16,cost:8.5,purchaseCost:8.5,store:"Main Store",expiry:"2026-10-04",icon:"🧈"},
+    {id:4,name:"Cooking Cream",sku:"DAI-003",barcode:"8901001004",category:"Dairy",unit:"L",stock:4.8,min:5,reorder:8,max:14,cost:6.4,purchaseCost:6.4,store:"Main Store",expiry:"2026-09-20",icon:"🥛"},
+    {id:5,name:"Arabica Coffee Beans",sku:"BEV-001",barcode:"8901001005",category:"Beverages",unit:"kg",stock:18.5,min:12,reorder:16,max:30,cost:18.5,purchaseCost:18.5,store:"Main Store",expiry:"2026-10-06",icon:"☕"},
+    {id:6,name:"Basmati Rice",sku:"PAN-013",barcode:"8901001006",category:"Pantry",unit:"kg",stock:42,min:20,reorder:28,max:60,cost:3.4,purchaseCost:3.4,store:"Cold Store",expiry:"2027-08-10",icon:"🍚"}
   ],
   transactions: [
-    {id:"TX-1048",date:"2026-09-14T10:30:00",type:"Purchase",product:"Paneer",store:"Hotel Rajmudra - Main Store",qty:12,cost:11.8,user:"Akash Kumar",ref:"GRN-00218"},
-    {id:"TX-1047",date:"2026-09-14T09:15:00",type:"Consumption",product:"Tomato",store:"Hotel Rajmudra - Main Store",qty:-4.5,cost:3.4,user:"Deepu Kumar",ref:"CON-00821"},
-    {id:"TX-1046",date:"2026-09-14T08:40:00",type:"Wastage",product:"Cooking Cream",store:"Hotel Rajmudra - Main Store",qty:-1.2,cost:6.4,user:"Deepu Kumar",ref:"WST-00092"},
-    {id:"TX-1045",date:"2026-09-13T16:10:00",type:"Consumption",product:"Butter",store:"Hotel Rajmudra - Main Store",qty:-1.6,cost:8.5,user:"Deepu Kumar",ref:"CON-00820"},
-    {id:"TX-1044",date:"2026-09-12T11:20:00",type:"Transfer out",product:"Basmati Rice",store:"Kitchen Store",qty:-10,cost:3.4,user:"Akash Kumar",ref:"TRF-00028"},
-    {id:"TX-1043",date:"2026-09-12T12:05:00",type:"Transfer in",product:"Basmati Rice",store:"Hotel Rajmudra - Main Store",qty:10,cost:3.4,user:"Akash Kumar",ref:"TRF-00028"}
+    {id:"TX-1048",date:"2026-09-14T10:30:00",type:"Purchase",product:"Paneer",store:"Main Store",qty:12,cost:11.8,user:"Akash Kumar",ref:"GRN-00218"},
+    {id:"TX-1047",date:"2026-09-14T09:15:00",type:"Consumption",product:"Tomato",store:"Main Store",qty:-4.5,cost:3.4,user:"Deepu Kumar",ref:"CON-00821"},
+    {id:"TX-1046",date:"2026-09-14T08:40:00",type:"Wastage",product:"Cooking Cream",store:"Main Store",qty:-1.2,cost:6.4,user:"Deepu Kumar",ref:"WST-00092"},
+    {id:"TX-1045",date:"2026-09-13T16:10:00",type:"Consumption",product:"Butter",store:"Main Store",qty:-1.6,cost:8.5,user:"Deepu Kumar",ref:"CON-00820"},
+    {id:"TX-1044",date:"2026-09-12T11:20:00",type:"Transfer out",product:"Basmati Rice",store:"Cold Store",qty:-10,cost:3.4,user:"Akash Kumar",ref:"TRF-00028"},
+    {id:"TX-1043",date:"2026-09-12T12:05:00",type:"Transfer in",product:"Basmati Rice",store:"Main Store",qty:10,cost:3.4,user:"Akash Kumar",ref:"TRF-00028"}
   ],
   suppliers:[
     ["Fresh Foods Co.","Produce & dairy","orders@freshfoods.co",3,2180],
@@ -23,9 +23,8 @@ const seed = {
     ["Green Valley Farms","Fresh produce","hello@greenvalley.co",2,890]
   ],
   stores:[
-    ["Hotel Rajmudra - Main Store","Primary material & inventory warehouse","Akash Kumar",6],
-    ["Kitchen Store","Daily kitchen production & perishables","Deepu Kumar",2],
-    ["Bar & Beverage Cellar","Beverage & syrup storage","Akash Kumar",1]
+    ["Main Store","Primary material & inventory warehouse","Akash Kumar",6],
+    ["Cold Store","Chilled storage, dairy, perishables & frozen stock","Deepu Kumar",2]
   ]
 };
 
@@ -49,7 +48,7 @@ const state = stored && typeof stored === "object" ? stored : {
       website: "http://www.hotelrajmudra.com/",
       financialYear: "April",
       department: "Kitchen",
-      location: "Hotel Rajmudra - Main Store",
+      location: "Main Store",
       dateFormat: "DD-MM-YYYY",
       confirmDelete: true
     },
@@ -64,7 +63,7 @@ const defaultPurchases = [
     no: "GRN-00218",
     date: "2026-09-14",
     supplier: "Fresh Foods Co.",
-    store: "Hotel Rajmudra - Main Store",
+    store: "Main Store",
     reference: "INV-90214",
     remarks: "Weekly dairy delivery",
     items: [
@@ -80,7 +79,7 @@ const defaultPurchases = [
     no: "GRN-00217",
     date: "2026-09-06",
     supplier: "Metro Provisions",
-    store: "Hotel Rajmudra - Main Store",
+    store: "Main Store",
     reference: "INV-84190",
     remarks: "Dry goods & beans restock",
     items: [
@@ -96,7 +95,7 @@ const defaultPurchases = [
     no: "GRN-00216",
     date: "2026-08-24",
     supplier: "Green Valley Farms",
-    store: "Hotel Rajmudra - Main Store",
+    store: "Main Store",
     reference: "INV-77120",
     remarks: "End of month produce delivery",
     items: [
@@ -114,7 +113,7 @@ const defaultOutwards = [
     no: "OUT-00084",
     date: "2026-09-14",
     department: "Kitchen",
-    store: "Hotel Rajmudra - Main Store",
+    store: "Main Store",
     issuedTo: "Executive Chef",
     remarks: "Lunch prep & curry service",
     items: [
@@ -129,7 +128,7 @@ const defaultOutwards = [
     no: "OUT-00083",
     date: "2026-09-13",
     department: "Bakery",
-    store: "Hotel Rajmudra - Main Store",
+    store: "Main Store",
     issuedTo: "Pastry Chef",
     remarks: "Morning croissant & bakery production",
     items: [
@@ -144,7 +143,7 @@ const defaultOutwards = [
     no: "OUT-00082",
     date: "2026-09-10",
     department: "Bar",
-    store: "Hotel Rajmudra - Main Store",
+    store: "Main Store",
     issuedTo: "Bar Manager",
     remarks: "Espresso & cold brew bar prep",
     items: [
@@ -180,17 +179,35 @@ if (isFirstRun) {
 }
 state.purchaseOrders = Array.isArray(state.purchaseOrders) ? state.purchaseOrders : [];
 state.suppliers = Array.isArray(state.suppliers) && state.suppliers.length ? state.suppliers : seed.suppliers;
-state.stores = (Array.isArray(state.stores) && state.stores.length && !state.stores.some(s => s[0] === "Downtown Kitchen")) ? state.stores : seed.stores;
+state.stores = Array.isArray(state.stores) && state.stores.length ? state.stores : seed.stores;
+
+// Ensure Store 1 is Main Store and Store 2 is Cold Store
+if (state.stores.length > 0) {
+  state.stores[0][0] = "Main Store";
+  if (!state.stores[0][1]) state.stores[0][1] = "Primary material & inventory warehouse";
+  if (!state.stores[0][2]) state.stores[0][2] = "Akash Kumar";
+}
+if (state.stores.length > 1) {
+  state.stores[1][0] = "Cold Store";
+  if (!state.stores[1][1]) state.stores[1][1] = "Chilled storage, dairy, perishables & frozen stock";
+  if (!state.stores[1][2]) state.stores[1][2] = "Deepu Kumar";
+} else {
+  state.stores.push(["Cold Store", "Chilled storage, dairy, perishables & frozen stock", "Deepu Kumar", 2]);
+}
 
 state.users = [
   { name: "Akash Kumar", role: "Owner", location: "All locations", active: true, email: "RajmudraStores@gmail.com", phone: "9507543741" },
   { name: "Akash Kumar", role: "Store Manager", location: "All locations", active: true, email: "RajmudraStores@gmail.com", phone: "9507543741" },
-  { name: "Deepu Kumar", role: "Store Keeper", location: "Hotel Rajmudra - Main Store", active: true, email: "RajmudraStores@gmail.com", phone: "9507543741" }
+  { name: "Deepu Kumar", role: "Store Keeper", location: "Main Store", active: true, email: "RajmudraStores@gmail.com", phone: "9507543741" }
 ];
 
 state.currentUser = (state.currentUser && state.currentUser !== "Alex Kim" && state.users.some(u => u.name === state.currentUser)) ? state.currentUser : "Akash Kumar";
 state.currentUserRole = state.currentUserRole || (state.users.find(u => u.name === state.currentUser)?.role || "Owner");
-state.currentStore = (state.currentStore && state.currentStore !== "Downtown Kitchen") ? state.currentStore : "Hotel Rajmudra - Main Store";
+
+const isStore1Name = s => !s || s === "Hotel Rajmudra - Main Store" || s === "Downtown Kitchen" || s === "Main Store";
+const isStore2Name = s => s === "Kitchen Store" || s === "Cold Store";
+
+state.currentStore = isStore2Name(state.currentStore) ? "Cold Store" : "Main Store";
 
 state.settings = state.settings || {};
 state.settings.general = {
@@ -204,39 +221,50 @@ state.settings.general = {
   phone: "9507543741",
   email: "RajmudraStores@gmail.com",
   website: "http://www.hotelrajmudra.com/",
-  location: (!state.settings.general?.location || state.settings.general.location === "Downtown Kitchen") ? "Hotel Rajmudra - Main Store" : state.settings.general.location
+  location: isStore2Name(state.settings.general?.location) ? "Cold Store" : "Main Store"
 };
 
-// Migrate historical records referencing Downtown Kitchen or Alex Kim/Maya Chen
+// Migrate historical records referencing old store names or users
 if (Array.isArray(state.products)) {
   state.products.forEach(p => {
-    if (p.store === "Downtown Kitchen") p.store = "Hotel Rajmudra - Main Store";
+    if (isStore1Name(p.store)) p.store = "Main Store";
+    else if (isStore2Name(p.store)) p.store = "Cold Store";
   });
 }
 if (Array.isArray(state.purchases)) {
   state.purchases.forEach(p => {
-    if (p.store === "Downtown Kitchen") p.store = "Hotel Rajmudra - Main Store";
+    if (isStore1Name(p.store)) p.store = "Main Store";
+    else if (isStore2Name(p.store)) p.store = "Cold Store";
     if (p.user === "Alex Kim") p.user = "Akash Kumar";
     if (p.user === "Maya Chen") p.user = "Deepu Kumar";
   });
 }
 if (Array.isArray(state.outwards)) {
   state.outwards.forEach(o => {
-    if (o.store === "Downtown Kitchen") o.store = "Hotel Rajmudra - Main Store";
+    if (isStore1Name(o.store)) o.store = "Main Store";
+    else if (isStore2Name(o.store)) o.store = "Cold Store";
     if (o.user === "Alex Kim") o.user = "Akash Kumar";
     if (o.user === "Maya Chen") o.user = "Deepu Kumar";
   });
 }
+if (Array.isArray(state.purchaseOrders)) {
+  state.purchaseOrders.forEach(po => {
+    if (isStore1Name(po.store)) po.store = "Main Store";
+    else if (isStore2Name(po.store)) po.store = "Cold Store";
+  });
+}
 if (Array.isArray(state.transactions)) {
   state.transactions.forEach(t => {
-    if (t.store === "Downtown Kitchen") t.store = "Hotel Rajmudra - Main Store";
+    if (isStore1Name(t.store)) t.store = "Main Store";
+    else if (isStore2Name(t.store)) t.store = "Cold Store";
     if (t.user === "Alex Kim") t.user = "Akash Kumar";
     if (t.user === "Maya Chen") t.user = "Deepu Kumar";
   });
 }
 state.settings.inventory = state.settings.inventory || { negative: false, lowThreshold: 10, recalculate: true };
-state.settings.transactions = state.settings.transactions || { purchasePrefix: "GRN-", outwardPrefix: "OUT-" };
+state.settings.transactions = state.settings.transactions || { purchasePrefix: "GRN-", outwardPrefix: "OUT-", auditPrefix: "AUD-" };
 state.settings.savedReports = Array.isArray(state.settings.savedReports) ? state.settings.savedReports : [];
+state.stockAudits = Array.isArray(state.stockAudits) ? state.stockAudits : [];
 
 // Initialize departments in state so they can be added, modified or deleted
 state.departments = Array.isArray(state.departments) && state.departments.length
@@ -538,7 +566,17 @@ const toast = msg => {
   setTimeout(() => t.classList.remove("show"), 2800);
 };
 
-const productByName = name => state.products.find(p => p.name === name);
+const productByName = name => {
+  if (!name || typeof name !== "string") return undefined;
+  const trimmed = name.trim();
+  if (!trimmed) return undefined;
+  const exact = state.products.find(p => p.name === trimmed);
+  if (exact) return exact;
+  const lower = trimmed.toLowerCase();
+  const caseMatch = state.products.find(p => (p.name || "").trim().toLowerCase() === lower);
+  if (caseMatch) return caseMatch;
+  return state.products.find(p => (p.sku && p.sku.toLowerCase() === lower) || (p.barcode && p.barcode === trimmed));
+};
 const stockValue = () => state.products.reduce((sum, p) => sum + (Number(p.stock) || 0) * (Number(p.cost) || 0), 0);
 
 function rebuildStock() {
@@ -584,7 +622,7 @@ function setField(path, value) {
   obj[parts[parts.length - 1]] = value;
 }
 
-const titleCase = s => s.replace(/(^|[-_])(w)/g, (_, a, b) => " " + b.toUpperCase()).trim();
+const titleCase = s => String(s || '').split(/[-_]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 const escapeQuote = s => String(s).replace(/'/g, "\\'");
 
 function layout(title, subtitle, actions = "", body = "") {
@@ -767,7 +805,7 @@ function ledgerRows(rows) {
             <td><b>${t.ref || '—'}</b></td>
             <td><div class="product-cell"><span class="product-dot">${productByName(t.product)?.icon || "📦"}</span>${t.product}</div></td>
             <td><span class="tag">${t.type}</span></td>
-            <td>${t.store || "Hotel Rajmudra - Main Store"}</td>
+            <td>${t.store || "Main Store"}</td>
             <td class="num-cell" style="color:${t.qty < 0 ? "var(--red)" : "var(--green-text)"};font-weight:700">${t.qty > 0 ? "+" : ""}${numberValue(t.qty)}</td>
             <td class="num-cell">${money(t.cost)}</td>
             <td class="num-cell"><b>${money(Math.abs(t.qty) * (t.cost || 0))}</b></td>
@@ -1113,7 +1151,7 @@ function renderInventoryTable() {
                 </div>
               </td>
               <td>${p.category || "—"}</td>
-              <td>${p.store || "Hotel Rajmudra - Main Store"}</td>
+              <td>${p.store || "Main Store"}</td>
               <td>${p.min || 0} / ${p.reorder || 0}</td>
               <td class="num-cell" style="font-weight:700;${p.stock < (p.min||10) ? 'color:var(--red);' : ''}">${numberValue(p.stock)} ${p.unit}</td>
               <td class="num-cell">${money(p.purchaseCost || p.cost || 0)}</td>
@@ -1217,7 +1255,7 @@ function viewItem(id) {
       <div><span style="color:#64748b;">Category:</span> <b>${p.category || '—'}</b></div>
       <div><span style="color:#64748b;">Department:</span> <b>${p.department || '—'}</b></div>
       <div><span style="color:#64748b;">Unit:</span> <b>${p.unit}</b></div>
-      <div><span style="color:#64748b;">Warehouse:</span> <b>${p.store || 'Hotel Rajmudra - Main Store'}</b></div>
+      <div><span style="color:#64748b;">Warehouse:</span> <b>${p.store || 'Main Store'}</b></div>
       <div><span style="color:#64748b;">Current Stock:</span> <b style="font-size:15px;color:var(--blue);">${numberValue(p.stock)} ${p.unit}</b></div>
       <div><span style="color:#64748b;">Cost Rate:</span> <b>${money(p.cost || 0)}</b></div>
       <div><span style="color:#64748b;">Min Level:</span> <b>${p.min || 0}</b></div>
@@ -1326,7 +1364,7 @@ function saveItemChanges(id) {
 }
 
 // PURCHASING & GOODS RECEIPT
-let purchaseDraft = { date: today, supplier: "Fresh Foods Co.", store: "Hotel Rajmudra - Main Store", reference: "", remarks: "", items: [], isNew: false };
+let purchaseDraft = { date: today, supplier: "Fresh Foods Co.", store: "Main Store", reference: "", remarks: "", items: [], isNew: false };
 const nextPurchaseNo = () => `GRN-${String((state.purchases || []).length + 219).padStart(5, "0")}`;
 
 function newPurchase() {
@@ -1812,97 +1850,174 @@ function addPurchaseRow() {
 
 function removePurchaseRow(idx) {
   purchaseDraft.items.splice(idx, 1);
+  if (!purchaseDraft.items.length) {
+    purchaseDraft.items.push({ product: "", qty: 1, rate: 0, gstRate: 0, gstAmount: 0, amount: 0 });
+  }
   const tbody = document.getElementById("purchase-items-body");
   if (tbody) tbody.innerHTML = renderPurchaseTableRows();
   refreshPurchaseTotals();
 }
 
+function syncPurchaseDraftFromDOM() {
+  const dateEl = document.getElementById("vfs-p-date");
+  if (dateEl && dateEl.value) purchaseDraft.date = dateEl.value;
+  const supEl = document.getElementById("vfs-p-supplier");
+  if (supEl) purchaseDraft.supplier = supEl.value;
+  const storeEl = document.getElementById("vfs-p-store");
+  if (storeEl) purchaseDraft.store = storeEl.value;
+  const refEl = document.getElementById("vfs-p-ref");
+  if (refEl) purchaseDraft.reference = refEl.value.trim();
+  const remEl = document.getElementById("vfs-p-remarks");
+  if (remEl) purchaseDraft.remarks = remEl.value.trim();
+
+  purchaseDraft.items.forEach((item, idx) => {
+    const sEl = document.getElementById(`p-search-${idx}`);
+    if (sEl) item.product = sEl.value.trim();
+    const qEl = document.getElementById(`p-qty-${idx}`);
+    if (qEl && qEl.value !== "") item.qty = Number(qEl.value);
+    const rEl = document.getElementById(`p-rate-${idx}`);
+    if (rEl && rEl.value !== "") item.rate = Number(rEl.value);
+    const gEl = document.getElementById(`p-gst-${idx}`);
+    if (gEl && gEl.value !== "") item.gstRate = Number(gEl.value);
+  });
+}
+
 function savePurchase() {
-  // Prune any completely empty rows first so trailing or accidental rows don't block save
-  purchaseDraft.items = purchaseDraft.items.filter(i => (i.product && i.product.trim()) || Number(i.qty) > 0);
-  if (!purchaseDraft.items.length) {
-    toast("Please add at least one item");
+  syncPurchaseDraftFromDOM();
+
+  // Collect only valid items that have a product name entered
+  const validItems = [];
+  purchaseDraft.items.forEach(i => {
+    const prodName = (i.product || "").trim();
+    if (prodName) {
+      const qty = Number(i.qty);
+      const rate = Number(i.rate);
+      const gstRate = Number(i.gstRate) || 0;
+      validItems.push({
+        ...i,
+        product: prodName,
+        qty: isNaN(qty) || qty <= 0 ? 1 : qty,
+        rate: isNaN(rate) || rate < 0 ? 0 : rate,
+        gstRate: isNaN(gstRate) || gstRate < 0 ? 0 : gstRate
+      });
+    }
+  });
+
+  if (!validItems.length) {
+    toast("Please enter or select at least one item to save");
+    const firstInput = document.getElementById("p-search-0");
+    if (firstInput) {
+      firstInput.focus();
+      firstInput.select();
+    }
     return;
   }
-  const invalid = purchaseDraft.items.some(i => !i.product || !i.qty);
-  if (invalid) {
-    toast("Ensure all items have an item name and quantity");
-    return;
-  }
+
   const isEditing = Boolean(purchaseDraft.isEditing);
   const no = purchaseDraft.no || nextPurchaseNo();
-  const confirmMsg = isEditing
-    ? `Update and save changes to Goods Receipt ${no}?`
-    : `Post Goods Receipt ${no} and update stock balances?`;
 
-  confirmModal(confirmMsg, () => {
-    const items = purchaseDraft.items.map(i => {
-      const p = productByName(i.product);
-      const qty = Number(i.qty) || 0;
-      const rate = Number(i.rate) || 0;
-      const gstRate = Number(i.gstRate) || 0;
-      const taxableAmount = qty * rate;
-      const gstAmount = roundNumber(taxableAmount * (gstRate / 100));
-      return {
-        ...i,
-        unit: p?.unit || "unit",
-        qty,
-        rate,
-        gstRate,
-        gstAmount,
-        taxableAmount,
-        amount: taxableAmount + gstAmount
+  const processedItems = validItems.map(i => {
+    let p = productByName(i.product);
+    if (!p) {
+      // Auto-create newly purchased product in catalog
+      p = {
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        name: i.product,
+        sku: "ITEM-" + String(state.products.length + 1).padStart(3, "0"),
+        barcode: "",
+        category: "General",
+        department: "Kitchen",
+        unit: i.unit || "unit",
+        stock: 0,
+        min: 5,
+        reorder: 10,
+        max: 50,
+        cost: Number(i.rate) || 0,
+        purchaseCost: Number(i.rate) || 0,
+        store: purchaseDraft.store || state.currentStore,
+        icon: "📦",
+        active: true
       };
-    });
-    const subtotal = items.reduce((a, i) => a + i.taxableAmount, 0);
-    const gstTotal = items.reduce((a, i) => a + i.gstAmount, 0);
-    const total = subtotal + gstTotal;
-
-    // If editing, clear existing transactions and previous purchase record
-    if (isEditing) {
-      state.transactions = state.transactions.filter(t => t.ref !== no);
-      state.purchases = state.purchases.filter(p => p.no !== no);
-    }
-
-    items.forEach(i => {
-      state.transactions.unshift({
-        id: "TX-" + Date.now() + Math.random().toString(36).slice(2, 6),
-        date: purchaseDraft.date + "T12:00:00",
-        type: "Purchase",
-        product: i.product,
-        store: purchaseDraft.store,
-        qty: Number(i.qty),
-        cost: Number(i.rate),
-        user: state.currentUser,
-        ref: no
-      });
-      const p = productByName(i.product);
-      if (p) {
+      state.products.push(p);
+      if (!state.openingStock) state.openingStock = {};
+      if (state.openingStock[p.name] === undefined) {
+        state.openingStock[p.name] = 0;
+      }
+    } else {
+      // Canonical product name from catalog
+      i.product = p.name;
+      if (Number(i.rate) > 0) {
         p.cost = Number(i.rate);
         p.purchaseCost = Number(i.rate);
       }
-    });
+    }
 
-    state.purchases.unshift({
-      ...purchaseDraft,
-      no,
-      items,
-      subtotal,
-      gstTotal,
-      total,
-      user: state.currentUser,
-      status: "Posted",
-      createdAt: purchaseDraft.createdAt || new Date().toISOString()
-    });
+    const qty = Number(i.qty) || 1;
+    const rate = Number(i.rate) || 0;
+    const gstRate = Number(i.gstRate) || 0;
+    const taxableAmount = qty * rate;
+    const gstAmount = roundNumber(taxableAmount * (gstRate / 100));
 
-    save(); // Persist to localStorage
-    rebuildStock();
-    toast(no + (isEditing ? " updated successfully!" : " posted successfully!"));
-    purchaseDraft.isNew = false;
-    purchaseDraft.isEditing = false;
-    closeProductSearchPopover();
-    showView("purchasing");
+    return {
+      product: i.product,
+      unit: p?.unit || i.unit || "unit",
+      qty,
+      rate,
+      gstRate,
+      gstAmount,
+      taxableAmount,
+      amount: taxableAmount + gstAmount
+    };
   });
+
+  const subtotal = processedItems.reduce((a, i) => a + i.taxableAmount, 0);
+  const gstTotal = processedItems.reduce((a, i) => a + i.gstAmount, 0);
+  const total = subtotal + gstTotal;
+
+  // If editing, clear existing transactions and previous purchase record
+  if (isEditing) {
+    state.transactions = state.transactions.filter(t => t.ref !== no);
+    state.purchases = state.purchases.filter(p => p.no !== no);
+  }
+
+  const voucherDate = (purchaseDraft.date || today) + "T12:00:00";
+  processedItems.forEach(i => {
+    state.transactions.unshift({
+      id: "TX-" + Date.now() + Math.random().toString(36).slice(2, 6),
+      date: voucherDate,
+      type: "Purchase",
+      product: i.product,
+      store: purchaseDraft.store || state.currentStore,
+      qty: Number(i.qty),
+      cost: Number(i.rate),
+      user: state.currentUser,
+      ref: no
+    });
+  });
+
+  state.purchases.unshift({
+    no,
+    date: purchaseDraft.date || today,
+    supplier: purchaseDraft.supplier || (state.suppliers[0] ? state.suppliers[0][0] : "Fresh Foods Co."),
+    store: purchaseDraft.store || state.currentStore,
+    reference: purchaseDraft.reference || "",
+    remarks: purchaseDraft.remarks || "",
+    items: processedItems,
+    subtotal,
+    gstTotal,
+    total,
+    user: state.currentUser,
+    status: "Posted",
+    createdAt: purchaseDraft.createdAt || new Date().toISOString()
+  });
+
+  save();
+  rebuildStock();
+  ensureProductsDatalist();
+  toast(no + (isEditing ? " updated successfully!" : " posted successfully!"));
+  purchaseDraft = { date: today, supplier: "Fresh Foods Co.", store: state.currentStore, reference: "", remarks: "", items: [], isNew: false, isEditing: false };
+  closeProductSearchPopover();
+  showView("purchasing");
 }
 
 function editPurchaseVoucher(no) {
@@ -1977,7 +2092,7 @@ function purchaseHistory() {
                   <td><b>${v.no}</b></td>
                   <td>${fmtDate(v.date)}</td>
                   <td>${v.supplier}</td>
-                  <td>${v.store || "Hotel Rajmudra - Main Store"}</td>
+                  <td>${v.store || "Main Store"}</td>
                   <td>${v.items?.length || 0} items</td>
                   <td class="num-cell" style="font-weight:700;">${money(v.total)}</td>
                   <td>${v.user}</td>
@@ -2089,7 +2204,7 @@ function purchaseOrdersScreen() {
                     <td><input type="number" value="${i.qty}" oninput="poDraft.items[${idx}].qty=Number(this.value)||0;refreshPOTotals()"></td>
                     <td><input type="number" step="0.01" value="${i.rate}" oninput="poDraft.items[${idx}].rate=Number(this.value)||0;refreshPOTotals()"></td>
                     <td class="num-cell" id="po-amt-${idx}">${money((i.qty || 0) * (i.rate || 0))}</td>
-                    <td><button class="row-delete" onclick="poDraft.items.splice(${idx},1);refreshPOTotals();showView('purchase-orders')">×</button></td>
+                    <td><button type="button" class="row-delete" onclick="removePORow(${idx})">×</button></td>
                   </tr>
                 `).join("")}
               </tbody>
@@ -2173,6 +2288,16 @@ function addPORow() {
   showView("purchase-orders");
 }
 
+function removePORow(idx) {
+  if (!poDraft || !Array.isArray(poDraft.items)) return;
+  poDraft.items.splice(idx, 1);
+  if (poDraft.items.length === 0) {
+    poDraft.items.push({ product: state.products[0]?.name || "", qty: 1, rate: 0 });
+  }
+  refreshPOTotals();
+  showView("purchase-orders");
+}
+
 function refreshPOTotals() {
   const total = poDraft.items.reduce((a, i) => a + (Number(i.qty) || 0) * (Number(i.rate) || 0), 0);
   const totalEl = document.getElementById("po-total");
@@ -2219,10 +2344,10 @@ function convertPOToPurchase(poNo) {
 }
 
 // STOCK OUTWARD (ISSUES)
-let outwardDraft = { department: "Kitchen", store: "Hotel Rajmudra - Main Store", date: today, issuedTo: "", reference: "", remarks: "", items: [], isNew: false };
+let outwardDraft = { department: "Kitchen", store: "Main Store", date: today, issuedTo: "", reference: "", remarks: "", items: [], isNew: false };
 const nextOutwardNo = () => `OUT-${String(state.outwards.length + 1).padStart(5, "0")}`;
 
-function newOutward() {
+function newOutward(prefilledItems = []) {
   outwardDraft = {
     no: nextOutwardNo(),
     department: "Kitchen",
@@ -2231,7 +2356,7 @@ function newOutward() {
     issuedTo: "",
     reference: "",
     remarks: "",
-    items: [{ product: "", qty: 1 }],
+    items: Array.isArray(prefilledItems) && prefilledItems.length ? prefilledItems.map(i => ({ product: i.product || "", qty: Number(i.qty) || 1, rate: Number(i.rate) || 0 })) : [{ product: "", qty: 1 }],
     isNew: true
   };
   showView("outward");
@@ -2242,6 +2367,10 @@ function newOutward() {
       firstInput.select();
     }
   }, 60);
+}
+
+function newOutwardDraft(prefilledItems) {
+  newOutward(prefilledItems);
 }
 
 function exitOutwardFullscreen() {
@@ -2595,11 +2724,12 @@ function refreshOutwardTotals() {
   if (vBox) {
     vBox.className = "vfs-footer-validation " + (hasExceeded ? "has-error" : "valid");
     vBox.textContent = hasExceeded
-      ? "⚠ Some items exceed warehouse on-hand stock"
+      ? "⚠ Some items exceed warehouse on-hand stock (confirmation will be requested on save)"
       : "✓ Quantities verified against warehouse stock · Press [F5] to add line items";
   }
-  if (saveBtn) saveBtn.disabled = hasExceeded;
-  if (saveBtnDocked) saveBtnDocked.disabled = hasExceeded;
+  // Keep save buttons enabled so clicks provide interactive feedback
+  if (saveBtn) saveBtn.disabled = false;
+  if (saveBtnDocked) saveBtnDocked.disabled = false;
 }
 
 function refreshOutwardTableStock() {
@@ -2632,81 +2762,158 @@ function addOutwardRow() {
 
 function removeOutwardRow(idx) {
   outwardDraft.items.splice(idx, 1);
+  if (!outwardDraft.items.length) {
+    outwardDraft.items.push({ product: "", qty: 1 });
+  }
   const tbody = document.getElementById("outward-items-body");
   if (tbody) tbody.innerHTML = renderOutwardTableRows();
   refreshOutwardTotals();
 }
 
-function saveOutward() {
-  // Prune any completely empty rows first
-  outwardDraft.items = outwardDraft.items.filter(i => (i.product && i.product.trim()) || Number(i.qty) > 0);
-  if (!outwardDraft.items.length) { toast("Add at least one item to issue"); return; }
-  const isEditing = Boolean(outwardDraft.isEditing);
-  const no = outwardDraft.no || nextOutwardNo();
-  const invalid = outwardDraft.items.some(i => {
-    const p = productByName(i.product);
-    return !p || !i.qty || (Number(i.qty) > Number(p.stock) && !state.settings.inventory?.negative);
+function syncOutwardDraftFromDOM() {
+  const dateEl = document.getElementById("vfs-out-date");
+  if (dateEl && dateEl.value) outwardDraft.date = dateEl.value;
+  const deptEl = document.getElementById("vfs-out-dept");
+  if (deptEl) outwardDraft.department = deptEl.value;
+  const storeEl = document.getElementById("vfs-out-store");
+  if (storeEl) outwardDraft.store = storeEl.value;
+  const toEl = document.getElementById("vfs-out-issuedto");
+  if (toEl) outwardDraft.issuedTo = toEl.value.trim();
+  const remEl = document.getElementById("vfs-out-remarks");
+  if (remEl) outwardDraft.remarks = remEl.value.trim();
+
+  outwardDraft.items.forEach((item, idx) => {
+    const sEl = document.getElementById(`out-search-${idx}`);
+    if (sEl) item.product = sEl.value.trim();
+    const qEl = document.getElementById(`out-qty-${idx}`);
+    if (qEl && qEl.value !== "") item.qty = Number(qEl.value);
   });
-  if (invalid) {
-    toast("Please resolve stock errors before saving");
+}
+
+function saveOutward() {
+  syncOutwardDraftFromDOM();
+
+  // Collect only valid items that have a product name entered
+  const validItems = [];
+  outwardDraft.items.forEach(i => {
+    const prodName = (i.product || "").trim();
+    if (prodName) {
+      const qty = Number(i.qty);
+      validItems.push({
+        ...i,
+        product: prodName,
+        qty: isNaN(qty) || qty <= 0 ? 1 : qty
+      });
+    }
+  });
+
+  if (!validItems.length) {
+    toast("Please enter or select at least one item to issue");
+    const firstInput = document.getElementById("out-search-0");
+    if (firstInput) {
+      firstInput.focus();
+      firstInput.select();
+    }
     return;
   }
-  const confirmMsg = isEditing
-    ? `Update and save changes to Stock Outward voucher ${no}?`
-    : `Post Stock Outward voucher ${no} and deduct from inventory?`;
 
-  confirmModal(confirmMsg, () => {
-    const now = new Date().toISOString();
-    const items = outwardDraft.items.map(i => {
-      const p = productByName(i.product);
+  // Verify products exist and check stock levels
+  const unknownProducts = [];
+  const exceededStockItems = [];
+
+  const processedItems = validItems.map(i => {
+    const p = productByName(i.product);
+    if (!p) {
+      unknownProducts.push(i.product);
       return {
-        ...i,
-        unit: p?.unit || "unit",
-        rate: p?.cost || 0,
-        amount: Number(i.qty) * (p?.cost || 0)
+        product: i.product,
+        unit: "unit",
+        qty: Number(i.qty) || 1,
+        rate: 0,
+        amount: 0
       };
-    });
-    const total = items.reduce((a, i) => a + i.amount, 0);
-
-    // If editing, clear existing transactions and previous outward record
-    if (isEditing) {
-      state.transactions = state.transactions.filter(t => t.ref !== no);
-      state.outwards = state.outwards.filter(o => o.no !== no);
     }
 
-    items.forEach(i => {
-      state.transactions.unshift({
-        id: "TX-" + Date.now() + Math.random().toString(36).slice(2, 6),
-        date: outwardDraft.date + "T12:00:00",
-        type: "Stock Outward",
-        product: i.product,
-        department: outwardDraft.department,
-        store: outwardDraft.store,
-        qty: -Number(i.qty),
-        cost: Number(i.rate),
-        user: state.currentUser,
-        ref: no
-      });
-    });
+    const qty = Number(i.qty) || 1;
+    const available = Number(p.stock) || 0;
+    if (qty > available && !state.settings.inventory?.negative) {
+      exceededStockItems.push({ name: p.name, qty, available, unit: p.unit || "unit" });
+    }
 
-    state.outwards.unshift({
-      ...outwardDraft,
-      no,
-      items,
-      total,
-      user: state.currentUser,
-      status: "Posted",
-      createdAt: outwardDraft.createdAt || now
-    });
-
-    save(); // Persist to localStorage!
-    rebuildStock();
-    toast(no + (isEditing ? " updated successfully!" : " posted successfully!"));
-    outwardDraft.isNew = false;
-    outwardDraft.isEditing = false;
-    closeProductSearchPopover();
-    showView("outward");
+    return {
+      product: p.name,
+      unit: p.unit || "unit",
+      qty,
+      rate: Number(p.cost) || 0,
+      amount: qty * (Number(p.cost) || 0)
+    };
   });
+
+  if (unknownProducts.length > 0) {
+    toast(`Item "${unknownProducts[0]}" not found in stock catalog. Please select an existing item.`);
+    return;
+  }
+
+  // If some items exceed warehouse stock and negative inventory is disabled
+  if (exceededStockItems.length > 0) {
+    const first = exceededStockItems[0];
+    const warnMsg = `Stock warning: "${first.name}" issue qty (${first.qty} ${first.unit}) exceeds on-hand stock (${first.available} ${first.unit}). Post anyway as negative balance?`;
+    confirmModal(warnMsg, () => {
+      executeSaveOutward(processedItems);
+    });
+    return;
+  }
+
+  executeSaveOutward(processedItems);
+}
+
+function executeSaveOutward(processedItems) {
+  const isEditing = Boolean(outwardDraft.isEditing);
+  const no = outwardDraft.no || nextOutwardNo();
+  const total = processedItems.reduce((a, i) => a + i.amount, 0);
+
+  // If editing, clear existing transactions and previous outward record
+  if (isEditing) {
+    state.transactions = state.transactions.filter(t => t.ref !== no);
+    state.outwards = state.outwards.filter(o => o.no !== no);
+  }
+
+  const voucherDate = (outwardDraft.date || today) + "T12:00:00";
+  processedItems.forEach(i => {
+    state.transactions.unshift({
+      id: "TX-" + Date.now() + Math.random().toString(36).slice(2, 6),
+      date: voucherDate,
+      type: "Stock Outward",
+      product: i.product,
+      department: outwardDraft.department || "Kitchen",
+      store: outwardDraft.store || state.currentStore,
+      qty: -Number(i.qty),
+      cost: Number(i.rate),
+      user: state.currentUser,
+      ref: no
+    });
+  });
+
+  state.outwards.unshift({
+    no,
+    date: outwardDraft.date || today,
+    department: outwardDraft.department || "Kitchen",
+    store: outwardDraft.store || state.currentStore,
+    issuedTo: outwardDraft.issuedTo || "",
+    remarks: outwardDraft.remarks || "",
+    items: processedItems,
+    total,
+    user: state.currentUser,
+    status: "Posted",
+    createdAt: outwardDraft.createdAt || new Date().toISOString()
+  });
+
+  save();
+  rebuildStock();
+  toast(no + (isEditing ? " updated successfully!" : " posted successfully!"));
+  outwardDraft = { department: "Kitchen", store: state.currentStore, date: today, issuedTo: "", reference: "", remarks: "", items: [], isNew: false, isEditing: false };
+  closeProductSearchPopover();
+  showView("outward");
 }
 
 function editOutwardVoucher(no) {
@@ -2780,7 +2987,7 @@ function outwardHistory() {
                   <td><b>${v.no}</b></td>
                   <td>${fmtDate(v.date)}</td>
                   <td>${v.department}</td>
-                  <td>${v.store || "Hotel Rajmudra - Main Store"}</td>
+                  <td>${v.store || "Main Store"}</td>
                   <td>${v.issuedTo || "—"}</td>
                   <td>${v.items?.length || 0}</td>
                   <td class="num-cell" style="font-weight:700;">${money(v.total)}</td>
@@ -4810,6 +5017,10 @@ function exportStockLedgerCsv() {
   downloadCsv("stocksense-stock-ledger.csv", rows);
 }
 
+function exportReportData() {
+  exportStockLedgerCsv();
+}
+
 function exportPurchaseReportCsv() {
   const rows = [
     ["GRN No", "Date", "Supplier", "Reference", "Warehouse", "Items Count", "Total Value", "User"],
@@ -5220,128 +5431,1120 @@ function deleteUser(idx) {
   });
 }
 
-// SETTINGS
+// SETTINGS & TABBED MANAGEMENT
+let currentSettingsTab = "general";
+
+function switchSettingsTab(tab) {
+  currentSettingsTab = tab;
+  showView("settings");
+}
+
+function renderSuppliersSettingsContent() {
+  const totalDue = state.suppliers.reduce((a, s) => a + (Number(s[4]) || 0), 0);
+  const avgLead = state.suppliers.length ? Math.round(state.suppliers.reduce((a, s) => a + (Number(s[3]) || 0), 0) / state.suppliers.length) : 0;
+
+  return `
+    <div class="metrics-grid" style="margin-bottom:20px;">
+      <div class="card metric-card">
+        <div class="metric-top">
+          <span class="metric-title">Approved Vendors</span>
+          <span class="metric-badge green">Active</span>
+        </div>
+        <div class="metric-value">${state.suppliers.length}</div>
+        <div class="metric-sub">Registered food & supply partners</div>
+      </div>
+      <div class="card metric-card">
+        <div class="metric-top">
+          <span class="metric-title">Outstanding Payables</span>
+          <span class="metric-badge ${totalDue > 0 ? 'red' : 'green'}">Balance</span>
+        </div>
+        <div class="metric-value">${money(totalDue)}</div>
+        <div class="metric-sub">Pending vendor payments</div>
+      </div>
+      <div class="card metric-card">
+        <div class="metric-top">
+          <span class="metric-title">Average Lead Time</span>
+          <span class="metric-badge blue">Procurement</span>
+        </div>
+        <div class="metric-value">${avgLead} <span style="font-size:14px;color:var(--muted);font-weight:500;">days</span></div>
+        <div class="metric-sub">Delivery cycle turnaround</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head" style="justify-content:space-between;align-items:center;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="panel-title">Approved Vendors (${state.suppliers.length})</span>
+          <span class="pill">${state.suppliers.length} vendors</span>
+        </div>
+        <button class="primary" style="padding:6px 14px;font-size:12px;" onclick="openModal('supplier')">＋ Add Supplier</button>
+      </div>
+      <div class="view-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Supplier Name</th>
+              <th>Category</th>
+              <th>Contact / Email</th>
+              <th>Lead Time</th>
+              <th class="num-cell">Outstanding Balance</th>
+              <th>Status</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${state.suppliers.map((s, idx) => `
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:#f1f5f9;font-size:13px;">🚚</span>
+                    <b style="font-size:13px;color:var(--text);">${escapeHtml(s[0])}</b>
+                  </div>
+                </td>
+                <td><span class="pill">${escapeHtml(s[1] || "General")}</span></td>
+                <td>${escapeHtml(s[2] || "—")}</td>
+                <td>${s[3]} days</td>
+                <td class="num-cell" style="font-weight:700;">${money(s[4] || 0)}</td>
+                <td><span class="status ok">Active</span></td>
+                <td style="text-align:right;">
+                  <div class="table-action-btns">
+                    <button type="button" class="secondary" onclick="openModal('supplier', ${idx})">Edit</button>
+                    <button type="button" class="secondary" onclick="newPurchaseOrder([{product:state.products[0]?.name||'',qty:10,rate:10}])">Create PO</button>
+                    <button type="button" class="danger-btn" onclick="deleteSupplier(${idx})">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function renderDepartmentsSettingsContent() {
+  const totalItems = state.products.length;
+  const totalOutwardVal = state.outwards.reduce((a, o) => a + (Number(o.total) || 0), 0);
+
+  return `
+    <div class="metrics-grid" style="margin-bottom:20px;">
+      <div class="card metric-card">
+        <div class="metric-top">
+          <span class="metric-title">Configured Units</span>
+          <span class="metric-badge green">Active</span>
+        </div>
+        <div class="metric-value">${state.departments.length}</div>
+        <div class="metric-sub">Operational cost centers</div>
+      </div>
+      <div class="card metric-card">
+        <div class="metric-top">
+          <span class="metric-title">Catalog Assignment</span>
+          <span class="metric-badge blue">Products</span>
+        </div>
+        <div class="metric-value">${totalItems}</div>
+        <div class="metric-sub">Items mapped to departments</div>
+      </div>
+      <div class="card metric-card">
+        <div class="metric-top">
+          <span class="metric-title">Total Consumption</span>
+          <span class="metric-badge purple">Outward Value</span>
+        </div>
+        <div class="metric-value">${money(totalOutwardVal)}</div>
+        <div class="metric-sub">Issued across all departments</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head" style="justify-content:space-between;align-items:center;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="panel-title">Department Directory (${state.departments.length})</span>
+          <span class="pill">${state.departments.length} units</span>
+        </div>
+        <button class="primary" style="padding:6px 14px;font-size:12px;" onclick="openDepartmentModal()">＋ Add Department</button>
+      </div>
+      <div class="view-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width:40px;text-align:center;">#</th>
+              <th>Department Name</th>
+              <th>Assigned Items</th>
+              <th>Outward Vouchers</th>
+              <th>Consumption Value</th>
+              <th style="text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${state.departments.map((dept, idx) => {
+              const prodCount = state.products.filter(p => p.department === dept).length;
+              const deptOutwards = state.outwards.filter(o => o.department === dept);
+              const outCount = deptOutwards.length;
+              const outVal = deptOutwards.reduce((a, o) => a + (Number(o.total) || 0), 0);
+
+              return `
+                <tr>
+                  <td style="text-align:center;color:#64748b;">${idx + 1}</td>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:#f1f5f9;color:#334155;font-weight:700;font-size:12px;">🏢</span>
+                      <b style="font-size:14px;color:var(--text);">${escapeHtml(dept)}</b>
+                    </div>
+                  </td>
+                  <td><span class="pill" style="font-weight:600;">${prodCount} items</span></td>
+                  <td>${outCount} vouchers</td>
+                  <td><b style="color:var(--blue);font-family:'JetBrains Mono';">${money(outVal)}</b></td>
+                  <td style="text-align:right;">
+                    <button class="secondary" style="padding:4px 10px;font-size:12px;" onclick="openDepartmentModal('${escapeQuote(dept)}')">Modify / Rename</button>
+                    <button class="danger-btn" style="padding:4px 10px;font-size:12px;margin-left:4px;" onclick="deleteDepartment('${escapeQuote(dept)}')">Remove</button>
+                  </td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+// SETTINGS SCREEN
 function settingsScreen() {
   const g = state.settings.general || {};
   const inv = state.settings.inventory || {};
   const t = state.settings.transactions || {};
 
+  let mainBody = "";
+
+  if (currentSettingsTab === "suppliers") {
+    mainBody = renderSuppliersSettingsContent();
+  } else if (currentSettingsTab === "departments") {
+    mainBody = renderDepartmentsSettingsContent();
+  } else if (currentSettingsTab === "inventory") {
+    mainBody = `
+      <div id="set-inventory" class="settings-section">
+        <h2>Inventory & Calculations</h2>
+        <p>Numeric precision, rounding strategy, and stock threshold controls.</p>
+        <div class="settings-grid">
+          <label class="setting-field">
+            <span>Display Decimals</span>
+            <select onchange="state.settings.decimals=Number(this.value);save();showView('settings')">
+              <option value="0" ${state.settings.decimals === 0 ? 'selected' : ''}>0 decimals (Whole units)</option>
+              <option value="1" ${state.settings.decimals === 1 ? 'selected' : ''}>1 decimal (0.1)</option>
+              <option value="2" ${state.settings.decimals === 2 ? 'selected' : ''}>2 decimals (0.01)</option>
+              <option value="3" ${state.settings.decimals === 3 ? 'selected' : ''}>3 decimals (0.001)</option>
+            </select>
+          </label>
+          <label class="setting-field">
+            <span>Rounding Method</span>
+            <select onchange="state.settings.rounding=this.value;save();showView('settings');toast('Rounding method updated to ' + this.value)">
+              <option value="normal" ${(state.settings.rounding || 'normal') === 'normal' ? 'selected' : ''}>Normal (Half-Up / Standard Math)</option>
+              <option value="none" ${state.settings.rounding === 'none' ? 'selected' : ''}>None (Exact decimals)</option>
+              <option value="up" ${state.settings.rounding === 'up' ? 'selected' : ''}>Round Up (Ceiling / Math.ceil)</option>
+              <option value="down" ${state.settings.rounding === 'down' ? 'selected' : ''}>Round Down (Floor / Math.floor)</option>
+              <option value="nearest-05" ${state.settings.rounding === 'nearest-05' ? 'selected' : ''}>Nearest 0.05 (Cash / Nickel Rounding)</option>
+              <option value="nearest-50" ${state.settings.rounding === 'nearest-50' ? 'selected' : ''}>Nearest 0.50 (Half-Unit Rounding)</option>
+              <option value="nearest-integer" ${state.settings.rounding === 'nearest-integer' ? 'selected' : ''}>Nearest Integer (Whole Currency Unit)</option>
+              <option value="bankers" ${state.settings.rounding === 'bankers' ? 'selected' : ''}>Banker's Rounding (Round Half to Even)</option>
+            </select>
+          </label>
+          <label class="setting-field">
+            <span>Default Low-Stock Threshold</span>
+            <input type="number" value="${inv.lowThreshold || 10}" onchange="setField('inventory.lowThreshold', Number(this.value));save()">
+          </label>
+          <label class="setting-field">
+            <span>Live Rounding Preview</span>
+            <div class="rounding-preview-box">
+              <div>Preview for 12.3456: <b style="color:var(--blue);">${money(12.3456)}</b></div>
+              <div style="margin-top:2px;">Preview for 9.875: <b style="color:var(--green-text);">${money(9.875)}</b></div>
+            </div>
+          </label>
+        </div>
+        <label class="setting-toggle" style="margin-top:16px;">
+          <div>
+            <b>Allow Negative Stock Issues</b>
+            <small>Permit outward vouchers even when stock drops below 0</small>
+          </div>
+          <input type="checkbox" ${inv.negative ? 'checked' : ''} onchange="setField('inventory.negative', this.checked);save()">
+          <i></i>
+        </label>
+      </div>
+    `;
+  } else if (currentSettingsTab === "vouchers") {
+    mainBody = `
+      <div id="set-vouchers" class="settings-section">
+        <h2>Transaction Numbering</h2>
+        <p>Prefix formats for automatic voucher sequencing.</p>
+        <div class="settings-grid">
+          <label class="setting-field">
+            <span>Purchase GRN Prefix</span>
+            <input value="${t.purchasePrefix || 'GRN-'}" onchange="setField('transactions.purchasePrefix', this.value);save()">
+          </label>
+          <label class="setting-field">
+            <span>Stock Outward Prefix</span>
+            <input value="${t.outwardPrefix || 'OUT-'}" onchange="setField('transactions.outwardPrefix', this.value);save()">
+          </label>
+          <label class="setting-field">
+            <span>Physical Stock Audit Prefix</span>
+            <input value="${t.auditPrefix || 'AUD-'}" onchange="setField('transactions.auditPrefix', this.value);save()">
+          </label>
+        </div>
+      </div>
+    `;
+  } else if (currentSettingsTab === "backup") {
+    mainBody = `
+      <div id="set-backup" class="settings-section">
+        <h2>Backup & Local Storage</h2>
+        <p>Export your full StockSense database to JSON or reset store records.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+          <button class="secondary" onclick="exportFullBackup()">Download Backup JSON</button>
+          <button class="danger-btn" onclick="resetDefaults()">Reset to Defaults</button>
+        </div>
+      </div>
+    `;
+  } else {
+    // Default: General
+    mainBody = `
+      <div id="set-general" class="settings-section">
+        <h2>Business & General Profile</h2>
+        <p>Identity displayed on Goods Receipt, Outward vouchers and Stock count sheets.</p>
+        <div class="settings-grid">
+          <label class="setting-field">
+            <span>Business Name</span>
+            <input value="${escapeHtml(g.company || 'Hotel Rajmudra')}" onchange="setField('general.company', this.value);save()">
+          </label>
+          <label class="setting-field">
+            <span>Primary Active Warehouse</span>
+            <select onchange="state.currentStore=this.value;setField('general.location', this.value);save();updateSidebarMeta();toast('Active warehouse set to ' + this.value)">
+              ${state.stores.map(s => `
+                <option value="${s[0]}" ${s[0] === state.currentStore ? 'selected' : ''}>${s[0]}</option>
+              `).join("")}
+            </select>
+          </label>
+          <label class="setting-field">
+            <span>Website</span>
+            <input value="${escapeHtml(g.website || 'http://www.hotelrajmudra.com/')}" placeholder="http://www.hotelrajmudra.com/" onchange="setField('general.website', this.value);save()">
+          </label>
+          <label class="setting-field">
+            <span>Phone</span>
+            <input value="${escapeHtml(g.phone || '9507543741')}" onchange="setField('general.phone', this.value);save()">
+          </label>
+          <label class="setting-field">
+            <span>Email Address</span>
+            <input value="${escapeHtml(g.email || 'RajmudraStores@gmail.com')}" onchange="setField('general.email', this.value);save()">
+          </label>
+          <label class="setting-field" style="grid-column: 1 / -1;">
+            <span>Address</span>
+            <input value="${escapeHtml(g.address || 'Marunji Gaon Marunji, Road, near Rajmudra Petrol Pump, Hinjawadi, Pune, Maharashtra 411057')}" onchange="setField('general.address', this.value);save()">
+          </label>
+        </div>
+      </div>
+    `;
+  }
+
   return layout(
-    "Settings",
-    "Configure company identity, inventory decimals and system behaviors.",
+    "Settings & Configuration",
+    "Configure company identity, vendor accounts, department centers and inventory behaviors.",
     `<button class="primary" onclick="save();toast('Settings updated')">Save Changes</button>`,
     `
       <div class="settings-layout">
         <div class="settings-nav">
-          <button class="active" onclick="document.getElementById('set-general').scrollIntoView({behavior:'smooth'})">General</button>
-          <button onclick="document.getElementById('set-inventory').scrollIntoView({behavior:'smooth'})">Inventory Rules</button>
-          <button onclick="document.getElementById('set-vouchers').scrollIntoView({behavior:'smooth'})">Vouchers</button>
-          <button onclick="document.getElementById('set-backup').scrollIntoView({behavior:'smooth'})">Backup & Data</button>
+          <button class="${currentSettingsTab === 'general' ? 'active' : ''}" onclick="switchSettingsTab('general')">🏢 General Profile</button>
+          <button class="${currentSettingsTab === 'suppliers' ? 'active' : ''}" onclick="switchSettingsTab('suppliers')">🚚 Supplier Management</button>
+          <button class="${currentSettingsTab === 'departments' ? 'active' : ''}" onclick="switchSettingsTab('departments')">🏢 Department Management</button>
+          <button class="${currentSettingsTab === 'inventory' ? 'active' : ''}" onclick="switchSettingsTab('inventory')">⚖ Inventory Rules</button>
+          <button class="${currentSettingsTab === 'vouchers' ? 'active' : ''}" onclick="switchSettingsTab('vouchers')">📑 Voucher Prefixes</button>
+          <button class="${currentSettingsTab === 'backup' ? 'active' : ''}" onclick="switchSettingsTab('backup')">💾 Backup & Data</button>
         </div>
 
         <div class="settings-content">
-          <div id="set-general" class="settings-section">
-            <h2>Business & General Profile</h2>
-            <p>Identity displayed on Goods Receipt and Outward vouchers.</p>
-            <div class="settings-grid">
-              <label class="setting-field">
-                <span>Business Name</span>
-                <input value="${g.company || ''}" onchange="setField('general.company', this.value);save()">
-              </label>
-              <label class="setting-field">
-                <span>Website</span>
-                <input value="${g.website || ''}" placeholder="http://www.hotelrajmudra.com/" onchange="setField('general.website', this.value);save()">
-              </label>
-              <label class="setting-field">
-                <span>Phone</span>
-                <input value="${g.phone || ''}" onchange="setField('general.phone', this.value);save()">
-              </label>
-              <label class="setting-field">
-                <span>Email Address</span>
-                <input value="${g.email || ''}" onchange="setField('general.email', this.value);save()">
-              </label>
-              <label class="setting-field" style="grid-column: 1 / -1;">
-                <span>Address</span>
-                <input value="${g.address || ''}" onchange="setField('general.address', this.value);save()">
-              </label>
-            </div>
-          </div>
+          ${mainBody}
+        </div>
+      </div>
+    `
+  );
+}
 
-          <div id="set-inventory" class="settings-section">
-            <h2>Inventory & Calculations</h2>
-            <p>Numeric precision, rounding strategy, and stock threshold controls.</p>
-            <div class="settings-grid">
-              <label class="setting-field">
-                <span>Display Decimals</span>
-                <select onchange="state.settings.decimals=Number(this.value);save();showView('settings')">
-                  <option value="0" ${state.settings.decimals === 0 ? 'selected' : ''}>0 decimals (Whole units)</option>
-                  <option value="1" ${state.settings.decimals === 1 ? 'selected' : ''}>1 decimal (0.1)</option>
-                  <option value="2" ${state.settings.decimals === 2 ? 'selected' : ''}>2 decimals (0.01)</option>
-                  <option value="3" ${state.settings.decimals === 3 ? 'selected' : ''}>3 decimals (0.001)</option>
-                </select>
-              </label>
-              <label class="setting-field">
-                <span>Rounding Method</span>
-                <select onchange="state.settings.rounding=this.value;save();showView('settings');toast('Rounding method updated to ' + this.value)">
-                  <option value="normal" ${(state.settings.rounding || 'normal') === 'normal' ? 'selected' : ''}>Normal (Half-Up / Standard Math)</option>
-                  <option value="none" ${state.settings.rounding === 'none' ? 'selected' : ''}>None (Exact decimals)</option>
-                  <option value="up" ${state.settings.rounding === 'up' ? 'selected' : ''}>Round Up (Ceiling / Math.ceil)</option>
-                  <option value="down" ${state.settings.rounding === 'down' ? 'selected' : ''}>Round Down (Floor / Math.floor)</option>
-                  <option value="nearest-05" ${state.settings.rounding === 'nearest-05' ? 'selected' : ''}>Nearest 0.05 (Cash / Nickel Rounding)</option>
-                  <option value="nearest-50" ${state.settings.rounding === 'nearest-50' ? 'selected' : ''}>Nearest 0.50 (Half-Unit Rounding)</option>
-                  <option value="nearest-integer" ${state.settings.rounding === 'nearest-integer' ? 'selected' : ''}>Nearest Integer (Whole Currency Unit)</option>
-                  <option value="bankers" ${state.settings.rounding === 'bankers' ? 'selected' : ''}>Banker's Rounding (Round Half to Even)</option>
-                </select>
-              </label>
-              <label class="setting-field">
-                <span>Default Low-Stock Threshold</span>
-                <input type="number" value="${inv.lowThreshold || 10}" onchange="setField('inventory.lowThreshold', Number(this.value));save()">
-              </label>
-              <label class="setting-field">
-                <span>Live Rounding Preview</span>
-                <div class="rounding-preview-box">
-                  <div>Preview for 12.3456: <b style="color:var(--blue);">${money(12.3456)}</b></div>
-                  <div style="margin-top:2px;">Preview for 9.875: <b style="color:var(--green-text);">${money(9.875)}</b></div>
-                </div>
-              </label>
-            </div>
-            <label class="setting-toggle">
-              <div>
-                <b>Allow Negative Stock Issues</b>
-                <small>Permit outward vouchers even when stock drops below 0</small>
-              </div>
-              <input type="checkbox" ${inv.negative ? 'checked' : ''} onchange="setField('inventory.negative', this.checked);save()">
-              <i></i>
+// PHYSICAL STOCK AUDIT & VERIFICATION MODULE
+let physicalStockState = {
+  store: "Main Store",
+  category: "all",
+  search: "",
+  counts: {}, // productId -> numeric count
+  reasons: {}, // productId -> string reason
+  showHistory: false
+};
+
+function changePhysicalStockStore(store) {
+  physicalStockState.store = store;
+  physicalStockState.counts = {};
+  physicalStockState.reasons = {};
+  showView("physical-stock");
+}
+
+function changePhysicalStockCategory(cat) {
+  physicalStockState.category = cat;
+  showView("physical-stock");
+}
+
+function searchPhysicalStock(val) {
+  physicalStockState.search = val;
+  showView("physical-stock");
+}
+
+function togglePhysicalStockHistory() {
+  physicalStockState.showHistory = !physicalStockState.showHistory;
+  showView("physical-stock");
+}
+
+function setPhysicalCountToBook(id) {
+  const p = state.products.find(x => x.id === id);
+  if (!p) return;
+  const input = document.getElementById(`phys-input-${id}`);
+  if (input) {
+    input.value = p.stock || 0;
+  }
+  onPhysicalInputChange(id, p.stock || 0);
+}
+
+function fillAllWithSystemStock() {
+  const store = physicalStockState.store || state.currentStore || "Main Store";
+  state.products.filter(p => p.store === store).forEach(p => {
+    physicalStockState.counts[p.id] = Number(p.stock || 0);
+  });
+  toast(`Matched all floor counts to book stock for ${store}`);
+  showView("physical-stock");
+}
+
+function clearAllPhysicalStockInputs() {
+  physicalStockState.counts = {};
+  physicalStockState.reasons = {};
+  toast("Cleared all physical count inputs");
+  showView("physical-stock");
+}
+
+function onPhysicalInputChange(id, val) {
+  const p = state.products.find(x => x.id === id);
+  if (!p) return;
+
+  const raw = String(val).trim();
+  if (raw === "") {
+    delete physicalStockState.counts[id];
+  } else {
+    physicalStockState.counts[id] = Number(raw);
+  }
+
+  const bookStock = Number(p.stock || 0);
+  const isEntered = physicalStockState.counts[id] !== undefined && physicalStockState.counts[id] !== null;
+  const physVal = isEntered ? Number(physicalStockState.counts[id]) : bookStock;
+  const diff = isEntered ? (physVal - bookStock) : 0;
+  const rate = Number(p.cost || p.purchaseCost || 0);
+  const vVal = diff * rate;
+
+  const badgeEl = document.getElementById(`var-badge-${id}`);
+  const valEl = document.getElementById(`var-val-${id}`);
+  const inputEl = document.getElementById(`phys-input-${id}`);
+
+  if (badgeEl) {
+    let badgeClass = "match";
+    let badgeText = "Match (" + numberValue(bookStock) + " " + p.unit + ")";
+    if (isEntered) {
+      if (diff > 0.0001) {
+        badgeClass = "surplus";
+        badgeText = "+" + numberValue(diff) + " " + p.unit + " (Surplus)";
+      } else if (diff < -0.0001) {
+        badgeClass = "deficit";
+        badgeText = numberValue(diff) + " " + p.unit + " (Deficit)";
+      } else {
+        badgeClass = "match";
+        badgeText = "0.00 " + p.unit + " (Match)";
+      }
+    }
+    badgeEl.className = `variance-badge ${badgeClass}`;
+    badgeEl.textContent = badgeText;
+  }
+
+  if (valEl) {
+    valEl.textContent = diff !== 0 ? ((diff > 0 ? '+' : '') + money(vVal)) : '₹0';
+    valEl.style.color = diff > 0 ? 'var(--green-text)' : diff < 0 ? 'var(--red)' : '#64748b';
+  }
+
+  if (inputEl) {
+    inputEl.style.borderColor = isEntered && Math.abs(diff) > 0.0001 ? (diff > 0 ? '#86efac' : '#fca5a5') : '#cbd5e1';
+    inputEl.style.backgroundColor = isEntered && Math.abs(diff) > 0.0001 ? (diff > 0 ? '#f0fdf4' : '#fef2f2') : '#fff';
+  }
+
+  // Update top-level metrics without re-rendering the whole page (smooth typing!)
+  updatePhysicalStockLiveMetrics();
+}
+
+function updatePhysicalStockLiveMetrics() {
+  const store = physicalStockState.store || state.currentStore || "Main Store";
+  const storeProducts = state.products.filter(p => p.store === store);
+
+  let totalAudited = 0;
+  let surplusCount = 0;
+  let deficitCount = 0;
+  let surplusVal = 0;
+  let deficitVal = 0;
+  let netVal = 0;
+
+  storeProducts.forEach(p => {
+    if (physicalStockState.counts[p.id] !== undefined && physicalStockState.counts[p.id] !== null) {
+      totalAudited++;
+      const current = Number(p.stock || 0);
+      const phys = Number(physicalStockState.counts[p.id]);
+      const diff = phys - current;
+      const rate = Number(p.cost || p.purchaseCost || 0);
+      const vVal = diff * rate;
+      if (diff > 0.0001) {
+        surplusCount++;
+        surplusVal += vVal;
+        netVal += vVal;
+      } else if (diff < -0.0001) {
+        deficitCount++;
+        deficitVal += Math.abs(vVal);
+        netVal += vVal;
+      }
+    }
+  });
+
+  const progEl = document.getElementById("phys-metric-progress");
+  if (progEl) progEl.textContent = `${totalAudited} / ${storeProducts.length}`;
+  const discEl = document.getElementById("phys-metric-discrepancies");
+  if (discEl) {
+    discEl.textContent = `${surplusCount + deficitCount} items`;
+    discEl.style.color = (surplusCount + deficitCount) > 0 ? 'var(--red)' : 'var(--green-text)';
+  }
+  const surpEl = document.getElementById("phys-metric-surplus");
+  if (surpEl) surpEl.textContent = `+${money(surplusVal)}`;
+  const defEl = document.getElementById("phys-metric-deficit");
+  if (defEl) defEl.textContent = money(deficitVal);
+  const netEl = document.getElementById("phys-metric-net");
+  if (netEl) {
+    netEl.textContent = `${netVal > 0 ? '+' : ''}${money(netVal)}`;
+    netEl.style.color = netVal >= 0 ? 'var(--green-text)' : 'var(--red)';
+  }
+}
+
+function reconcilePhysicalStock() {
+  const store = physicalStockState.store || state.currentStore || "Main Store";
+  const storeProducts = state.products.filter(p => p.store === store);
+
+  const adjustments = [];
+  let surplusVal = 0;
+  let deficitVal = 0;
+  let totalNetVal = 0;
+
+  storeProducts.forEach(p => {
+    if (physicalStockState.counts[p.id] !== undefined && physicalStockState.counts[p.id] !== null) {
+      const physical = Number(physicalStockState.counts[p.id]);
+      const current = Number(p.stock || 0);
+      const diff = physical - current;
+      const rate = Number(p.cost || p.purchaseCost || 0);
+      const varianceVal = diff * rate;
+
+      if (Math.abs(diff) > 0.0001) {
+        adjustments.push({
+          product: p,
+          oldStock: current,
+          newStock: physical,
+          diff: diff,
+          rate: rate,
+          value: varianceVal,
+          reason: physicalStockState.reasons[p.id] || "Physical stock count verification"
+        });
+        if (diff > 0) surplusVal += varianceVal;
+        else deficitVal += Math.abs(varianceVal);
+        totalNetVal += varianceVal;
+      }
+    }
+  });
+
+  if (adjustments.length === 0) {
+    toast("No stock variances detected to reconcile.");
+    return;
+  }
+
+  openInAppModal("Confirm Stock Reconciliation", `
+    <div style="text-align:left;">
+      <p style="margin-bottom:12px;font-size:14px;color:#334155;">
+        You are about to reconcile <b>${adjustments.length} item(s)</b> in <b>${store}</b>:
+      </p>
+      <div style="background:#f8fafc;padding:14px;border-radius:8px;border:1px solid #e2e8f0;font-size:13px;display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:#64748b;">Surplus additions (+stock):</span>
+          <b style="color:var(--green-text);">+${money(surplusVal)}</b>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:#64748b;">Deficit write-offs (-loss):</span>
+          <b style="color:var(--red);">${money(deficitVal)}</b>
+        </div>
+        <div style="display:flex;justify-content:space-between;border-top:1px solid #e2e8f0;padding-top:8px;">
+          <span style="font-weight:700;color:#0f172a;">Net inventory adjustment:</span>
+          <b style="font-weight:700;color:${totalNetVal >= 0 ? 'var(--green-text)' : 'var(--red)'};">${(totalNetVal > 0 ? '+' : '') + money(totalNetVal)}</b>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:#64748b;">
+        ℹ Updating will write verified physical counts directly into the database, record detailed transaction adjustments in the Stock Ledger, and log an audit voucher.
+      </div>
+    </div>
+  `, `
+    <button class="secondary" onclick="closeModal()">Cancel</button>
+    <button class="primary" onclick="executePhysicalStockReconciliation()">Confirm & Update Stock</button>
+  `);
+}
+
+function executePhysicalStockReconciliation() {
+  const store = physicalStockState.store || state.currentStore || "Main Store";
+  const storeProducts = state.products.filter(p => p.store === store);
+
+  const adjustments = [];
+  let surplusVal = 0;
+  let deficitVal = 0;
+  let totalNetVal = 0;
+
+  storeProducts.forEach(p => {
+    if (physicalStockState.counts[p.id] !== undefined && physicalStockState.counts[p.id] !== null) {
+      const physical = Number(physicalStockState.counts[p.id]);
+      const current = Number(p.stock || 0);
+      const diff = physical - current;
+      const rate = Number(p.cost || p.purchaseCost || 0);
+      const varianceVal = diff * rate;
+
+      if (Math.abs(diff) > 0.0001) {
+        adjustments.push({
+          product: p,
+          oldStock: current,
+          newStock: physical,
+          diff: diff,
+          rate: rate,
+          value: varianceVal,
+          reason: physicalStockState.reasons[p.id] || "Physical stock count verification"
+        });
+        if (diff > 0) surplusVal += varianceVal;
+        else deficitVal += Math.abs(varianceVal);
+        totalNetVal += varianceVal;
+      }
+    }
+  });
+
+  if (adjustments.length === 0) {
+    closeModal();
+    toast("No stock variances detected.");
+    return;
+  }
+
+  const prefix = state.settings.transactions?.auditPrefix || "AUD-";
+  const auditId = `${prefix}${String((state.stockAudits || []).length + 101).padStart(5, "0")}`;
+  const now = new Date().toISOString();
+
+  adjustments.forEach(adj => {
+    // 1. Update product stock on hand
+    adj.product.stock = Number(adj.newStock.toFixed(state.settings.decimals !== undefined ? state.settings.decimals : 2));
+
+    // 2. Add Stock Ledger adjustment record
+    const tx = {
+      id: "TX-" + String(state.transactions.length + 1050),
+      date: now,
+      type: "Stock Adjustment",
+      product: adj.product.name,
+      store: store,
+      qty: Number(adj.diff.toFixed(state.settings.decimals !== undefined ? state.settings.decimals : 2)),
+      cost: adj.rate,
+      user: state.currentUser,
+      ref: auditId,
+      remarks: adj.reason
+    };
+    state.transactions.unshift(tx);
+  });
+
+  // 3. Save stock audit voucher log
+  if (!Array.isArray(state.stockAudits)) state.stockAudits = [];
+  state.stockAudits.unshift({
+    id: auditId,
+    date: now,
+    store: store,
+    user: state.currentUser,
+    itemCount: storeProducts.length,
+    adjustedCount: adjustments.length,
+    surplusVal: surplusVal,
+    deficitVal: deficitVal,
+    netVal: totalNetVal,
+    adjustments: adjustments.map(a => ({
+      product: a.product.name,
+      unit: a.product.unit,
+      oldStock: a.oldStock,
+      newStock: a.newStock,
+      diff: a.diff,
+      rate: a.rate,
+      value: a.value,
+      reason: a.reason
+    }))
+  });
+
+  save();
+  closeModal();
+  physicalStockState.counts = {};
+  physicalStockState.reasons = {};
+  toast(`Physical stock updated successfully (${adjustments.length} items reconciled)`);
+  showView("physical-stock");
+}
+
+function physicalStockScreen() {
+  const store = physicalStockState.store || state.currentStore || "Main Store";
+  physicalStockState.store = store;
+
+  if (physicalStockState.showHistory) {
+    return renderPhysicalStockHistoryView();
+  }
+
+  let items = state.products.filter(p => p.store === store);
+  if (physicalStockState.category && physicalStockState.category !== "all") {
+    items = items.filter(p => p.category === physicalStockState.category);
+  }
+  if (physicalStockState.search) {
+    const q = physicalStockState.search.toLowerCase().trim();
+    items = items.filter(p => 
+      p.name.toLowerCase().includes(q) || 
+      (p.sku && p.sku.toLowerCase().includes(q)) ||
+      (p.barcode && p.barcode.toLowerCase().includes(q))
+    );
+  }
+
+  const categories = [...new Set(state.products.filter(p => p.store === store).map(p => p.category).filter(Boolean))];
+
+  let totalAudited = 0;
+  let surplusCount = 0;
+  let deficitCount = 0;
+  let surplusVal = 0;
+  let deficitVal = 0;
+  let netVal = 0;
+
+  state.products.filter(p => p.store === store).forEach(p => {
+    if (physicalStockState.counts[p.id] !== undefined && physicalStockState.counts[p.id] !== null) {
+      totalAudited++;
+      const current = Number(p.stock || 0);
+      const phys = Number(physicalStockState.counts[p.id]);
+      const diff = phys - current;
+      const rate = Number(p.cost || p.purchaseCost || 0);
+      const vVal = diff * rate;
+      if (diff > 0.0001) {
+        surplusCount++;
+        surplusVal += vVal;
+        netVal += vVal;
+      } else if (diff < -0.0001) {
+        deficitCount++;
+        deficitVal += Math.abs(vVal);
+        netVal += vVal;
+      }
+    }
+  });
+
+  const hasAdjustments = (surplusCount + deficitCount) > 0;
+
+  return layout(
+    "Physical Stock Audit & Count",
+    "Enter real verified physical stock on hand to reconcile book inventory, calculate variances and maintain balance precision.",
+    `
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="secondary" onclick="togglePhysicalStockHistory()">📋 Audit History (${(state.stockAudits || []).length})</button>
+        <button class="secondary" onclick="printPhysicalStockSheet()">🖨 Print Count Sheet</button>
+        <button class="secondary" onclick="fillAllWithSystemStock()">↺ Match Book Stock</button>
+        <button class="primary" onclick="reconcilePhysicalStock()" id="btn-reconcile-stock">
+          ✓ Confirm & Update Stock
+        </button>
+      </div>
+    `,
+    `
+      <div class="panel" style="margin-bottom:16px;padding:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#334155;">
+              <span>Warehouse:</span>
+              <select style="padding:6px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;font-weight:600;background:#fff;" onchange="changePhysicalStockStore(this.value)">
+                ${state.stores.map(s => `
+                  <option value="${s[0]}" ${s[0] === store ? 'selected' : ''}>${s[0]}</option>
+                `).join("")}
+              </select>
+            </label>
+
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#334155;">
+              <span>Category:</span>
+              <select style="padding:6px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;background:#fff;" onchange="changePhysicalStockCategory(this.value)">
+                <option value="all" ${physicalStockState.category === 'all' ? 'selected' : ''}>All Categories</option>
+                ${categories.map(c => `
+                  <option value="${c}" ${c === physicalStockState.category ? 'selected' : ''}>${c}</option>
+                `).join("")}
+              </select>
             </label>
           </div>
 
-          <div id="set-vouchers" class="settings-section">
-            <h2>Transaction Numbering</h2>
-            <p>Prefix formats for automatic voucher sequencing.</p>
-            <div class="settings-grid">
-              <label class="setting-field">
-                <span>Purchase GRN Prefix</span>
-                <input value="${t.purchasePrefix || 'GRN-'}" onchange="setField('transactions.purchasePrefix', this.value);save()">
-              </label>
-              <label class="setting-field">
-                <span>Stock Outward Prefix</span>
-                <input value="${t.outwardPrefix || 'OUT-'}" onchange="setField('transactions.outwardPrefix', this.value);save()">
-              </label>
-            </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-grow:1;max-width:360px;">
+            <input type="text" placeholder="Search item name, SKU, or barcode..." value="${escapeHtml(physicalStockState.search)}" oninput="searchPhysicalStock(this.value)" style="width:100%;padding:7px 12px;font-size:13px;border:1px solid #cbd5e1;border-radius:6px;">
           </div>
+        </div>
+      </div>
 
-          <div id="set-backup" class="settings-section">
-            <h2>Backup & Local Storage</h2>
-            <p>Export your full StockSense database to JSON.</p>
-            <div style="display:flex;gap:10px;">
-              <button class="secondary" onclick="exportFullBackup()">Download Backup JSON</button>
-              <button class="danger-btn" onclick="resetDefaults()">Reset to Defaults</button>
-            </div>
+      <div class="metrics-grid" style="margin-bottom:20px;">
+        <div class="card metric-card">
+          <div class="metric-top">
+            <span class="metric-title">Stock Take Progress</span>
+            <span class="metric-badge blue">Counted</span>
+          </div>
+          <div class="metric-value" id="phys-metric-progress">${totalAudited} / ${state.products.filter(p => p.store === store).length}</div>
+          <div class="metric-sub">Items entered for ${store}</div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-top">
+            <span class="metric-title">Discrepancies Found</span>
+            <span class="metric-badge ${hasAdjustments ? 'red' : 'green'}">Variances</span>
+          </div>
+          <div class="metric-value" id="phys-metric-discrepancies" style="color:${hasAdjustments ? 'var(--red)' : 'var(--green-text)'};">${surplusCount + deficitCount} items</div>
+          <div class="metric-sub">${surplusCount} surplus, ${deficitCount} deficit</div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-top">
+            <span class="metric-title">Surplus Valuation</span>
+            <span class="metric-badge green">+Stock</span>
+          </div>
+          <div class="metric-value" id="phys-metric-surplus" style="color:var(--green-text);">+${money(surplusVal)}</div>
+          <div class="metric-sub">Physical exceeds recorded</div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-top">
+            <span class="metric-title">Deficit / Shrinkage</span>
+            <span class="metric-badge red">-Loss</span>
+          </div>
+          <div class="metric-value" id="phys-metric-deficit" style="color:var(--red);">${money(deficitVal)}</div>
+          <div class="metric-sub">Missing or unrecorded loss</div>
+        </div>
+
+        <div class="card metric-card">
+          <div class="metric-top">
+            <span class="metric-title">Net Financial Impact</span>
+            <span class="metric-badge ${netVal >= 0 ? 'green' : 'red'}">Net Reconcile</span>
+          </div>
+          <div class="metric-value" id="phys-metric-net" style="color:${netVal >= 0 ? 'var(--green-text)' : 'var(--red)'};">${(netVal > 0 ? '+' : '') + money(netVal)}</div>
+          <div class="metric-sub">Net stock balance adjustment</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head" style="justify-content:space-between;align-items:center;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="panel-title">Physical Count Sheet — ${store}</span>
+            <span class="pill">${items.length} items shown</span>
+          </div>
+          <div style="font-size:12px;color:#64748b;">
+            💡 Type actual floor count into the <b>Physical Count</b> field. Live variance updates automatically.
+          </div>
+        </div>
+
+        <div class="view-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:36px;text-align:center;">#</th>
+                <th>Item Details</th>
+                <th>Category</th>
+                <th class="num-cell" style="text-align:right;">Book (System) Stock</th>
+                <th style="width:200px;text-align:center;">Actual Physical Stock</th>
+                <th style="width:190px;text-align:center;">Variance (Qty)</th>
+                <th class="num-cell" style="text-align:right;width:120px;">Variance Value</th>
+                <th style="min-width:180px;">Variance Reason / Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items.length === 0 ? `
+                <tr>
+                  <td colspan="8" style="text-align:center;padding:36px;color:#64748b;">
+                    No inventory items found matching your filter criteria in <b>${store}</b>.
+                  </td>
+                </tr>
+              ` : items.map((p, idx) => {
+                const bookStock = Number(p.stock || 0);
+                const isEntered = physicalStockState.counts[p.id] !== undefined && physicalStockState.counts[p.id] !== null;
+                const physicalStock = isEntered ? Number(physicalStockState.counts[p.id]) : bookStock;
+                const diff = isEntered ? (physicalStock - bookStock) : 0;
+                const rate = Number(p.cost || p.purchaseCost || 0);
+                const varianceVal = diff * rate;
+
+                let badgeClass = "match";
+                let badgeText = "Match (" + numberValue(bookStock) + " " + p.unit + ")";
+                if (isEntered) {
+                  if (diff > 0.0001) {
+                    badgeClass = "surplus";
+                    badgeText = "+" + numberValue(diff) + " " + p.unit + " (Surplus)";
+                  } else if (diff < -0.0001) {
+                    badgeClass = "deficit";
+                    badgeText = numberValue(diff) + " " + p.unit + " (Deficit)";
+                  } else {
+                    badgeClass = "match";
+                    badgeText = "0.00 " + p.unit + " (Match)";
+                  }
+                }
+
+                const currentReason = physicalStockState.reasons[p.id] || "Physical Count Verification";
+
+                return `
+                  <tr id="phys-row-${p.id}">
+                    <td style="text-align:center;color:#64748b;">${idx + 1}</td>
+                    <td>
+                      <div class="product-cell">
+                        <span class="product-dot">${p.icon || '📦'}</span>
+                        <div>
+                          <b>${escapeHtml(p.name)}</b>
+                          <div style="font-size:11px;color:#64748b;margin-top:2px;">
+                            SKU: <b>${escapeHtml(p.sku || '—')}</b> | Rate: <b>${money(rate)}/${p.unit}</b>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><span class="pill">${escapeHtml(p.category || 'General')}</span></td>
+                    <td class="num-cell" style="font-size:14px;font-weight:700;color:var(--ink);">
+                      ${numberValue(bookStock)} <span style="font-size:12px;font-weight:500;color:#64748b;">${p.unit}</span>
+                    </td>
+                    <td>
+                      <div class="phys-input-wrap" style="display:flex;align-items:center;gap:6px;justify-content:center;">
+                        <input 
+                          type="number" 
+                          step="any" 
+                          min="0" 
+                          id="phys-input-${p.id}"
+                          value="${isEntered ? physicalStock : ''}" 
+                          placeholder="${numberValue(bookStock)}" 
+                          oninput="onPhysicalInputChange(${p.id}, this.value)"
+                          style="width:110px;padding:6px 8px;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;border:1.5px solid ${isEntered && Math.abs(diff) > 0.0001 ? (diff > 0 ? '#86efac' : '#fca5a5') : '#cbd5e1'};border-radius:6px;background:${isEntered && Math.abs(diff) > 0.0001 ? (diff > 0 ? '#f0fdf4' : '#fef2f2') : '#fff'};"
+                        >
+                        <span style="font-size:12px;font-weight:600;color:#64748b;">${p.unit}</span>
+                        <button type="button" title="Set to book stock" onclick="setPhysicalCountToBook(${p.id})" style="border:1px solid #cbd5e1;background:#f8fafc;border-radius:4px;padding:4px 6px;font-size:11px;cursor:pointer;">↺</button>
+                      </div>
+                    </td>
+                    <td style="text-align:center;">
+                      <span id="var-badge-${p.id}" class="variance-badge ${badgeClass}">${badgeText}</span>
+                    </td>
+                    <td class="num-cell" id="var-val-${p.id}" style="font-weight:700;color:${diff > 0 ? 'var(--green-text)' : diff < 0 ? 'var(--red)' : '#64748b'};">
+                      ${diff !== 0 ? (diff > 0 ? '+' : '') + money(varianceVal) : '₹0'}
+                    </td>
+                    <td>
+                      <select 
+                        id="phys-reason-${p.id}"
+                        style="width:100%;padding:4px 8px;font-size:11.5px;border:1px solid #cbd5e1;border-radius:5px;background:#fff;"
+                        onchange="physicalStockState.reasons[${p.id}] = this.value"
+                      >
+                        <option value="Physical Count Verification" ${currentReason === 'Physical Count Verification' ? 'selected' : ''}>Physical Count Verification</option>
+                        <option value="Normal Kitchen Spoilage / Wastage" ${currentReason === 'Normal Kitchen Spoilage / Wastage' ? 'selected' : ''}>Normal Kitchen Spoilage / Wastage</option>
+                        <option value="Portion / Prep Variance" ${currentReason === 'Portion / Prep Variance' ? 'selected' : ''}>Portion / Prep Variance</option>
+                        <option value="Breakage / Handling Damage" ${currentReason === 'Breakage / Handling Damage' ? 'selected' : ''}>Breakage / Handling Damage</option>
+                        <option value="Unrecorded Goods Receipt Correction" ${currentReason === 'Unrecorded Goods Receipt Correction' ? 'selected' : ''}>Unrecorded GRN Correction</option>
+                        <option value="Inventory Initial Count Correction" ${currentReason === 'Inventory Initial Count Correction' ? 'selected' : ''}>Initial Count Correction</option>
+                        <option value="Other Discrepancy" ${currentReason === 'Other Discrepancy' ? 'selected' : ''}>Other Discrepancy</option>
+                      </select>
+                    </td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+
+        <div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;">
+          <div style="font-size:13px;color:#475569;">
+            Active warehouse: <b>${store}</b> | Total items with discrepancies: <b style="color:${hasAdjustments ? 'var(--red)' : 'var(--green-text)'};">${surplusCount + deficitCount}</b>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button class="secondary" onclick="clearAllPhysicalStockInputs()">Clear Counts</button>
+            <button class="primary" onclick="reconcilePhysicalStock()" style="padding:9px 20px;font-weight:700;">
+              ✓ Reconcile & Update Physical Stock
+            </button>
           </div>
         </div>
       </div>
     `
   );
+}
+
+function renderPhysicalStockHistoryView() {
+  const audits = state.stockAudits || [];
+
+  return layout(
+    "Physical Stock Audit History",
+    "Comprehensive log of historical physical counts, stock variance reconciliations and adjustments.",
+    `
+      <button class="secondary" onclick="togglePhysicalStockHistory()">← Back to Stock Count</button>
+      <button class="secondary" onclick="exportAuditHistoryCsv()">Export CSV</button>
+    `,
+    `
+      <div class="panel">
+        <div class="panel-head">
+          <span class="panel-title">Audit Reconciliation Logs (${audits.length})</span>
+        </div>
+        <div class="view-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Audit Ref</th>
+                <th>Date & Time</th>
+                <th>Warehouse</th>
+                <th>Audited By</th>
+                <th>Items Audited</th>
+                <th>Reconciled Items</th>
+                <th class="num-cell">Net Variance</th>
+                <th>Status</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${audits.length === 0 ? `
+                <tr>
+                  <td colspan="9" style="text-align:center;padding:36px;color:#64748b;">
+                    No physical count audits recorded yet. Complete a physical stock count to generate reconciliation logs.
+                  </td>
+                </tr>
+              ` : audits.map(a => `
+                <tr>
+                  <td><b>${a.id}</b></td>
+                  <td>${fmtDate(a.date)}</td>
+                  <td><b>${escapeHtml(a.store || 'Main Store')}</b></td>
+                  <td>${escapeHtml(a.user || 'Akash Kumar')}</td>
+                  <td>${a.itemCount || '—'}</td>
+                  <td><span class="pill" style="font-weight:700;">${a.adjustedCount || (a.adjustments?.length || 0)} adjustments</span></td>
+                  <td class="num-cell" style="font-weight:700;color:${(a.netVal || 0) >= 0 ? 'var(--green-text)' : 'var(--red)'};">
+                    ${(a.netVal || 0) > 0 ? '+' : ''}${money(a.netVal || 0)}
+                  </td>
+                  <td><span class="status ok">Reconciled</span></td>
+                  <td style="text-align:right;">
+                    <button class="secondary" onclick="viewAuditDetails('${a.id}')">View Details</button>
+                  </td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `
+  );
+}
+
+function viewAuditDetails(auditId) {
+  const a = (state.stockAudits || []).find(x => x.id === auditId);
+  if (!a) return;
+
+  openInAppModal(`Audit Reconciliation — ${a.id}`, `
+    <div style="font-size:13px;margin-bottom:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#f8fafc;padding:12px;border-radius:6px;border:1px solid #e2e8f0;">
+      <div>Warehouse: <b>${escapeHtml(a.store)}</b></div>
+      <div>Date: <b>${fmtDate(a.date)}</b></div>
+      <div>Audited By: <b>${escapeHtml(a.user)}</b></div>
+      <div>Net Variance: <b style="color:${(a.netVal || 0) >= 0 ? 'var(--green-text)' : 'var(--red)'};">${(a.netVal || 0) > 0 ? '+' : ''}${money(a.netVal || 0)}</b></div>
+    </div>
+    <div style="max-height:360px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:6px;">
+      <table class="table" style="font-size:12px;margin:0;">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th class="num-cell">Old Book</th>
+            <th class="num-cell">Physical</th>
+            <th class="num-cell">Diff</th>
+            <th class="num-cell">Value</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${(a.adjustments || []).map(adj => `
+            <tr>
+              <td><b>${escapeHtml(adj.product)}</b></td>
+              <td class="num-cell">${numberValue(adj.oldStock)} ${adj.unit || ''}</td>
+              <td class="num-cell" style="font-weight:700;">${numberValue(adj.newStock)} ${adj.unit || ''}</td>
+              <td class="num-cell" style="font-weight:700;color:${adj.diff > 0 ? 'var(--green-text)' : 'var(--red)'};">
+                ${adj.diff > 0 ? '+' : ''}${numberValue(adj.diff)}
+              </td>
+              <td class="num-cell"><b>${money(adj.value)}</b></td>
+              <td style="font-size:11px;color:#64748b;">${escapeHtml(adj.reason || 'Count reconciliation')}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    </div>
+  `, `
+    <button class="secondary" onclick="closeModal()">Close</button>
+  `);
+}
+
+function exportAuditHistoryCsv() {
+  const audits = state.stockAudits || [];
+  if (audits.length === 0) {
+    toast("No audit logs to export");
+    return;
+  }
+  const headers = ["Audit ID", "Date", "Warehouse", "Audited By", "Items Audited", "Adjusted Items", "Net Impact"];
+  const rows = [
+    headers,
+    ...audits.map(a => [
+      a.id,
+      fmtDate(a.date),
+      a.store,
+      a.user,
+      a.itemCount || 0,
+      a.adjustedCount || 0,
+      (a.netVal || 0).toFixed(2)
+    ])
+  ];
+  downloadCsv("stocksense-physical-stock-audits.csv", rows);
+}
+
+function printPhysicalStockSheet() {
+  const store = physicalStockState.store || state.currentStore || "Main Store";
+  const items = state.products.filter(p => p.store === store);
+
+  openInAppModal(`Physical Stock Count Sheet — ${store}`, `
+    <div id="print-stock-sheet-content" style="padding:4px;font-family:sans-serif;">
+      <div style="border-bottom:2px solid #0f172a;padding-bottom:8px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;">
+        <div>
+          <h2 style="margin:0;font-size:17px;color:#0f172a;">Hotel Rajmudra — Physical Stock Take Sheet</h2>
+          <div style="color:#64748b;font-size:12px;margin-top:2px;">Location: <b>${escapeHtml(store)}</b> | Date: <b>${fmtDate(today)}</b></div>
+        </div>
+        <div style="text-align:right;font-size:11px;color:#64748b;line-height:1.4;">
+          Counted by: ____________________<br>Verified by: ____________________
+        </div>
+      </div>
+      <div style="max-height:400px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:6px;">
+        <table class="table" style="width:100%;font-size:11.5px;margin:0;">
+          <thead>
+            <tr style="background:#f8fafc;">
+              <th style="width:30px;text-align:center;">#</th>
+              <th>Item Name</th>
+              <th>SKU</th>
+              <th>Category</th>
+              <th>Unit</th>
+              <th class="num-cell" style="text-align:right;">Book Stock</th>
+              <th style="text-align:center;width:120px;background:#f1f5f9;">Physical Count</th>
+              <th style="width:130px;">Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${items.map((p, idx) => `
+              <tr style="border-bottom:1px solid #e2e8f0;">
+                <td style="text-align:center;color:#64748b;">${idx + 1}</td>
+                <td><b>${escapeHtml(p.name)}</b></td>
+                <td>${escapeHtml(p.sku || '—')}</td>
+                <td>${escapeHtml(p.category || '—')}</td>
+                <td>${escapeHtml(p.unit)}</td>
+                <td class="num-cell" style="font-weight:700;">${numberValue(p.stock)}</td>
+                <td style="text-align:center;border-left:1px dashed #cbd5e1;border-right:1px dashed #cbd5e1;background:#fafafa;">&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `, `
+    <button class="secondary" onclick="closeModal()">Close</button>
+    <button class="primary" onclick="window.print()">Print Count Sheet</button>
+  `);
 }
 
 function exportFullBackup() {
@@ -5757,8 +6960,9 @@ function showView(view) {
   else if (view === "purchasing") html = purchaseDraft.isNew ? purchaseScreen() : purchaseHistory();
   else if (view === "purchase-orders") html = purchaseOrdersScreen();
   else if (view === "outward") html = outwardDraft.isNew ? outwardScreen() : outwardHistory();
-  else if (view === "departments") html = departmentsScreen();
-  else if (view === "suppliers") html = suppliersScreen();
+  else if (view === "physical-stock") html = physicalStockScreen();
+  else if (view === "departments") { currentSettingsTab = "departments"; html = settingsScreen(); }
+  else if (view === "suppliers") { currentSettingsTab = "suppliers"; html = settingsScreen(); }
   else if (view === "accounts") html = accountsScreen();
   else if (view === "reports") html = universalReports();
   else if (view === "stores") html = storesScreen();
