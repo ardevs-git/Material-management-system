@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "node server.js",
     "start": "node server.js",
-    "build": "mkdir -p dist && cp -r index.html styles.css app.js closing-stock-import.js dist/ 2>/dev/null || true"
+    "lint": "node --check app.js server.js closing-stock-import.js",
+    "build": "mkdir -p dist && cp -r index.html styles.css app.js closing-stock-import.js vendor dist/ 2>/dev/null || true"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8"
   }
 }

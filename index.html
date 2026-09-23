@@ -15,79 +15,95 @@
 <body>
   <div class="app-shell">
     <aside class="sidebar" id="sidebar">
-      <div class="brand" id="brand-header" onclick="showView('dashboard')" style="cursor:pointer;" title="Go to Dashboard">
-        <div class="brand-mark">HR</div>
-        <div>
-          <strong>Hotel Rajmudra</strong>
-          <span>Inventory OS</span>
-        </div>
-      </div>
-
-      <div class="workspace-switch" id="workspace-switcher" onclick="toggleStoreDropdown(event)" title="Click to switch location">
-        <div class="store-icon">⌂</div>
-        <div class="workspace-info">
-          <b id="sidebar-current-store">Main Store</b>
-          <span>Active warehouse</span>
-        </div>
-        <span class="chevron">⌄</span>
-        <div id="store-dropdown" class="header-popover store-popover"></div>
+      <div class="brand" id="brand-header" onclick="showView('inventory')" style="cursor:pointer;" title="StockSense">
+        <span class="stocksense-brand-title">StockSense</span>
       </div>
 
       <nav class="sidebar-nav">
-        <p class="nav-label">Core Operations</p>
-        <button class="nav-item active" data-view="dashboard" id="nav-dashboard"><span>⌂</span> Dashboard</button>
-        <button class="nav-item" data-view="inventory" id="nav-inventory"><span>▣</span> Stock <i class="nav-badge" id="stock-badge">0</i></button>
-        <button class="nav-item" data-view="physical-stock" id="nav-physical-stock"><span>⚖</span> Physical Stock</button>
-        <button class="nav-item" data-view="purchasing" id="nav-purchasing"><span>♧</span> Purchases</button>
-        <button class="nav-item" data-view="purchase-orders" id="nav-po"><span>📋</span> Purchase Orders</button>
-        <button class="nav-item" data-view="outward" id="nav-outward"><span>⇲</span> Stock Outward</button>
-        
-        <p class="nav-label second">Management & Admin</p>
-        <button class="nav-item" data-view="accounts" id="nav-accounts"><span>💳</span> Accounts</button>
-        <button class="nav-item" data-view="reports" id="nav-reports"><span>◒</span> Analytics & Reports</button>
-        <button class="nav-item" data-view="users" id="nav-users"><span>♙</span> Team & Security</button>
-        <button class="nav-item" data-view="settings" id="nav-settings"><span>⚙</span> Settings</button>
+        <button class="nav-item" data-view="dashboard" id="nav-dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          Dashboard
+        </button>
+        <button class="nav-item active" data-view="inventory" id="nav-inventory">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          Stock
+        </button>
+        <button class="nav-item" data-view="add-product" id="nav-add-product" onclick="openModal('product')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          + Add Product
+        </button>
+        <button class="nav-item" data-view="purchasing" id="nav-purchasing">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          Purchases
+        </button>
+        <button class="nav-item" data-view="sales" id="nav-sales">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          Sales
+        </button>
+        <button class="nav-item" data-view="outward" id="nav-outward">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+          Outward
+        </button>
+        <button class="nav-item" data-view="accounts" id="nav-accounts">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          Accounts
+        </button>
+        <button class="nav-item" data-view="reports" id="nav-reports">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+          Reports
+        </button>
+        <button class="nav-item" data-view="settings" id="nav-settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Settings
+        </button>
+        <button class="nav-item" data-view="about-dev" id="nav-about-dev">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          About Developer
+        </button>
       </nav>
 
-      <div class="sidebar-bottom">
-        <button class="nav-item" data-view="audit" id="nav-audit"><span>⌁</span> Activity Log</button>
-        <div class="user-profile" id="user-profile-trigger" onclick="toggleUserDropdown(event)" title="Switch active user">
-          <div class="avatar" id="sidebar-avatar">AK</div>
-          <div class="user-meta">
-            <b id="sidebar-user-name">Akash Kumar</b>
-            <span id="sidebar-user-role">Owner</span>
-          </div>
-          <span class="more">•••</span>
-          <div id="user-dropdown" class="header-popover user-popover"></div>
-        </div>
+      <div class="sidebar-copyright">
+        &copy; 2024 StockSense Inc.
       </div>
     </aside>
 
     <main class="main" id="main-content">
       <header class="topbar">
-        <div class="breadcrumbs">
-          <span>Workspace</span><b>/</b>
-          <strong id="page-title">Dashboard</strong>
+        <div class="topbar-left">
+          <h1 class="topbar-page-title" id="page-title">Stock</h1>
         </div>
 
-        <div class="top-actions">
-          <button class="top-action purchase-action" id="btn-top-purchase" onclick="newPurchase()">⊕ Purchase</button>
-          <button class="top-action outward-action" id="btn-top-outward" onclick="newOutward()">⊕ Outward</button>
-          
-          <div class="global-search">
-            <span>⌕</span>
-            <input id="global-search" placeholder="Search item, SKU, voucher... (⌘K)" />
-            <kbd>⌘ K</kbd>
+        <div class="topbar-actions-group">
+          <button class="topbar-btn topbar-btn-purchase" id="btn-top-purchase" onclick="newPurchase()" title="Create Purchase Entry">
+            <span>＋</span> Purchase
+          </button>
+          <button class="topbar-btn topbar-btn-outward" id="btn-top-outward" onclick="newOutward()" title="Record Stock Outward">
+            <span>＋</span> Outward
+          </button>
+          <button class="topbar-btn topbar-btn-new-item" id="btn-top-new-item" onclick="openModal('product')" title="Add New Product Master">
+            <span>＋</span> New Item
+          </button>
+
+          <div class="role-selector-wrap">
+            <select id="top-role-select" onchange="switchCurrentUserRole(this.value)">
+              <option value="Admin">Admin</option>
+              <option value="Owner">Owner</option>
+              <option value="Store Manager">Store Manager</option>
+              <option value="Accountant">Accountant</option>
+              <option value="Chef">Chef</option>
+            </select>
           </div>
 
-          <div class="popover-wrapper">
-            <button class="icon-btn" id="notif-btn" onclick="toggleNotifDropdown(event)" title="Alerts & Low Stock">
-              <span>🔔</span><i id="notif-badge" class="badge-dot"></i>
-            </button>
-            <div id="notif-dropdown" class="header-popover notif-popover"></div>
+          <div class="user-badge-profile" id="user-profile-trigger" onclick="toggleUserDropdown(event)" title="User Profile">
+            <div class="user-avatar-circle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <div class="user-meta-stack">
+              <b id="topbar-user-name">Admin User</b>
+              <span id="topbar-user-role">Admin</span>
+            </div>
+            <div id="user-dropdown" class="header-popover user-popover"></div>
           </div>
-
-          <button class="help-btn" id="help-btn" onclick="openHelpModal()" title="Keyboard Shortcuts & Help">?</button>
         </div>
       </header>
 
@@ -99,6 +115,8 @@
   <div id="modal-root"></div>
   <div id="product-search-popover" class="product-search-popover"></div>
 
+  <script src="vendor/jspdf.umd.min.js"></script>
+  <script src="vendor/jspdf.plugin.autotable.min.js"></script>
   <script src="closing-stock-import.js"></script>
   <script src="app.js"></script>
 </body>
